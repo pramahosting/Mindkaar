@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {createMentalHealthPrompt} from "../prompts/prompt1"
 const MOODS = ["😊 Great", "🙂 Good", "😐 Okay", "😔 Low", "😞 Struggling"];
 
 export default function SignupPage({ onSwitch }) {
@@ -13,6 +14,7 @@ export default function SignupPage({ onSwitch }) {
     support: [],
     goals: [],
   });
+
   const [step, setStep] = useState(1);
   const [done, setDone] = useState(false);
 
@@ -64,10 +66,13 @@ export default function SignupPage({ onSwitch }) {
         support:     form.support,
         goals:       form.goals,
       };
+
+      const prompt = createMentalHealthPrompt(payload);
+
       setDone(false)
       setStep(1); 
       setForm({ name:"",email:"",password:"",age:"",mood:"",sleepHours:"",stressLevel:"5",support:[],goals:[] })
-      console.log("Signup payload:", payload);   // handy during dev
+      console.log("Signup payload:", prompt);   // handy during dev
 
     //   const data = await apiCall(ENDPOINTS.signup, payload);
     //   console.log("Signup response:", data);
@@ -75,7 +80,7 @@ export default function SignupPage({ onSwitch }) {
     //   if (data.token) localStorage.setItem("token", data.token);
       setDone(true);
     } catch (err) {
-      setError(err.message);
+      console.log(err.message);
     } finally {
       //setLoading(false);
     }
