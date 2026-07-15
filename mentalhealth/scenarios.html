@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiet Hours — Reflection Scenarios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:        #232A3B;
+    --bg-panel:  #2B3348;
+    --bg-raised: #323C54;
+    --line:      #414c68;
+    --ink:       #F1E9DA;
+    --ink-dim:   #A9AFC2;
+    --moss:      #8DA98F;
+    --moss-dim:  #6E8A72;
+    --peach:     #E3A379;
+    --danger:    #D98072;
+    --mono:      'IBM Plex Mono', monospace;
+    --serif:     'Fraunces', serif;
+    --sans:      'Inter', sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 15% 0%, rgba(141,169,143,0.08), transparent 55%),
+      radial-gradient(ellipse at 85% 100%, rgba(227,163,121,0.06), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:inherit; }
+
+  .app{
+    max-width:1400px;
+    margin:0 auto;
+    padding:32px 24px 64px;
+  }
+
+  header.top{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:36px;
+    flex-wrap:wrap;
+    border-bottom:1px solid var(--line);
+    padding-bottom:20px;
+  }
+  header.top .brand{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+  }
+  header.top h1{
+    font-family:var(--serif);
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:28px;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  header.top .brand .moon{
+    font-size:20px;
+    filter:saturate(0.6);
+  }
+  header.top p{
+    margin:0;
+    font-size:13px;
+    color:var(--ink-dim);
+    font-family:var(--mono);
+    letter-spacing:0.02em;
+  }
+
+  .grid{
+    display:flex;
+    flex-direction:row;
+    gap:20px;
+    align-items:flex-start;
+    overflow-x:auto;
+    padding-bottom:8px;
+  }
+  .grid > section{
+    flex-shrink:0;
+  }
+  #form-panel{ width:340px; }
+  #list-panel{ width:320px; }
+  #detail-panel{ width:520px; }
+
+  @media (max-width: 700px){
+    #form-panel, #list-panel, #detail-panel{ width:88vw; }
+  }
+
+  .panel{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px;
+  }
+
+  .panel-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--moss);
+    margin:0 0 16px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .panel-label::before{
+    content:'';
+    width:6px; height:6px;
+    border-radius:50%;
+    background:var(--moss);
+    display:inline-block;
+  }
+
+  /* ---------- FORM ---------- */
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:block;
+    font-size:12.5px;
+    color:var(--ink-dim);
+    margin-bottom:6px;
+    font-weight:500;
+  }
+  .field input[type=text],
+  .field input[type=email],
+  .field input[type=password],
+  .field input[type=number],
+  .field select,
+  .field textarea{
+    width:100%;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:8px;
+    color:var(--ink);
+    padding:10px 11px;
+    font-family:var(--sans);
+    font-size:14px;
+    outline:none;
+    transition:border-color .15s ease;
+  }
+  .field textarea{ resize:vertical; min-height:64px; }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus{
+    border-color:var(--moss);
+  }
+  .field input::placeholder,
+  .field textarea::placeholder{ color:#6b7286; }
+
+  .two-col{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+
+  .slider-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .slider-row input[type=range]{
+    flex:1;
+    accent-color:var(--peach);
+  }
+  .slider-val{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--peach);
+    width:32px;
+    text-align:right;
+  }
+
+  details.endpoint{
+    margin:4px 0 18px;
+    font-size:12px;
+  }
+  details.endpoint summary{
+    cursor:pointer;
+    color:var(--ink-dim);
+    font-family:var(--mono);
+    letter-spacing:0.02em;
+  }
+  details.endpoint input{
+    margin-top:8px;
+    width:100%;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:8px;
+    color:var(--ink);
+    padding:8px 10px;
+    font-family:var(--mono);
+    font-size:12px;
+  }
+  details.endpoint select{
+    margin-top:8px;
+    width:100%;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:8px;
+    color:var(--ink);
+    padding:8px 10px;
+    font-family:var(--mono);
+    font-size:12px;
+  }
+  details.endpoint .field label{
+    font-size:12px;
+    font-family:var(--mono);
+    color:var(--ink-dim);
+    margin-bottom:0;
+  }
+  .remember-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:10px;
+    font-size:11.5px;
+    color:var(--ink-dim);
+    cursor:pointer;
+  }
+  .remember-row input{ margin:0; width:auto; }
+
+  button.submit{
+    width:100%;
+    background:var(--moss);
+    color:#182119;
+    border:none;
+    border-radius:8px;
+    padding:12px;
+    font-size:14px;
+    font-weight:600;
+    font-family:var(--sans);
+    cursor:pointer;
+    transition:background .15s ease, transform .1s ease;
+  }
+  button.submit:hover{ background:#9dbb9f; }
+  button.submit:active{ transform:scale(0.99); }
+  button.submit:disabled{
+    background:#4b5568;
+    color:var(--ink-dim);
+    cursor:not-allowed;
+  }
+
+  .status-msg{
+    margin-top:12px;
+    font-size:12.5px;
+    font-family:var(--mono);
+    color:var(--ink-dim);
+    line-height:1.5;
+  }
+  .status-msg.error{ color:var(--danger); }
+  .status-msg.ok{ color:var(--moss); }
+
+  /* ---------- SCENARIO LIST ---------- */
+  .scenario-list{
+    list-style:none;
+    margin:0; padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .scenario-card{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 14px 12px;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .scenario-card:hover{
+    border-color:var(--moss-dim);
+  }
+  .scenario-card.active{
+    border-color:var(--moss);
+    background:#39445e;
+  }
+  .scenario-card h3{
+    margin:0 0 8px;
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:16px;
+    line-height:1.3;
+  }
+  .dial{
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .dial .dots{ display:flex; gap:3px; }
+  .dial .dot{
+    width:7px; height:7px;
+    border-radius:50%;
+    background:#454f6c;
+  }
+  .dial .dot.filled{ background:var(--peach); }
+  .dial .label{
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--ink-dim);
+    letter-spacing:0.04em;
+  }
+  .empty-hint{
+    color:var(--ink-dim);
+    font-size:13px;
+    line-height:1.6;
+  }
+
+  /* ---------- LIST STATE TAGS ---------- */
+  .state-tag{
+    display:inline-block;
+    margin-top:8px;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:0.03em;
+    padding:2px 8px;
+    border-radius:100px;
+  }
+  .state-tag.loading{
+    color:var(--ink-dim);
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+  }
+  .state-tag.error{
+    color:var(--bg);
+    background:var(--danger);
+  }
+
+  /* ---------- DETAIL LOADING / ERROR ---------- */
+  .detail-loading{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:220px;
+    color:var(--ink-dim);
+    font-family:var(--mono);
+    font-size:13px;
+    text-align:center;
+    padding:40px 20px;
+  }
+  .detail-error{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    min-height:220px;
+    color:var(--danger);
+    font-size:13.5px;
+    text-align:center;
+    padding:40px 20px;
+    line-height:1.6;
+  }
+  .retry-btn{
+    background:var(--bg-raised);
+    border:1px solid var(--danger);
+    color:var(--ink);
+    border-radius:8px;
+    padding:8px 16px;
+    font-family:var(--sans);
+    font-size:13px;
+    font-weight:500;
+    cursor:pointer;
+  }
+  .retry-btn:hover{ background:#3d3040; }
+
+  /* ---------- DETAIL ---------- */
+  .detail-empty{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:300px;
+    color:var(--ink-dim);
+    font-family:var(--mono);
+    font-size:13px;
+    text-align:center;
+    padding:40px 20px;
+  }
+  .detail h2{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:24px;
+    margin:0 0 6px;
+    line-height:1.25;
+  }
+  .detail .difficulty-line{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-dim);
+    margin-bottom:20px;
+  }
+  .narrative{
+    font-size:15px;
+    line-height:1.75;
+    color:var(--ink);
+    background:var(--bg-raised);
+    border-left:3px solid var(--moss);
+    padding:16px 18px;
+    border-radius:0 8px 8px 0;
+    margin-bottom:24px;
+  }
+  .options-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+    margin-bottom:12px;
+  }
+  .option{
+    display:flex;
+    gap:14px;
+    padding:14px 0;
+    border-top:1px solid var(--line);
+  }
+  .option:first-of-type{ border-top:none; }
+  .option .letter{
+    font-family:var(--serif);
+    font-size:20px;
+    font-weight:600;
+    color:var(--peach);
+    width:24px;
+    flex-shrink:0;
+  }
+  .option .body p{
+    margin:0 0 8px;
+    font-size:14px;
+    line-height:1.6;
+  }
+  .option .trait{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:0.03em;
+    color:var(--bg);
+    background:var(--moss);
+    padding:2px 8px;
+    border-radius:100px;
+  }
+
+  /* ---------- STACKED QUESTIONS (per-topic) ---------- */
+  .topic-description{
+    font-size:13.5px;
+    color:var(--ink-dim);
+    line-height:1.6;
+    margin:0 0 24px;
+  }
+  .question-block{
+    margin-bottom:32px;
+    padding-bottom:28px;
+    border-bottom:1px solid var(--line);
+  }
+  .question-block:last-of-type{
+    border-bottom:none;
+    margin-bottom:0;
+    padding-bottom:0;
+  }
+  .question-number{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--peach);
+    margin-bottom:10px;
+  }
+  .question-block .narrative{ margin-bottom:16px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <div class="brand">
+      <span class="moon">☾</span>
+      <h1>Quiet Hours</h1>
+    </div>
+    <p>reflection scenarios, generated from your baseline</p>
+  </header>
+
+  <div class="grid">
+
+    <!-- SECTION 1: PROFILE FORM -->
+    <section class="panel" id="form-panel">
+      <p class="panel-label">Your baseline</p>
+      <form id="profile-form">
+        <div class="field">
+          <label for="f-name">Name</label>
+          <input type="text" id="f-name" placeholder="Jordan Lee" required>
+        </div>
+        <div class="two-col">
+          <div class="field">
+            <label for="f-email">Email</label>
+            <input type="email" id="f-email" placeholder="you@example.com" required>
+          </div>
+          <div class="field">
+            <label for="f-password">Password</label>
+            <input type="password" id="f-password" placeholder="••••••••">
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="field">
+            <label for="f-age">Age</label>
+            <input type="number" id="f-age" placeholder="27" min="13" max="120">
+          </div>
+          <div class="field">
+            <label for="f-mood">Current mood</label>
+            <select id="f-mood">
+              <option value="">Select…</option>
+              <option>Anxious</option>
+              <option>Low</option>
+              <option>Numb</option>
+              <option>Restless</option>
+              <option>Okay</option>
+              <option>Hopeful</option>
+            </select>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="field">
+            <label for="f-sleep">Sleep hours (avg)</label>
+            <input type="number" id="f-sleep" placeholder="6" min="0" max="24" step="0.5">
+          </div>
+          <div class="field">
+            <label for="f-stress">Stress level</label>
+            <div class="slider-row">
+              <input type="range" id="f-stress" min="1" max="10" value="5">
+              <span class="slider-val" id="f-stress-val">5</span>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-support">Support system</label>
+          <select id="f-support">
+            <option value="">Select…</option>
+            <option>Strong — I have people I trust</option>
+            <option>Some — a few people, not always available</option>
+            <option>Limited — mostly on my own</option>
+            <option>None — I feel isolated</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-goals">Goals right now</label>
+          <textarea id="f-goals" placeholder="e.g. sleep better, stop comparing myself to others, feel less anxious at night"></textarea>
+        </div>
+
+        <details class="endpoint" id="api-settings">
+          <summary>API settings</summary>
+          <div class="field" style="margin-top:10px;">
+            <label for="f-backend-url">Backend URL</label>
+            <input type="text" id="f-backend-url" value="http://localhost:8000" placeholder="http://localhost:8000">
+          </div>
+          <div class="field">
+            <label for="f-groq-model">Model</label>
+            <select id="f-groq-model">
+              <option value="openai/gpt-oss-120b">openai/gpt-oss-120b (best quality, structured output)</option>
+              <option value="openai/gpt-oss-20b">openai/gpt-oss-20b (fastest, structured output)</option>
+              <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile</option>
+              <option value="meta-llama/llama-4-scout-17b-16e-instruct">meta-llama/llama-4-scout-17b-16e-instruct</option>
+              <option value="qwen/qwen3-32b">qwen/qwen3-32b</option>
+            </select>
+          </div>
+        </details>
+
+        <button type="submit" class="submit" id="submit-btn">Generate scenarios</button>
+        <div class="status-msg" id="status"></div>
+      </form>
+    </section>
+
+    <!-- SECTION 2: TOPIC LIST -->
+    <section class="panel" id="list-panel">
+      <p class="panel-label">Topics</p>
+      <div id="list-empty" class="empty-hint">
+        Fill in your baseline and generate — topics tailored to your profile will appear here. Click one to open its 10 questions.
+      </div>
+      <ul class="scenario-list" id="scenario-list"></ul>
+    </section>
+
+    <!-- SECTION 3: TOPIC QUESTIONS -->
+    <section class="panel" id="detail-panel">
+      <p class="panel-label">Questions</p>
+      <div class="detail-empty" id="detail-empty">
+        Select a topic from the list to see its 10 questions here.
+      </div>
+      <div class="detail" id="detail-content" style="display:none;"></div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  const stressInput = document.getElementById('f-stress');
+  const stressVal = document.getElementById('f-stress-val');
+  stressInput.addEventListener('input', () => stressVal.textContent = stressInput.value);
+
+  const form = document.getElementById('profile-form');
+  const submitBtn = document.getElementById('submit-btn');
+  const statusEl = document.getElementById('status');
+
+  const listEmpty = document.getElementById('list-empty');
+  const listEl = document.getElementById('scenario-list');
+
+  const detailEmpty = document.getElementById('detail-empty');
+  const detailContent = document.getElementById('detail-content');
+
+  const backendUrlInput = document.getElementById('f-backend-url');
+  const modelSelect = document.getElementById('f-groq-model');
+
+  const TOPIC_TIMEOUT_MS = 45000;
+  const QUESTIONS_TIMEOUT_MS = 60000; // 10 full questions per topic can take a while
+
+  // ---- state ----
+  // Phase 1: `topics` is the list of scenario topics (e.g. Sleep, Family...)
+  // Phase 2: each topic's 10 questions are fetched on click and cached by key,
+  // so re-clicking a topic you've already opened never re-fetches.
+  let topics = [];          // array of {id, topic, description}
+  let activeKey = null;     // stable key of the currently-selected topic
+  const questionCache = {}; // key -> array of 10 question objects
+  const questionState = {}; // key -> 'loading' | 'error' | 'timeout' | 'ready'
+  const questionError = {}; // key -> the actual error message, so failures are diagnosable
+
+  function setStatus(msg, type){
+    statusEl.textContent = msg || '';
+    statusEl.className = 'status-msg' + (type ? ' ' + type : '');
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;');
+  }
+
+  function difficultyDots(diffVal, defaultTotal){
+    let filled = 0, total = defaultTotal || 6;
+    if (typeof diffVal === 'string' && diffVal.includes('/')){
+      const [a, b] = diffVal.split('/').map(s => parseInt(s.trim(), 10));
+      if (!isNaN(a)) filled = a;
+      if (!isNaN(b) && b > 0) total = b;
+    } else if (typeof diffVal === 'number' && !isNaN(diffVal)){
+      filled = diffVal;
+    }
+    filled = Math.max(0, Math.min(filled, total));
+    let html = '<div class="dots">';
+    for (let i = 0; i < total; i++){
+      html += `<span class="dot${i < filled ? ' filled' : ''}"></span>`;
+    }
+    html += '</div>';
+    return html;
+  }
+
+  function topicName(t){
+    if (typeof t === 'string') return t || 'Untitled topic';
+    if (t && typeof t === 'object') return t.topic || t.title || t.name || 'Untitled topic';
+    return 'Untitled topic';
+  }
+
+  function topicDescription(t){
+    if (t && typeof t === 'object') return t.description || t.summary || '';
+    return '';
+  }
+
+  // Stable key for a topic: prefer its own id, fall back to its position
+  function topicKey(t, fallbackIndex){
+    if (t && typeof t === 'object' && t.id !== undefined && t.id !== null && t.id !== '') return String(t.id);
+    if (typeof t === 'string') return 'topic-' + t;
+    return 'idx-' + fallbackIndex;
+  }
+
+  // ---------------------------------------------------------------------
+  // JSON parsing helpers — defensive against models that don't perfectly
+  // honor response_format (markdown fences, the {{ }} artifact, etc.)
+  // ---------------------------------------------------------------------
+  function tryParseJson(raw){
+    if (raw === null || raw === undefined) return null;
+    if (typeof raw === 'object') return raw;
+    if (typeof raw !== 'string') return null;
+
+    let text = raw.trim();
+    if (!text) return null;
+
+    text = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+
+    const attempts = [text, text.replace(/\{\{/g, '{').replace(/\}\}/g, '}')];
+    for (const attempt of attempts){
+      try { return JSON.parse(attempt); } catch (e) { /* try next */ }
+    }
+
+    const match = text.match(/\{[\s\S]*\}/);
+    if (match){
+      for (const attempt of [match[0], match[0].replace(/\{\{/g, '{').replace(/\}\}/g, '}')]){
+        try { return JSON.parse(attempt); } catch (e) { /* keep trying */ }
+      }
+    }
+    return null;
+  }
+
+  function normalizeList(data, key){
+    if (!data) return [];
+    if (typeof data === 'string') return normalizeList(tryParseJson(data), key);
+    if (Array.isArray(data)) return data.filter(Boolean);
+    if (data[key]){
+      return Array.isArray(data[key]) ? data[key].filter(Boolean) : [data[key]];
+    }
+    return [];
+  }
+
+  function gatherProfile(){
+    return {
+      name:        document.getElementById('f-name').value.trim(),
+      email:       document.getElementById('f-email').value.trim(),
+      age:         document.getElementById('f-age').value ? Number(document.getElementById('f-age').value) : null,
+      mood:        document.getElementById('f-mood').value,
+      sleepHours:  document.getElementById('f-sleep').value ? Number(document.getElementById('f-sleep').value) : null,
+      stressLevel: Number(document.getElementById('f-stress').value),
+      support:     document.getElementById('f-support').value,
+      goals:       document.getElementById('f-goals').value.trim(),
+    };
+  }
+
+  // ---------------------------------------------------------------------
+  // Backend call — the FastAPI service builds the prompts, talks to Groq,
+  // and does all the JSON-schema/parsing work server-side. The client just
+  // sends the profile (+ topic, for phase 2) and gets back plain JSON:
+  // {"topics":[...]} or {"questions":[...]} — no unwrapping needed.
+  // ---------------------------------------------------------------------
+  function backendBaseUrl(){
+    const raw = backendUrlInput.value.trim();
+    return raw ? raw.replace(/\/+$/, '') : 'http://localhost:8000';
+  }
+
+  async function callBackend({ path, body, timeoutMs, resultKey }){
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+    let res;
+    try {
+      res = await fetch(backendBaseUrl() + path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: controller.signal,
+      });
+    } catch (networkErr){
+      if (networkErr && networkErr.name === 'AbortError'){
+        const e = new Error("The server didn't respond in time.");
+        e.code = 'TIMEOUT';
+        throw e;
+      }
+      console.error('Network error calling backend:', networkErr);
+      const e = new Error(`Could not reach the API at ${backendBaseUrl()}. Is the FastAPI server running?`);
+      e.code = 'NETWORK_ERROR';
+      throw e;
+    } finally {
+      clearTimeout(timeoutId);
+    }
+
+    const raw = await res.text();
+    const payload = tryParseJson(raw);
+
+    if (!res.ok){
+      console.error(`Backend error (${res.status}):`, raw);
+      const detail = payload && payload.detail;
+      const message = (detail && detail.error)
+        || (typeof detail === 'string' ? detail : null)
+        || `Server responded with status ${res.status}.`;
+      const e = new Error(message);
+      e.code = (detail && detail.code) || 'API_ERROR';
+      throw e;
+    }
+
+    if (payload === null){
+      console.error('Backend response was not valid JSON:', raw.slice(0, 500));
+      const e = new Error("The server's response wasn't valid JSON.");
+      e.code = 'PARSE_ERROR';
+      throw e;
+    }
+
+    const list = normalizeList(payload, resultKey);
+    if (!list.length){
+      console.error(`Backend returned JSON but no "${resultKey}" were found in it:`, payload);
+      const e = new Error(`The server didn't return any ${resultKey}.`);
+      e.code = 'EMPTY_RESPONSE';
+      throw e;
+    }
+
+    return list;
+  }
+
+  // ---------------------------------------------------------------------
+  // Rendering — Section 2: topic list
+  // ---------------------------------------------------------------------
+  function renderList(){
+    listEl.innerHTML = '';
+
+    if (!topics || !topics.length){
+      listEmpty.style.display = 'block';
+      return;
+    }
+    listEmpty.style.display = 'none';
+
+    topics.forEach((t, i) => {
+      const key = topicKey(t, i);
+      const name = topicName(t);
+      const state = questionState[key];
+
+      let stateTag = '';
+      if (state === 'loading') stateTag = '<span class="state-tag loading">loading…</span>';
+      else if (state === 'error') stateTag = '<span class="state-tag error">couldn\u2019t load — click to retry</span>';
+      else if (state === 'timeout') stateTag = '<span class="state-tag error">timed out — click to retry</span>';
+
+      const li = document.createElement('li');
+      li.className = 'scenario-card' + (key === activeKey ? ' active' : '');
+      li.innerHTML = `
+        <h3>${escapeHtml(name)}</h3>
+        ${stateTag}
+      `;
+      li.addEventListener('click', () => selectTopic(key, i));
+      listEl.appendChild(li);
+    });
+  }
+
+  // ---------------------------------------------------------------------
+  // Rendering — Section 3: the 10 questions for the active topic
+  // ---------------------------------------------------------------------
+  function renderDetail(){
+    if (activeKey === null){
+      detailEmpty.style.display = 'flex';
+      detailContent.style.display = 'none';
+      return;
+    }
+
+    const state = questionState[activeKey];
+
+    if (state === 'loading'){
+      detailEmpty.style.display = 'none';
+      detailContent.style.display = 'block';
+      detailContent.innerHTML = `<div class="detail-loading">Generating 10 questions for this topic…</div>`;
+      return;
+    }
+
+    if (state === 'error' || state === 'timeout' || !questionCache[activeKey]){
+      detailEmpty.style.display = 'none';
+      detailContent.style.display = 'block';
+      const message = questionError[activeKey] || 'Something went wrong loading this topic.';
+      detailContent.innerHTML = `
+        <div class="detail-error">
+          <span>${escapeHtml(message)}</span>
+          <button type="button" class="retry-btn" id="retry-detail-btn">Try again</button>
+        </div>
+      `;
+      const retryBtn = document.getElementById('retry-detail-btn');
+      if (retryBtn){
+        retryBtn.addEventListener('click', () => {
+          const idx = topics.findIndex((t, i) => topicKey(t, i) === activeKey);
+          if (idx > -1) fetchQuestionsForTopic(activeKey, topics[idx]);
+        });
+      }
+      return;
+    }
+
+    const questions = questionCache[activeKey];
+    const idx = topics.findIndex((t, i) => topicKey(t, i) === activeKey);
+    const topic = idx > -1 ? topics[idx] : null;
+
+    detailEmpty.style.display = 'none';
+    detailContent.style.display = 'block';
+
+    let blocksHtml = '';
+    questions.forEach((q, qi) => {
+      let optionsHtml = '';
+      (q.options || []).forEach(opt => {
+        const label    = (opt.id !== undefined && opt.id !== null && opt.id !== '') ? opt.id : (opt.letter || '');
+        const text     = opt.text || '';
+        const strategy = opt.strategy || opt.trait || '';
+        optionsHtml += `
+          <div class="option">
+            <div class="letter">${escapeHtml(String(label))}</div>
+            <div class="body">
+              <p>${escapeHtml(text)}</p>
+              ${strategy ? `<span class="trait">${escapeHtml(strategy)}</span>` : ''}
+            </div>
+          </div>
+        `;
+      });
+      if (!optionsHtml){
+        optionsHtml = '<p class="empty-hint">No response options were returned for this question.</p>';
+      }
+
+      const difficulty = (q && typeof q === 'object') ? (q.difficulty ?? null) : null;
+
+      blocksHtml += `
+        <div class="question-block">
+          <div class="question-number">Question ${qi + 1}${difficulty !== null ? ` · Difficulty ${escapeHtml(String(difficulty))}` : ''}</div>
+          <div class="narrative">${escapeHtml(q.narrative || '')}</div>
+          <p class="options-label">How do you respond?</p>
+          ${optionsHtml}
+        </div>
+      `;
+    });
+
+    detailContent.innerHTML = `
+      <h2>${escapeHtml(topic ? topicName(topic) : 'Topic')}</h2>
+      ${topic && topicDescription(topic) ? `<p class="topic-description">${escapeHtml(topicDescription(topic))}</p>` : ''}
+      ${blocksHtml}
+    `;
+  }
+
+  // ---------------------------------------------------------------------
+  // Phase 2: fetch the 10 questions for one topic, cached by key. Only
+  // re-renders the list/detail — never touches the `topics` array, so the
+  // topic list itself is never at risk of disappearing.
+  // ---------------------------------------------------------------------
+  async function fetchQuestionsForTopic(key, topic){
+    questionState[key] = 'loading';
+    renderList();
+    renderDetail();
+
+    const model = modelSelect.value;
+    const profile = gatherProfile();
+
+    try {
+      const questions = await callBackend({
+        path: '/api/questions',
+        body: { profile, topic: topicName(topic), model },
+        timeoutMs: QUESTIONS_TIMEOUT_MS,
+        resultKey: 'questions',
+      });
+      questionCache[key] = questions;
+      questionState[key] = 'ready';
+      delete questionError[key];
+    } catch (err){
+      console.error(`Failed to fetch questions for topic "${topicName(topic)}":`, err);
+      questionCache[key] = null;
+      questionState[key] = (err && err.code === 'TIMEOUT') ? 'timeout' : 'error';
+      questionError[key] = (err && err.message) || 'Something went wrong loading this topic.';
+    }
+
+    renderList();
+    if (key === activeKey) renderDetail();
+  }
+
+  function selectTopic(key, index){
+    activeKey = key;
+    renderList();
+
+    if (questionState[key] === 'ready' || questionState[key] === 'loading'){
+      renderDetail();
+      return;
+    }
+
+    fetchQuestionsForTopic(key, topics[index]);
+  }
+
+  // ---------------------------------------------------------------------
+  // Phase 1: form submit -> fetch the topic list
+  // ---------------------------------------------------------------------
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const profile = gatherProfile();
+    const model = modelSelect.value;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Generating…';
+    setStatus('Asking the server for topics tailored to your profile…');
+
+    activeKey = null;
+    Object.keys(questionCache).forEach(k => delete questionCache[k]);
+    Object.keys(questionState).forEach(k => delete questionState[k]);
+    Object.keys(questionError).forEach(k => delete questionError[k]);
+    detailEmpty.style.display = 'flex';
+    detailContent.style.display = 'none';
+
+    try {
+      const list = await callBackend({
+        path: '/api/topics',
+        body: { profile, model },
+        timeoutMs: TOPIC_TIMEOUT_MS,
+        resultKey: 'topics',
+      });
+      topics = list;
+      renderList();
+      renderDetail();
+      setStatus(`Got ${topics.length} topic${topics.length === 1 ? '' : 's'} back. Click one to load its questions.`, 'ok');
+    } catch (err){
+      console.error('Topic generation failed:', err);
+      topics = [];
+      renderList();
+      renderDetail();
+      setStatus(err.message || 'Something went wrong talking to the server.', 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Generate scenarios';
+    }
+  });
+
+  renderList();
+  renderDetail();
+})();
+</script>
+</body>
+</html>

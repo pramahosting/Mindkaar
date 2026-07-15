@@ -1,0 +1,124 @@
+{
+  "scenarios": [
+    {
+      "id": 1,
+      "title": "The Midnight Mindstorm",
+      "difficulty": 2,
+      "narrative": "It's 1:47 AM. You've been staring at the ceiling for over an hour. Your medication sits on the nightstand, already taken with dinner, but your mind won't quiet down. Tomorrow you have an important meeting at 9 AM, and the weight of it presses against your chest like a physical force. Every small worry from the past week flickers through your thoughts — unwashed dishes, an unanswered email, a conversation you replay endlessly. You feel exhaustion pulling at your body, but your brain refuses to surrender. You need sleep, desperately, yet it feels further away than ever.",
+      "options": [
+        { "id": "A", "text": "Grab your phone and scroll through social media until your eyes feel heavy, hoping distraction numbs the thoughts.", "strategy": "avoidant" },
+        { "id": "B", "text": "Get out of bed, move to the living room, and journal every racing thought on paper without judging them — then return to bed.", "strategy": "emotionally_regulated" },
+        { "id": "C", "text": "Do a structured body-scan meditation: focus on relaxing each muscle group from toes to crown of head, counting breaths.", "strategy": "analytical" },
+        { "id": "D", "text": "Text a friend right now and ask them to stay on the phone until you fall asleep.", "strategy": "assertive" }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "The Overflowing Inbox",
+      "difficulty": 3,
+      "narrative": "You sit down at your desk on a Monday morning, coffee in hand, ready to start fresh. You open your inbox and find 47 unread emails — three of them marked urgent by your manager, one from a frustrated client, and tomorrow's project deadline is creeping closer. Your stomach tightens. Your shoulders rise toward your ears. You feel the familiar surge of stress rated 9 out of 10 swirling inside you. You slept okay last night, but the anxiety is already gnawing at your focus before you've even touched a single keystroke.",
+      "options": [
+        { "id": "A", "text": "Start frantically replying to the oldest emails first, trying to clear the inbox as fast as possible regardless of priority.", "strategy": "avoidant" },
+        { "id": "B", "text": "Take three slow breaths, then sort the emails by urgency and time required — create a plan for the next 3 hours before responding to anything.", "strategy": "analytical" },
+        { "id": "C", "text": "Send a quick message to your manager: 'I'm feeling overwhelmed right now and need help prioritizing — can we sync for 5 minutes?'", "strategy": "assertive" },
+        { "id": "D", "text": "Acknowledge the knot in your chest, name the emotion out loud — 'This is anxiety telling me I can't handle this' — then approach the simplest email first as a small win.", "strategy": "emotionally_regulated" }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "The Cancelled Plan",
+      "difficulty": 4,
+      "narrative": "Your closest friend just cancelled on dinner plans you'd been looking forward to all week. They send a brief text — no explanation, just 'Can't make it tonight, sorry.' This is the third time this month. A wave of hurt and irritation washes over you. Part of you wants to fire off an angry message. Another part replays old memories, wondering if you've done something wrong. You're already home, half-dressed for the evening, and now you're standing in your kitchen alone with your thoughts spiraling. Your internal stress level spikes from 6 to 9 in seconds.",
+      "options": [
+        { "id": "A", "text": "Send an immediate message: 'This really frustrates me. I need you to be honest about what's going on.'", "strategy": "assertive" },
+        { "id": "B", "text": "Ignore the text entirely, go ahead and order your favorite comfort food solo, and decide whether this friendship matters enough to address another day.", "strategy": "avoidant" },
+        { "id": "C", "text": "Step outside for a 10-minute walk around the block, letting the fresh air settle your emotions before deciding how to respond.", "strategy": "emotionally_regulated" },
+        { "id": "D", "text": "Pause and consider possible reasons behind the cancellations — are they stressed, going through something, or genuinely unreliable? List the most likely explanations before reacting.", "strategy": "analytical" }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "The Presentation Jitters",
+      "difficulty": 5,
+      "narrative": "You're standing backstage in a conference room. In 15 minutes, you'll present a quarterly strategy to senior leadership — the CEO is in the room. You spent days preparing, but your hands are already trembling and your mouth has gone dry. Your internal monologue screams: 'What if you forget everything? What if they see right through you?' Your medication is doing its job at baseline stress level 4, but this situation just pushed you to an 8. The AV coordinator glances at you expectantly. The clock ticks. Your heart pounds so loudly you're convinced the audience can hear it.",
+      "options": [
+        { "id": "A", "text": "Power through — clench your fist, dismiss the fear, and tell yourself to just get it over with as fast as possible.", "strategy": "avoidant" },
+        { "id": "B", "text": "Find a quiet corner, do four rounds of box breathing (inhale 4 seconds, hold 4, exhale 4, hold 4), and visualize delivering the first slide confidently.", "strategy": "analytical" },
+        { "id": "C", "text": 'Reframe the narrative: tell yourself "These nerves mean I care deeply about doing well — this energy is fuel, not a threat."', "strategy": "emotionally_regulated" },
+        { "id": "D", "text": "Walk directly to the AV coordinator and say: 'Could you cue up my first slide for me? Having that little bit of help would really ease my nerves.'", "strategy": "assertive" }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "The Family Expectation",
+      "difficulty": 5,
+      "narrative": "It's Sunday dinner at your parents' house. The meal has barely started when your mother turns to you and says, with genuine concern, 'So when are you going to get your life together? Your cousin just got promoted again.' The table falls silent. Your father nods along. You feel your face flush with a cocktail of embarrassment, anger, and old childhood helplessness. You want to scream. You want to leave. You want to say something calm and composed — but your throat is tight and your stress just jumped from 5 to 9. Everyone is waiting for your reaction.",
+      "options": [
+        { "id": "A", "text": "Stand up immediately, grab your keys, and leave without another word — you'll deal with the fallout later.", "strategy": "avoidant" },
+        { "id": "B", "text": "Pause, take a slow breath, then say: 'Mom, I appreciate that you care about me, but comments like that make me feel unseen. I'm working toward my own goals at my own pace.'", "strategy": "assertive" },
+        { "id": "C", "text": "Instead of reacting emotionally, observe what you're feeling — shame, anger, hurt — label each one silently, and let them pass like clouds before you decide what to say.", "strategy": "emotionally_regulated" },
+        { "id": "D", "text": "Analyze the situation: consider why this particular comment stings so deeply, whether there's a different conversation you could steer the family toward, and what boundaries you might need to set long-term.", "strategy": "analytical" }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "The Work-Life Collision",
+      "difficulty": 6,
+      "narrative": "It's 6:30 PM on a Thursday. Your child's school play starts in 30 minutes — they've been rehearsing for weeks and their lead role means everything to them. Simultaneously, your manager Slacks you: 'Client crisis, need you on a call NOW, couldn't be later.' Both demands are non-negotiable in the moment. Your chest constricts. Your stress rockets from 4 to 10. You love your job, but you also promised your child. People are staring at you. Your phone won't stop buzzing. The clock is merciless.",
+      "options": [
+        { "id": "A", "text": "Promise your child you'll be there in five, rush to the play, and sneak out during the first scene to take the call in the back of the auditorium.", "strategy": "avoidant" },
+        { "id": "B", "text": "Text your manager immediately: 'I have a family commitment I cannot miss right now. I can join the call at 8 PM. If that's not possible, please loop in Sarah as backup.'", "strategy": "assertive" },
+        { "id": "C", "text": "Take 60 seconds in the car to breathe deeply, acknowledge how painful this choice feels, and give yourself grace — whichever you choose, you're doing your best in an impossible moment.", "strategy": "emotionally_regulated" },
+        { "id": "D", "text": "Quickly assess: How time-sensitive is the client crisis actually? Can a colleague cover? Is there a 10-minute window to do both? Map the realistic options before committing.", "strategy": "analytical" }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "The Rumination Spiral",
+      "difficulty": 4,
+      "narrative": "You finally climbed into bed at 11 PM — exactly on schedule, doing the hard-won sleep hygiene habits you've been building. But three minutes in, your brain launches into a brutal rerun of an awkward thing you said at work two days ago. It sounds stupid out loud even in your head, yet your mind keeps replaying it on loop, adding layers: 'They probably think you're incompetent.' 'Why did you say that?' 'Everyone is laughing.' Your body tenses in the dark. Stress climbs from 3 to 8. Sleep feels impossible again.",
+      "options": [
+        { "id": "A", "text": "Grab your phone and distract yourself with a podcast or show until exhaustion overrides the thoughts.", "strategy": "avoidant" },
+        { "id": "B", "text": "Practice sleep reassurance techniques: remind yourself that most people likely forgot about the comment, your worth is not defined by one sentence, and tomorrow will feel different.", "strategy": "emotionally_regulated" },
+        { "id": "C", "text": "Get up, write the thought down on paper, schedule 10 minutes tomorrow to review it — tell your brain it's 'parked' and doesn't need processing tonight.", "strategy": "analytical" },
+        { "id": "D", "text": "Text a trusted colleague tomorrow with a brief, honest message: 'I've been overthinking something I said — can you give me an honest take?'", "strategy": "assertive" }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "The Unexpected Bill",
+      "difficulty": 6,
+      "narrative": "You open your mailbox and find an unexpected medical bill — $2,300 — for a procedure your insurance should have covered. The billing deadline is in two weeks. Your bank account balance flashes in your mind, and a cold wave of dread washes over you. Your stress level instantly hits 10. You've been trying to save for a therapy co-pay upgrade, and now those plans feel shattered. Your first instinct is panic, followed immediately by a shame spiral: 'Why didn't I double-check? Why is this always happening to me?'",
+      "options": [
+        { "id": "A", "text": "Put the bill in a drawer, refuse to look at it, and tell yourself you'll deal with it next week when you're in a better headspace.", "strategy": "avoidant" },
+        { "id": "B", "text": "Call your insurance company within the hour, request an itemized review of the claim, and ask to speak with a billing advocate if needed to dispute the charge.", "strategy": "assertive" },
+        { "id": "C", "text": "Sit with the panic for a moment — breathe, name the fear — then create a step-by-step action plan: what you know, what you need to find out, and who to call.", "strategy": "analytical" },
+        { "id": "D", "text": "Acknowledge that this situation triggers deep feelings of unfairness and helplessness. Give yourself five minutes to feel it fully, cry if needed, then shift to problem-solving mode.", "strategy": "emotionally_regulated" }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "The Silent Treatment",
+      "difficulty": 5,
+      "narrative": "You had a disagreement with your partner earlier — a tense but not explosive exchange about household responsibilities. Now it's been 18 hours of silence. No good morning text, no eye contact at breakfast, no 'hey' at the door. The quiet is louder than any argument. You feel the pull to either chase an apology or double down and give them the cold shoulder back. Your stomach is in knots. Stress: 7/10. You know the silence isn't resolution, but neither of you has cracked first.",
+      "options": [
+        { "id": "A", "text": "Mirror their silence completely — if they want space, give them space with a sledgehammer. You're not the one who always has to reach out.", "strategy": "avoidant" },
+        { "id": "B", "text": "Walk up to them at home and say: 'I don't want us to sit in this silence. I care more about us than about being right. Can we talk?'", "strategy": "assertive" },
+        { "id": "C", "text": "Sit quietly with your frustration, recognize what the silence triggers in you (abandonment? anger? grief?), and process those feelings before deciding how to act.", "strategy": "emotionally_regulated" },
+        { "id": "D", "text": "Reflect on the original argument objectively: what was your contribution, what was theirs, what's the actual pattern here, and what's the most effective way to break the cycle long-term?", "strategy": "analytical" }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "The Burnout Edge",
+      "difficulty": 7,
+      "narrative": "It's Friday evening, and you just realized you worked 58 hours this week. Your body aches. Your eyes burn. You have a weekend of personal commitments you can't cancel — a friend's birthday, a family obligation, grocery shopping. But also three overdue work tasks that will haunt you Monday if they're not done. You're exhausted but wired. Stress sits at a constant 10. You haven't eaten a real meal since noon yesterday. Your medication helps maintain baseline, but you feel like you're running on fumes. The weekend stretches ahead like another marathon, not a rest.",
+      "options": [
+        { "id": "A", "text": "Power through the weekend: skip the social events, stay up late tonight, and finish every work task so Monday is completely free.", "strategy": "avoidant" },
+        { "id": "B", "text": "Set a hard boundary: choose one today's commitments, communicate to your manager or team that Sunday evening is your boundary for work, and write it in your calendar as non-negotiable.", "strategy": "assertive" },
+        { "id": "C", "text": "Pause for 10 minutes. Close your eyes. Ask yourself: 'What is the 20% of effort that will get me 80% of relief?' Focus only on the highest-impact task and let the rest wait.", "strategy": "analytical" },
+        { "id": "D", "text": "Sit honestly with your exhaustion — not as a problem to solve, but as a signal. Eat a warm meal right now, write down three things your body needs this weekend, and honor your friend's birthday as part of your recovery, not a burden on top of it.", "strategy": "emotionally_regulated" }
+      ]
+    }
+  ]
+}

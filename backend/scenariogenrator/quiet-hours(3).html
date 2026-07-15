@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiet Hours — Reflection Scenarios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:        #232A3B;
+    --bg-panel:  #2B3348;
+    --bg-raised: #323C54;
+    --line:      #414c68;
+    --ink:       #F1E9DA;
+    --ink-dim:   #A9AFC2;
+    --moss:      #8DA98F;
+    --moss-dim:  #6E8A72;
+    --peach:     #E3A379;
+    --danger:    #D98072;
+    --mono:      'IBM Plex Mono', monospace;
+    --serif:     'Fraunces', serif;
+    --sans:      'Inter', sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 15% 0%, rgba(141,169,143,0.08), transparent 55%),
+      radial-gradient(ellipse at 85% 100%, rgba(227,163,121,0.06), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:inherit; }
+
+  .app{
+    max-width:1400px;
+    margin:0 auto;
+    padding:32px 24px 64px;
+  }
+
+  header.top{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:36px;
+    flex-wrap:wrap;
+    border-bottom:1px solid var(--line);
+    padding-bottom:20px;
+  }
+  header.top .brand{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+  }
+  header.top h1{
+    font-family:var(--serif);
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:28px;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  header.top .brand .moon{
+    font-size:20px;
+    filter:saturate(0.6);
+  }
+  header.top p{
+    margin:0;
+    font-size:13px;
+    color:var(--ink-dim);
+    font-family:var(--mono);
+    letter-spacing:0.02em;
+  }
+
+  .grid{
+    display:flex;
+    flex-direction:row;
+    gap:20px;
+    align-items:flex-start;
+    overflow-x:auto;
+    padding-bottom:8px;
+  }
+  .grid > section{
+    flex-shrink:0;
+  }
+  #form-panel{ width:340px; }
+  #list-panel{ width:320px; }
+  #detail-panel{ width:520px; }
+
+  @media (max-width: 700px){
+    #form-panel, #list-panel, #detail-panel{ width:88vw; }
+  }
+
+  .panel{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px;
+  }
+
+  .panel-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--moss);
+    margin:0 0 16px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .panel-label::before{
+    content:'';
+    width:6px; height:6px;
+    border-radius:50%;
+    background:var(--moss);
+    display:inline-block;
+  }
+
+  /* ---------- FORM ---------- */
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:block;
+    font-size:12.5px;
+    color:var(--ink-dim);
+    margin-bottom:6px;
+    font-weight:500;
+  }
+  .field input[type=text],
+  .field input[type=email],
+  .field input[type=password],
+  .field input[type=number],
+  .field select,
+  .field textarea{
+    width:100%;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:8px;
+    color:var(--ink);
+    padding:10px 11px;
+    font-family:var(--sans);
+    font-size:14px;
+    outline:none;
+    transition:border-color .15s ease;
+  }
+  .field textarea{ resize:vertical; min-height:64px; }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus{
+    border-color:var(--moss);
+  }
+  .field input::placeholder,
+  .field textarea::placeholder{ color:#6b7286; }
+
+  .two-col{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+
+  .slider-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .slider-row input[type=range]{
+    flex:1;
+    accent-color:var(--peach);
+  }
+  .slider-val{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--peach);
+    width:32px;
+    text-align:right;
+  }
+
+  details.endpoint{
+    margin:4px 0 18px;
+    font-size:12px;
+  }
+  details.endpoint summary{
+    cursor:pointer;
+    color:var(--ink-dim);
+    font-family:var(--mono);
+    letter-spacing:0.02em;
+  }
+  details.endpoint input{
+    margin-top:8px;
+    width:100%;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:8px;
+    color:var(--ink);
+    padding:8px 10px;
+    font-family:var(--mono);
+    font-size:12px;
+  }
+
+  button.submit{
+    width:100%;
+    background:var(--moss);
+    color:#182119;
+    border:none;
+    border-radius:8px;
+    padding:12px;
+    font-size:14px;
+    font-weight:600;
+    font-family:var(--sans);
+    cursor:pointer;
+    transition:background .15s ease, transform .1s ease;
+  }
+  button.submit:hover{ background:#9dbb9f; }
+  button.submit:active{ transform:scale(0.99); }
+  button.submit:disabled{
+    background:#4b5568;
+    color:var(--ink-dim);
+    cursor:not-allowed;
+  }
+
+  .status-msg{
+    margin-top:12px;
+    font-size:12.5px;
+    font-family:var(--mono);
+    color:var(--ink-dim);
+    line-height:1.5;
+  }
+  .status-msg.error{ color:var(--danger); }
+  .status-msg.ok{ color:var(--moss); }
+
+  /* ---------- SCENARIO LIST ---------- */
+  .scenario-list{
+    list-style:none;
+    margin:0; padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .scenario-card{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 14px 12px;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .scenario-card:hover{
+    border-color:var(--moss-dim);
+  }
+  .scenario-card.active{
+    border-color:var(--moss);
+    background:#39445e;
+  }
+  .scenario-card h3{
+    margin:0 0 8px;
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:16px;
+    line-height:1.3;
+  }
+  .dial{
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .dial .dots{ display:flex; gap:3px; }
+  .dial .dot{
+    width:7px; height:7px;
+    border-radius:50%;
+    background:#454f6c;
+  }
+  .dial .dot.filled{ background:var(--peach); }
+  .dial .label{
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--ink-dim);
+    letter-spacing:0.04em;
+  }
+  .empty-hint{
+    color:var(--ink-dim);
+    font-size:13px;
+    line-height:1.6;
+  }
+
+  /* ---------- LIST STATE TAGS ---------- */
+  .state-tag{
+    display:inline-block;
+    margin-top:8px;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:0.03em;
+    padding:2px 8px;
+    border-radius:100px;
+  }
+  .state-tag.loading{
+    color:var(--ink-dim);
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+  }
+  .state-tag.error{
+    color:var(--bg);
+    background:var(--danger);
+  }
+
+  /* ---------- DETAIL LOADING / ERROR ---------- */
+  .detail-loading{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:220px;
+    color:var(--ink-dim);
+    font-family:var(--mono);
+    font-size:13px;
+    text-align:center;
+    padding:40px 20px;
+  }
+  .detail-error{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    min-height:220px;
+    color:var(--danger);
+    font-size:13.5px;
+    text-align:center;
+    padding:40px 20px;
+    line-height:1.6;
+  }
+  .retry-btn{
+    background:var(--bg-raised);
+    border:1px solid var(--danger);
+    color:var(--ink);
+    border-radius:8px;
+    padding:8px 16px;
+    font-family:var(--sans);
+    font-size:13px;
+    font-weight:500;
+    cursor:pointer;
+  }
+  .retry-btn:hover{ background:#3d3040; }
+
+  /* ---------- DETAIL ---------- */
+  .detail-empty{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:300px;
+    color:var(--ink-dim);
+    font-family:var(--mono);
+    font-size:13px;
+    text-align:center;
+    padding:40px 20px;
+  }
+  .detail h2{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:24px;
+    margin:0 0 6px;
+    line-height:1.25;
+  }
+  .detail .difficulty-line{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-dim);
+    margin-bottom:20px;
+  }
+  .narrative{
+    font-size:15px;
+    line-height:1.75;
+    color:var(--ink);
+    background:var(--bg-raised);
+    border-left:3px solid var(--moss);
+    padding:16px 18px;
+    border-radius:0 8px 8px 0;
+    margin-bottom:24px;
+  }
+  .options-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+    margin-bottom:12px;
+  }
+  .option{
+    display:flex;
+    gap:14px;
+    padding:14px 0;
+    border-top:1px solid var(--line);
+  }
+  .option:first-of-type{ border-top:none; }
+  .option .letter{
+    font-family:var(--serif);
+    font-size:20px;
+    font-weight:600;
+    color:var(--peach);
+    width:24px;
+    flex-shrink:0;
+  }
+  .option .body p{
+    margin:0 0 8px;
+    font-size:14px;
+    line-height:1.6;
+  }
+  .option .trait{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:0.03em;
+    color:var(--bg);
+    background:var(--moss);
+    padding:2px 8px;
+    border-radius:100px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <div class="brand">
+      <span class="moon">☾</span>
+      <h1>Quiet Hours</h1>
+    </div>
+    <p>reflection scenarios, generated from your baseline</p>
+  </header>
+
+  <div class="grid">
+
+    <!-- SECTION 1: PROFILE FORM -->
+    <section class="panel" id="form-panel">
+      <p class="panel-label">Your baseline</p>
+      <form id="profile-form">
+        <div class="field">
+          <label for="f-name">Name</label>
+          <input type="text" id="f-name" placeholder="Jordan Lee" required>
+        </div>
+        <div class="two-col">
+          <div class="field">
+            <label for="f-email">Email</label>
+            <input type="email" id="f-email" placeholder="you@example.com" required>
+          </div>
+          <div class="field">
+            <label for="f-password">Password</label>
+            <input type="password" id="f-password" placeholder="••••••••" required>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="field">
+            <label for="f-age">Age</label>
+            <input type="number" id="f-age" placeholder="27" min="13" max="120">
+          </div>
+          <div class="field">
+            <label for="f-mood">Current mood</label>
+            <select id="f-mood">
+              <option value="">Select…</option>
+              <option>Anxious</option>
+              <option>Low</option>
+              <option>Numb</option>
+              <option>Restless</option>
+              <option>Okay</option>
+              <option>Hopeful</option>
+            </select>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="field">
+            <label for="f-sleep">Sleep hours (avg)</label>
+            <input type="number" id="f-sleep" placeholder="6" min="0" max="24" step="0.5">
+          </div>
+          <div class="field">
+            <label for="f-stress">Stress level</label>
+            <div class="slider-row">
+              <input type="range" id="f-stress" min="1" max="10" value="5">
+              <span class="slider-val" id="f-stress-val">5</span>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-support">Support system</label>
+          <select id="f-support">
+            <option value="">Select…</option>
+            <option>Strong — I have people I trust</option>
+            <option>Some — a few people, not always available</option>
+            <option>Limited — mostly on my own</option>
+            <option>None — I feel isolated</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-goals">Goals right now</label>
+          <textarea id="f-goals" placeholder="e.g. sleep better, stop comparing myself to others, feel less anxious at night"></textarea>
+        </div>
+
+        <details class="endpoint">
+          <summary>Local RAG endpoint</summary>
+          <input type="text" id="f-endpoint" value="http://localhost:8000/api/scenarios" placeholder="http://localhost:8000/api/scenarios">
+        </details>
+
+        <button type="submit" class="submit" id="submit-btn">Generate scenarios</button>
+        <div class="status-msg" id="status"></div>
+      </form>
+    </section>
+
+    <!-- SECTION 2: SCENARIO LIST -->
+    <section class="panel" id="list-panel">
+      <p class="panel-label">Scenarios</p>
+      <div id="list-empty" class="empty-hint">
+        Fill in your baseline and generate — scenarios tailored to your profile will appear here. Click one to open it.
+      </div>
+      <ul class="scenario-list" id="scenario-list"></ul>
+    </section>
+
+    <!-- SECTION 3: SCENARIO DETAIL -->
+    <section class="panel" id="detail-panel">
+      <p class="panel-label">Scenario</p>
+      <div class="detail-empty" id="detail-empty">
+        Select a scenario from the list to read it here.
+      </div>
+      <div class="detail" id="detail-content" style="display:none;"></div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  const stressInput = document.getElementById('f-stress');
+  const stressVal = document.getElementById('f-stress-val');
+  stressInput.addEventListener('input', () => stressVal.textContent = stressInput.value);
+
+  const form = document.getElementById('profile-form');
+  const submitBtn = document.getElementById('submit-btn');
+  const statusEl = document.getElementById('status');
+
+  const listEmpty = document.getElementById('list-empty');
+  const listEl = document.getElementById('scenario-list');
+
+  const detailEmpty = document.getElementById('detail-empty');
+  const detailContent = document.getElementById('detail-content');
+
+  // ---- state ----
+  let scenarios = [];        // array of {id, title, difficulty, narrative, options} from /ask/olama
+  let activeId  = null;      // key of the currently-selected scenario (stable across re-renders)
+  const detailCache = {};    // key -> fully-loaded scenario detail (title, narrative, options...)
+  const detailState = {};    // key -> 'loading' | 'error' | 'ready'
+
+  function setStatus(msg, type){
+    statusEl.textContent = msg || '';
+    statusEl.className = 'status-msg' + (type ? ' ' + type : '');
+  }
+
+  function difficultyDots(diffVal, defaultTotal){
+    // accepts "3/6", a bare number, or undefined
+    let filled = 0, total = defaultTotal || 6;
+    if (typeof diffVal === 'string' && diffVal.includes('/')){
+      const [a, b] = diffVal.split('/').map(s => parseInt(s.trim(), 10));
+      if (!isNaN(a)) filled = a;
+      if (!isNaN(b) && b > 0) total = b;
+    } else if (typeof diffVal === 'number' && !isNaN(diffVal)){
+      filled = diffVal;
+    }
+    filled = Math.max(0, Math.min(filled, total));
+    let html = '<div class="dots">';
+    for (let i = 0; i < total; i++){
+      html += `<span class="dot${i < filled ? ' filled' : ''}"></span>`;
+    }
+    html += '</div>';
+    return html;
+  }
+
+  // Stable key for a scenario: prefer its own id, fall back to its position
+  function scenarioKey(s, fallbackIndex){
+    if (s && typeof s === 'object' && s.id !== undefined && s.id !== null && s.id !== '') return String(s.id);
+    return 'idx-' + fallbackIndex;
+  }
+
+  // A scenario entry from /ask/olama can be a plain string, or an object
+  // with the title/difficulty under one of several likely field names.
+  function scenarioTitle(s){
+    if (typeof s === 'string') return s || 'Untitled scenario';
+    if (s && typeof s === 'object'){
+      return s.title || s.name || s.heading || s.scenario_title || 'Untitled scenario';
+    }
+    return 'Untitled scenario';
+  }
+
+  function scenarioDifficulty(s){
+    if (s && typeof s === 'object'){
+      const d = s.difficulty ?? s.level ?? s.rating ?? s.difficulty_level;
+      return d === undefined ? null : d;
+    }
+    return null; // plain-string scenarios carry no difficulty info
+  }
+
+  // Attempts to turn whatever text/object the LLM returned into real JSON.
+  // Handles: already-parsed objects, markdown code fences, and the
+  // double-brace `{{ ... }}` templating artifact some prompts leak into output.
+  function tryParseJson(raw){
+    if (raw === null || raw === undefined) return null;
+    if (typeof raw === 'object') return raw;
+    if (typeof raw !== 'string') return null;
+
+    let text = raw.trim();
+    if (!text) return null;
+
+    // strip ```json ... ``` or ``` ... ``` fences
+    text = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+
+    const attempts = [
+      text,
+      text.replace(/\{\{/g, '{').replace(/\}\}/g, '}'),
+    ];
+
+    for (const attempt of attempts){
+      try { return JSON.parse(attempt); } catch (e) { /* try next */ }
+    }
+
+    // last resort: grab the outermost {...} block and retry
+    const match = text.match(/\{[\s\S]*\}/);
+    if (match){
+      for (const attempt of [match[0], match[0].replace(/\{\{/g, '{').replace(/\}\}/g, '}')]){
+        try { return JSON.parse(attempt); } catch (e) { /* keep trying */ }
+      }
+    }
+    return null;
+  }
+
+  // Normalizes any of: bare array, {scenarios:[...]}, or a single scenario object
+  // into a plain array of scenario objects.
+  function normalizeScenarios(data){
+    if (!data) return [];
+    if (typeof data === 'string'){
+      return normalizeScenarios(tryParseJson(data));
+    }
+    if (Array.isArray(data)) return data.filter(Boolean);
+    if (data.scenarios){
+      return Array.isArray(data.scenarios) ? data.scenarios.filter(Boolean) : [data.scenarios];
+    }
+    if (data.title || data.narrative || data.options) return [data];
+    return [];
+  }
+
+  function gatherProfile(){
+    return {
+      name:        document.getElementById('f-name').value,
+      email:       document.getElementById('f-email').value,
+      password:    document.getElementById('f-password').value,
+      age:         document.getElementById('f-age').value ? Number(document.getElementById('f-age').value) : null,
+      mood:        document.getElementById('f-mood').value,
+      sleepHours:  document.getElementById('f-sleep').value ? Number(document.getElementById('f-sleep').value) : null,
+      stressLevel: Number(document.getElementById('f-stress').value),
+      support:     document.getElementById('f-support').value,
+      goals:       document.getElementById('f-goals').value,
+    };
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;');
+  }
+
+  // Renders the scenario list. Never clears the list unless `scenarios` is
+  // actually empty, so selecting an item never makes the list vanish.
+  function renderList(){
+    listEl.innerHTML = '';
+
+    if (!scenarios || !scenarios.length){
+      listEmpty.style.display = 'block';
+      return;
+    }
+    listEmpty.style.display = 'none';
+
+    scenarios.forEach((s, i) => {
+      const key = scenarioKey(s, i);
+      const title = scenarioTitle(s);
+      const difficulty = scenarioDifficulty(s);
+      const state = detailState[key];
+
+      let stateTag = '';
+      if (state === 'loading') stateTag = '<span class="state-tag loading">loading…</span>';
+      else if (state === 'error') stateTag = '<span class="state-tag error">couldn\u2019t load — click to retry</span>';
+      else if (state === 'timeout') stateTag = '<span class="state-tag error">timed out — click to retry</span>';
+
+      const dialHtml = difficulty !== null
+        ? `<div class="dial">${difficultyDots(difficulty)}<span class="label">DIFFICULTY</span></div>`
+        : '';
+
+      const li = document.createElement('li');
+      li.className = 'scenario-card' + (key === activeId ? ' active' : '');
+      li.innerHTML = `
+        <h3>${escapeHtml(title)}</h3>
+        ${dialHtml}
+        ${stateTag}
+      `;
+      li.addEventListener('click', () => selectScenario(key, i));
+      listEl.appendChild(li);
+    });
+  }
+
+  // Renders the detail panel based on the state of the *currently active* scenario.
+  function renderDetail(){
+    if (activeId === null){
+      detailEmpty.style.display = 'flex';
+      detailContent.style.display = 'none';
+      return;
+    }
+
+    const state = detailState[activeId];
+
+    if (state === 'loading'){
+      detailEmpty.style.display = 'none';
+      detailContent.style.display = 'block';
+      detailContent.innerHTML = `<div class="detail-loading">Generating the question for this scenario…</div>`;
+      return;
+    }
+
+    if (state === 'error' || state === 'timeout' || !detailCache[activeId]){
+      detailEmpty.style.display = 'none';
+      detailContent.style.display = 'block';
+      const message = state === 'timeout'
+        ? "This is taking too long — the local server didn't respond in time."
+        : "Couldn't load this scenario's question. The LLM response may have been empty or malformed.";
+      detailContent.innerHTML = `
+        <div class="detail-error">
+          <span>${escapeHtml(message)}</span>
+          <button type="button" class="retry-btn" id="retry-detail-btn">Try again</button>
+        </div>
+      `;
+      const retryBtn = document.getElementById('retry-detail-btn');
+      if (retryBtn){
+        retryBtn.addEventListener('click', () => {
+          const idx = scenarios.findIndex((s, i) => scenarioKey(s, i) === activeId);
+          if (idx > -1) fetchScenarioDetail(activeId, scenarios[idx]);
+        });
+      }
+      return;
+    }
+
+    const s = detailCache[activeId];
+    detailEmpty.style.display = 'none';
+    detailContent.style.display = 'block';
+
+    let optionsHtml = '';
+    (s.options || []).forEach(opt => {
+      // Accept both the documented schema (id/text/strategy) and legacy
+      // field names (letter/trait), so nothing silently fails to render.
+      const label    = (opt.id !== undefined && opt.id !== null && opt.id !== '') ? opt.id : (opt.letter || '');
+      const text     = opt.text || '';
+      const strategy = opt.strategy || opt.trait || '';
+      optionsHtml += `
+        <div class="option">
+          <div class="letter">${escapeHtml(String(label))}</div>
+          <div class="body">
+            <p>${escapeHtml(text)}</p>
+            ${strategy ? `<span class="trait">${escapeHtml(strategy)}</span>` : ''}
+          </div>
+        </div>
+      `;
+    });
+    if (!optionsHtml){
+      optionsHtml = '<p class="empty-hint">No response options were returned for this scenario.</p>';
+    }
+
+    detailContent.innerHTML = `
+      <h2>${escapeHtml(s.title || 'Untitled scenario')}</h2>
+      <div class="difficulty-line">Difficulty ${escapeHtml(String(s.difficulty !== undefined ? s.difficulty : '—'))}</div>
+      <div class="narrative">${escapeHtml(s.narrative || '')}</div>
+      <p class="options-label">How do you respond?</p>
+      ${optionsHtml}
+    `;
+  }
+
+  // Fetches the full question/detail for one scenario and caches it by key.
+  // Only re-renders the list/detail — never touches the `scenarios` array,
+  // so the list itself is never at risk of disappearing.
+  const DETAIL_FETCH_TIMEOUT_MS = 4500000000;
+
+  async function fetchScenarioDetail(key, scenario){
+    detailState[key] = 'loading';
+    renderList();
+    renderDetail();
+
+    const profile = gatherProfile();
+    profile.scenario = scenario;
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => console.log("timeoutt"), DETAIL_FETCH_TIMEOUT_MS);
+
+    try {
+      const res = await fetch('http://127.0.0.1:8000/ask/llm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(profile),
+        //signal: controller.signal,
+      });
+
+      if (!res.ok){
+        throw new Error(`Server responded with ${res.status}`);
+      }
+
+      // Read as text first — protects against responses that claim to be
+      // JSON but aren't quite valid (e.g. the {{ }} double-brace artifact).
+      const raw = await res.text();
+      const data = tryParseJson(raw);
+      if (data === null){
+        throw new Error('Response was not valid JSON.');
+      }
+
+      const list = normalizeScenarios(data);
+      const detail = list[0] || null;
+      if (!detail){
+        throw new Error('Response did not contain a scenario.');
+      }
+
+      detailCache[key] = detail;
+      detailState[key] = 'ready';
+    } catch (err){
+      const timedOut = err && err.name === 'AbortError';
+      console.error('Failed to fetch scenario detail:', timedOut ? 'timed out' : err);
+      detailCache[key] = null;
+      detailState[key] = timedOut ? 'timeout' : 'error';
+    } finally {
+      clearTimeout(timeoutId);
+    }
+
+    renderList();
+    if (key === activeId) renderDetail();
+  }
+
+  function selectScenario(key, index){
+    activeId = key;
+    renderList();
+
+    // Already loaded (or currently loading) — just show it, don't refetch.
+    if (detailState[key] === 'ready' || detailState[key] === 'loading'){
+      renderDetail();
+      return;
+    }
+
+    fetchScenarioDetail(key, scenarios[index]);
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const profile = gatherProfile();
+    const endpoint = document.getElementById('f-endpoint').value.trim();
+    if (!endpoint){
+      setStatus('Add a RAG endpoint URL first.', 'error');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Generating…';
+    setStatus('Sending your baseline to the local RAG…');
+
+    // fresh generation — clear any previously cached scenario detail
+    activeId = null;
+    Object.keys(detailCache).forEach(k => delete detailCache[k]);
+    Object.keys(detailState).forEach(k => delete detailState[k]);
+
+    try {
+      const res = await fetch('http://127.0.0.1:8000/ask/olama', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(profile),
+      });
+
+      if (!res.ok){
+        throw new Error(`Server responded with ${res.status}`);
+      }
+
+      const raw = await res.text();
+      const data = tryParseJson(raw);
+      if (data === null){
+        throw new Error('The server did not return valid JSON.');
+      }
+
+      scenarios = normalizeScenarios(data);
+      renderList();
+      renderDetail();
+
+      if (scenarios.length){
+        setStatus(`Got ${scenarios.length} scenario${scenarios.length === 1 ? '' : 's'} back.`, 'ok');
+      } else {
+        setStatus('The response did not contain any scenarios.', 'error');
+      }
+    } catch (err) {
+      scenarios = [];
+      renderList();
+      renderDetail();
+      setStatus('Could not reach the RAG: ' + err.message, 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Generate scenarios';
+    }
+  });
+
+  renderList();
+  renderDetail();
+})();
+</script>
+</body>
+</html>

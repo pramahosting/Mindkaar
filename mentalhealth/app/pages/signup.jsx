@@ -1,8 +1,11 @@
+"use client";
+
 import { useState } from "react";
 import {createMentalHealthPrompt} from "../prompts/prompt1"
+
 const MOODS = ["😊 Great", "🙂 Good", "😐 Okay", "😔 Low", "😞 Struggling"];
 
-export default function SignupPage({ onSwitch }) {
+export default function SignupPage({ onSwitch, onDone }) {
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -78,6 +81,8 @@ export default function SignupPage({ onSwitch }) {
     //   console.log("Signup response:", data);
 
     //   if (data.token) localStorage.setItem("token", data.token);
+
+      onDone(payload)
       setDone(true);
     } catch (err) {
       console.log(err.message);

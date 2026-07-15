@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import SignupPage from "./signup"
 
-function LoginPage({ onSwitch }) {
+export default function LoginPage({ onSwitch }) {
   const [form, setForm] = useState({ email: "", password: "" });
   const [submitted, setSubmitted] = useState(false);
 
@@ -111,10 +110,10 @@ function LoginPage({ onSwitch }) {
 
 
 
-export default function App() {
-  const [page, setPage] = useState("login");
+// export default function App() {
+//   const [page, setPage] = useState("login");
 
-  return page === "login"
-    ? <LoginPage onSwitch={() => setPage("signup")} />
-    : <SignupPage onSwitch={() => setPage("login")} />;
-}
+//   return page === "login"
+//     ? <LoginPage onSwitch={() => setPage("signup")} />
+//     : <SignupPage onSwitch={() => setPage("login")} />;
+// }

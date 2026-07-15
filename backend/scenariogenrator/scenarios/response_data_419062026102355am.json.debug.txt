@@ -1,0 +1,124 @@
+{
+  "scenarios": [
+    {
+      "id": 1,
+      "title": "The Unexpected Critique",
+      "difficulty": 2,
+      "narrative": "You're in your weekly video call with your therapy group. Your therapist asks each member to briefly share one thing they struggled with this week. When it's your turn, you mention you had a rough few days feeling unmotivated. After the session, a fellow member DMs you privately saying, 'Honestly, with everything in your life you had smooth, I think part of your problem is you don't push yourself hard enough.' The message sits there on your screen, and your jaw tightens. Your sleep has been okay, your stress isn't sky-high, but right now it feels like someone just punched a small hole in your chest.",
+      "options": [
+        { "id": "A", "text": "Reply firmly: 'I'm working through this with professional support, and that message isn't helpful — I'd appreciate it if we kept things constructive.'", "strategy": "assertive-boundary" },
+        { "id": "B", "text": "Pause, take a few slow breaths, and re-read the message to see if you can find any useful kernel of honesty in it before responding — or not responding at all right now.", "strategy": "emotion-regulated-reflection" },
+        { "id": "C", "text": "Flag the message to your therapist and ask them to handle it so you don't have to engage with this person directly.", "strategy": "analytical-delegation" },
+        { "id": "D", "text": "Delete the message, mute the thread for the night, and distract yourself with a show — you'll deal with it some other day.", "strategy": "avoidant" }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "The Overbooked Evening",
+      "difficulty": 3,
+      "narrative": "It's Tuesday evening. You already had a packed day: back-to-back responsibilities from morning until now. Your best friend calls, clearly disappointed, saying, 'You said you'd come over tonight. I made dinner. Are you bailing again?' You completely forgot. Your sleep last night was nine hours, and you'd planned to finally decompress at home, but you realize your friend has been weeks without seeing you. The guilt settles in fast.",
+      "options": [
+        { "id": "A", "text": "Go to your friend's place right now. Keep a commitment, cancel your relaxation plans, and deal with being drained tomorrow.", "strategy": "people-pleasing" },
+        { "id": "B", "text": "Be honest with your friend: 'I sincerely forgot, and I should have remembered. Can I come over late, or can we firm up plans for this weekend so I don't flake again?'", "strategy": "assertive-balanced" },
+        { "id": "C", "text": "Weigh both options out loud with your friend — how much rest you need tonight, how it affects you by skipping a real rest night, and propose a fair middle ground.", "strategy": "analytical" },
+        { "id": "D", "text": "Lie and say something urgent came up, promise you'll make it up soon, and spend the evening avoiding your phone.", "strategy": "avoidant" }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "The Slow-Crease Burnout Signal",
+      "difficulty": 4,
+      "narrative": "It's been a few weeks of 'fine.' Nothing majorly wrong: you slept okay (around nine hours most nights), stress sits at a 3 out of 10, you're in therapy, but lately there's a flatness beneath everything. You wake up, go through the motions, and catch yourself rereading messages three times because your attention drifts. A close person notices and asks, 'Are you doing alright? You seem distant.' You open your mouth to answer and realize you genuinely don't know.",
+      "options": [
+        { "id": "A", "text": "Open up honestly: 'I'm not in danger, but something feels off. Can we just walk together and talk for a bit?'", "strategy": "emotion-regulated-connection" },
+        { "id": "B", "text": "Take this as a data point. Write down when the flatness started, any pattern changes, and schedule an earlier therapy session to investigate.", "strategy": "analytical" },
+        { "id": "C", "text": "Brush it off with a smile: 'I'm totally fine, just a bit tired.' Nothing to worry about — you don't want to burden anyone.", "strategy": "avoidant" },
+        { "id": "D", "text": "Tell them you appreciate the check-in, then adopt a mini-action plan: one small thing a day that brings you energy, tracked for a week, to see if the pattern shifts.", "strategy": "assertive-self-directed" }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "The Misunderstood Message",
+      "difficulty": 4,
+      "narrative": "You send a carefully worded text to a family member explaining that you need a quiet couple of days to recharge. They reply: 'Everyone needs quiet time sometimes. You just have to learn to push through it.' Your stress level was already low, so the problem isn't the load — it's feeling unseen by people who matter. It's been a flat few days mood-wise, and this message lands heavier than it probably should.",
+      "options": [
+        { "id": "A", "text": "Reply calmly: 'I hear you, but I know what I need. I'll reconnect with you in a couple of days.' Then mute the thread.", "strategy": "assertive-boundary" },
+        { "id": "B", "text": "Take a walk before you respond. Ask yourself why it hit so hard, then decide whether it's really the message or your current emotional state amplifying it.", "strategy": "emotion-regulated-reflection" },
+        { "id": "C", "text": "Read the message once, set your phone aside, journal for ten minutes about what you actually need from this relationship right now, and decide if you want to engage at all.", "strategy": "analytical" },
+        { "id": "D", "text": "Fire back an immediate, emotionally charged response explaining why they're wrong, then feel equally guilty and drained afterward.", "strategy": "avoidant-reactive" }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "The Invisible Wall at Group Hangouts",
+      "difficulty": 5,
+      "narrative": "You're at a small group gathering. Everyone is able to show up with energy and chip in for shared costs as the evening goes on. You're not in crisis; you've been sleeping nine hours, your stress is manageable. But tonight you genuinely feel a low emotional hum — and splitting the costs, the expectation of energy in the group — it all suddenly catches up. You realize you'd rather be home resting, but leaving now feels like admitting something is 'wrong.'",
+      "options": [
+        { "id": "A", "text": "Excuse yourself honestly: 'I'm not at my best tonight. I'm going to head out, but let's catch up soon one-on-one.'", "strategy": "assertive" },
+        { "id": "B", "text": "Stay but consent to one tiny boundary: you pay less and opt out of the loud later plans. You observe yourself to see teaches you something about your limits.", "strategy": "analytical" },
+        { "id": "C", "text": "Do a brief internal check-in on your mood first. Then, stay but give yourself permission to be quiener than usual tonight, without performing normalcy.", "strategy": "emotion-regulated" },
+        { "id": "D", "text": "Smile through whatever outcome happens, text yourself a reminder 'must bring this up in therapy,' then force yourself to match everyone's energy.", "strategy": "avoidant" }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "The Friend Who Keeps Showing Up Empty",
+      "difficulty": 5,
+      "narrative": "A close friend keeps venting to you every time you talk. You've been feeling mood-flat, your stress is at a 3, you're in therapy and doing the work — and this friendship is starting to feel draining rather than supportive. Tonight, they text again: 'You there? I just need to get something off my chest.' You want to be a good friend, but you recognize your resilience battery is low.",
+      "options": [
+        { "id": "A", "text": "Reply: 'I care about you a lot, but I'm running on empty tonight. Can we talk tomorrow when I can really be present?'", "strategy": "assertive-boundary" },
+        { "id": "B", "text": "Respond briefly this time, but make a note to talk about balance in this friendship at your next therapy session.", "strategy": "analytical" },
+        { "id": "C", "text": "Take ten quiet minutes to center yourself before deciding — call if you have capacity, send a thoughtful but short message if you don't.", "strategy": "emotion-regulated" },
+        { "id": "D", "text": "Read the message, feel immediately guilty about not wanting to help, then give and give and ignore your own state — feeling worse on the next day.", "strategy": "avoidant-people-pleasing" }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "The Victory That Feels Hollow",
+      "difficulty": 6,
+      "narrative": "You completed a significant personal goal — something you'd been working toward. But instead of feeling proud, you feel…nothing. Flat. People around you are congratulating you, posting nice things. You know by every measure this is a success, but inside it's hollow. You slept nine hours, stress has been low, but the mood won't lift even with a win.",
+      "options": [
+        { "id": "A", "text": "Tell at least one trusted person the truth: 'I know I should be happy about this, but I'm not feeling it right now — can we talk about that?'", "strategy": "emotion-regulated-connection" },
+        { "id": "B", "text": "Don't explain to anyone yet. Schedule some time with your therapist this week and explore whether this is a sign your goals need adjusting, or if something deeper is happening.", "strategy": "analytical" },
+        { "id": "C", "text": "Practice acknowledging the win anyway: write down three objective facts about what you accomplished, even if you can't feel the emotion behind them.", "strategy": "assertive-cognitive" },
+        { "id": "D", "text": "Fake enthusiasm in public, never mention the hollow feeling, and quietly move on to the next distraction hoping it eventually clicks.", "strategy": "avoidant" }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "The Therapist's Unexpected Question",
+      "difficulty": 7,
+      "narrative": "Mid-session, your therapist asks casually, 'If nothing was practically at stake — what would you change about your life right now?' You weren't prepared. You've been doing okay on the outside: nine hours of sleep, stress at 3, therapy going fine. But the question cracks open something you've been quietly avoiding. The room feels very still.",
+      "options": [
+        { "id": "A", "text": "Say what comes to mind first, even if it's messy and you don't have a plan for it yet. Trust that naming it is the first step.", "strategy": "assertive-vulnerable" },
+        { "id": "B", "text": "Ask your therapist to give you a moment. Breathe. Then slowly unpack out loud what surfaces, even if you don't have the full picture.", "strategy": "emotion-regulated" },
+        { "id": "C", "text": "Say, 'I don't know, but I think that question matters to me. Can we spend the rest of the session exploring why I didn't have an answer?'", "strategy": "analytical" },
+        { "id": "D", "text": "Deflect with a laugh, give a surface-level answer about something small, and move on — that question felt too exposing.", "strategy": "avoidant" }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "The Relapse of an Old Pattern",
+      "difficulty": 7,
+      "narrative": "You've been building resilience in therapy, your routine is stable, and stress is low. Out of nowhere, an old emotional pattern fires — you catastrophize a small setback, feel the sharp spiral, and suddenly you're back in a mindset you thought you were growing out of. Your logical brain knows this is minor; your emotional brain is already writing the worst-case ending.",
+      "options": [
+        { "id": "A", "text": "Call on your coping toolkit immediately: name the pattern out loud ('This is catastrophizing. I recognize it.'), then ground yourself with a physical anchor — cold water, deep breaths, a walk.", "strategy": "assertive-grounded-action" },
+        { "id": "B", "text": "Let yourself feel the spiral for a set amount of time — say, ten minutes — journal through it, and then deliberately shift to evaluating the actual facts of what happened.", "strategy": "emotion-regulated-with-boundary" },
+        { "id": "C", "text": "Map it: what specifically triggered this? What did it remind you of? Write a brief note about it for your next therapy session to decode the connection.", "strategy": "analytical" },
+        { "id": "D", "text": "Push it away immediately and numb out with distractions, telling yourself you shouldn't be this bothered by something so small — and avoid thinking about it again.", "strategy": "avoidant" }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "The Crossroads Invitation",
+      "difficulty": 8,
+      "narrative": "An unexpected opportunity slides in — something that aligns perfectly with your deeper goals, but it would push you into a situation with unpredictable social demands and unknowns. Part of you lights up. Part of you immediately retreats, thinking, 'I'm not resilient enough for that right now. What if I collapse?' Your sleep is fine, your stress is low, you're doing the internal work — but your tolerance for uncertainty still feels fragile.",
+      "options": [
+        { "id": "A", "text": "Accept the opportunity and simultaneously set conditions — time limits, an exit strategy, and a check-in plan with your therapist — so you can stretch without overcommitting.", "strategy": "assertive-strategic" },
+        { "id": "B", "text": "Sit with the decision for 48 hours. Write out the best-case, worst-case, and most realistic case. Let your calmer mind catch up with your immediate fear.", "strategy": "analytical" },
+        { "id": "C", "text": "Acknowledge the fear without letting it decide: 'I notice I want to run from this. What would it look like to go anyway, at my own pace?'", "strategy": "emotion-regulated-values-based" },
+        { "id": "D", "text": 'Say "not right now" quickly, relief flooding in — and file it away under "maybe someday" without ever revisiting the decision.', "strategy": "avoidant" }
+      ]
+    }
+  ]
+}

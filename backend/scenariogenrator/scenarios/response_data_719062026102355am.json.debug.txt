@@ -1,0 +1,124 @@
+{
+  "scenarios": [
+    {
+      "id": 1,
+      "title": "The Overloaded Inbox",
+      "difficulty": 2,
+      "narrative": "It's Monday morning. You sit down at your desk and open your inbox to find 47 unread emails, three marked 'URGENT' by different people — each expecting a response by noon. Your chest tightens. The coffee hasn't kicked in yet, and the notifications keep pinging. You feel the familiar wave of overwhelm creeping in.",
+      "options": [
+        { "id": "A", "text": "Take three deep breaths, then sort emails by priority and tackle the most critical one first.", "strategy": "Emotionally Regulated" },
+        { "id": "B", "text": "Reply to all of them with quick, short answers just to clear the queue as fast as possible.", "strategy": "Avoidant / Sub-optimal" },
+        { "id": "C", "text": "Close the inbox, make a structured task list with time blocks, and start with the easiest win to build momentum.", "strategy": "Analytical" },
+        { "id": "D", "text": "Message each sender directly, clearly stating your timeline and setting realistic expectations for when you'll respond.", "strategy": "Assertive" }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "The Friend Who Keeps Canceling",
+      "difficulty": 3,
+      "narrative": "Your close friend has canceled plans with you for the third time in a row. Each time, the reason seems valid — work deadline, family emergency, not feeling well. But you're starting to feel like you're not a priority. Tonight was supposed to be a movie night you'd been looking forward to all week. Your phone buzzes with the cancellation text.",
+      "options": [
+        { "id": "A", "text": "Reply with 'No worries, take care!' and quietly feel hurt without saying anything.", "strategy": "Avoidant / Sub-optimal" },
+        { "id": "B", "text": "Acknowledge your disappointment internally, then suggest a specific alternative plan that works for both of you.", "strategy": "Emotionally Regulated" },
+        { "id": "C", "text": "Send a calm but honest message expressing that you value the friendship and would love to find a time that sticks.", "strategy": "Assertive" },
+        { "id": "D", "text": "Step back and analyze the pattern — is this a phase they're going through, or a sign the friendship dynamic is shifting?", "strategy": "Analytical" }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "The Unexpected Bill",
+      "difficulty": 4,
+      "narrative": "You're reviewing your bank account and discover an unexpected charge of $350 — a medical bill you thought was covered by insurance. Your savings are modest, and this wasn't in the budget. A knot forms in your stomach. You have rent due in a week, and this throws your entire monthly plan off balance.",
+      "options": [
+        { "id": "A", "text": "Panic for a moment, then immediately call the billing department to dispute the charge and ask about payment plans.", "strategy": "Assertive" },
+        { "id": "B", "text": "Ignore the bill for now, hoping it will resolve itself or that you'll figure it out later.", "strategy": "Avoidant / Sub-optimal" },
+        { "id": "C", "text": "Pause, take a breath, then review your budget line by line to identify where you can reallocate funds this month.", "strategy": "Analytical" },
+        { "id": "D", "text": "Acknowledge the stress you're feeling, remind yourself you've handled surprises before, and then make a plan.", "strategy": "Emotionally Regulated" }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "The Group Project Freeloader",
+      "difficulty": 5,
+      "narrative": "You're in a team project at work or school, and one member hasn't contributed anything meaningful for two weeks. The deadline is in five days, and the rest of the team is frustrated. During today's meeting, the freeloader presents someone else's work as their own. Everyone notices. The team lead looks around the room, waiting for someone to speak up.",
+      "options [
+        { "id": "A", "text": "Stay silent to avoid conflict and just pick up the extra work yourself to make sure the project succeeds.", "strategy": "Avoidant / Sub-optimal" },
+        { "id": "B", "text": "Calmly point out the discrepancy in the meeting and suggest redistributing tasks transparently.", "strategy": "Assertive" },
+        { "id": "C", "text": "After the meeting, privately message the team lead with your observations and let them handle it.", "strategy": "Analytical" },
+        { "id": "D", "text": "Notice your frustration rising, take a moment to center yourself, then address the situation with a solution-focused tone.", "strategy": "Emotionally Regulated" }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "The Social Media Spiral",
+      "difficulty": 3,
+      "narrative": "You're scrolling through social media before bed and stumble upon a post from an old friend who just got a major promotion, bought a house, and announced an engagement — all in the same week. You smile and like the post, but inside, a quiet voice whispers, 'Why not me?' The comparison trap tightens. You glance at the clock — it's already past midnight.",
+      "options": [
+        { "id": "A", "text": "Keep scrolling, looking for something that makes you feel better about your own life.", "strategy": "Avoidant / Sub-optimal" },
+        { "id": "B", "text": "Put the phone down, journal three things you're genuinely proud of in your own journey tonight.", "strategy": "Emotionally Regulated" },
+        { "id": "C", "text": "Send your friend a genuine congratulations message, then set a phone curfew for yourself starting tomorrow.", "strategy": "Assertive" },
+        { "id": "D", "text": "Reflect on what specifically triggered the comparison and whether those are goals you actually want or just societal expectations.", "strategy": "Analytical" }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "The Family Dinner Debate",
+      "difficulty": 5,
+      "narrative": "You're at a family dinner, and the conversation shifts to a topic you feel strongly about. A relative makes a dismissive comment that directly contradicts your values. The table goes quiet for a second. You feel your face getting warm. Other family members are watching to see how you'll react. This has happened before, and it always ends in an argument.",
+      "options": [
+        { "id": "A", "text": "Fire back immediately with a sharp rebuttal to defend your position.", "strategy": "Avoidant / Sub-optimal" },
+        { "id": "B", "text": "Take a slow breath, acknowledge their perspective briefly, and calmly share your viewpoint without attacking theirs.", "strategy": "Emotionally Regulated" },
+        { "id": "C", "text": "Politely change the subject to keep the peace, even though it bothers you.", "strategy": "Avoidant / Sub-optimal" },
+        { "id": "D", "text": "Ask them a genuine question about why they hold that view, turning the debate into a curious conversation.", "strategy": "Analytical" }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "The Missed Opportunity",
+      "difficulty": 6,
+      "narrative": "You find out that a position you applied for — one you really wanted — went to an internal candidate. You weren't even given an interview. A colleague mentions it casually, not knowing you had applied. You feel a mix of disappointment, self-doubt, and frustration. Part of you wonders if you're even on the right career path.",
+      "options": [
+        { "id": "A", "text": "Brush it off outwardly but ruminate on it for days, replaying what you could have done differently.", "strategy": "Avoidant / Sub-optimal" },
+        { "id": "B", "text": "Request a meeting with your manager to ask for honest feedback on how to strengthen your candidacy for future roles.", "strategy": "Assertive" },
+        { "id": "C", "text": "Allow yourself to feel the disappointment fully, then write down what you learned and what your next concrete step will be.", "strategy": "Emotionally Regulated" },
+        { "id": "D", "text": "Analyze the situation objectively — was this role truly the right fit, or is there a better opportunity you haven't considered yet?", "strategy": "Analytical" }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "The Neighbor's Noise",
+      "difficulty": 4,
+      "narrative": "It's 11:30 PM on a Tuesday. Your upstairs neighbor is playing loud music, and you have an important early-morning presentation tomorrow. You've asked them twice before to keep it down after 10 PM, and both times they were polite but nothing changed. You can feel your patience wearing thin. The bass is vibrating through your ceiling.",
+      "options": [
+        { "id": "A", "text": "Bang on the ceiling with a broom handle and leave an angry note under their door.", "strategy": "Avoidant / Sub-optimal" },
+        { "id": "B", "text": "Put on noise-canceling headphones, do a quick breathing exercise, and plan to have a calm, firm conversation tomorrow.", "strategy": "Emotionally Regulated" },
+        { "id": "C", "text": "Go upstairs, knock on the door, and clearly but respectfully explain the impact and ask for a compromise.", "strategy": "Assertive" },
+        { "id": "D", "text": "Document the noise issue and research your building's noise policy so you have a clear case if you need to escalate.", "strategy": "Analytical" }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "The Unexpected Criticism",
+      "difficulty": 6,
+      "narrative": "You've just finished presenting a project you worked hard on for weeks. During the feedback session, a senior colleague publicly points out several flaws in your approach — some valid, some feel nitpicky. The room is watching. You feel your confidence wobble. Your first instinct is to either defend every decision or shut down completely.",
+      "options": [
+        { "id": "A", "text": "Defend each point immediately, explaining why your approach was correct.", "strategy": "Avoidant / Sub-optimal" },
+        { "id": "B", "text": "Thank them for the feedback, note which points resonate, and ask for specific suggestions on improvement.", "strategy": "Assertive" },
+        { "id": "C", "text": "Take a moment to absorb the feedback without reacting, then later separate the constructive points from the noise.", "strategy": "Analytical" },
+        { "id": "D", "text": "Notice the sting of criticism, remind yourself that feedback isn't a reflection of your worth, and respond with curiosity.", "strategy": "Emotionally Regulated" }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "The Crossroads Decision",
+      "difficulty": 7,
+      "narrative": "You've been offered a new opportunity — a role that pays more and looks impressive on paper, but it would mean moving to a new city, leaving your support system of friends and family behind. The offer expires in 48 hours. Part of you is excited; part of you is terrified. You've always played it safe, and this feels like a leap into the unknown. Your phone rings — it's your best friend, who doesn't know about the offer yet.",
+      "options": [
+        { "id": "A", "text": "Decline the offer immediately because the fear of leaving your comfort zone feels too overwhelming.", "strategy": "Avoidant / Sub-optimal" },
+        { "id": "B", "text": "Call your best friend, share the situation openly, and talk through the pros and cons together before deciding.", "strategy": "Emotionally Regulated" },
+        { "id": "C", "text": "Create a detailed decision matrix weighing financial, emotional, social, and long-term career factors before the deadline.", "strategy": "Analytical" },
+        { "id": "D", "text": "Accept the offer, trusting that you've built the resilience to adapt and that your support system will remain connected regardless of distance.", "strategy": "Assertive" }
+      ]
+    }
+  ]
+}
