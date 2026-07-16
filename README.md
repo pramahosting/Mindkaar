@@ -51,31 +51,65 @@ backend/    FastAPI + SQLite (swap DATABASE_URL for your own Neon Postgres
 ### The flow, end to end
 
 1. **Register / Login** - JWT-based auth, bcrypt-hashed passwords, SQLite by default.
-2. **Profile** - age, mood, sleep, stress level, support system, goals.
-3. **Scenario identification** - the profile is sent to Groq, which scores
-   six mental-scenario categories (Stress, Anxiety, Conflict, Unrest,
-   Burnout, Loneliness) by relevance; the highest becomes the active scenario.
-4. **Ranked questions** - Groq generates reflective questions for that
-   scenario; the backend sorts them by difficulty ascending (simplest first).
-5. **Game selection** - each scenario maps to a mini-game
-   (`backend/app/game_logic.py`); today that's "Chopping Vegetables" for
-   every scenario, themed slightly differently per scenario. Add more
-   entries to `GAME_CATALOG` to give other scenarios their own game.
-6. **The game** - centered game panel, progressive difficulty (spawn rate,
-   item lifespan, and decoy frequency all increase every 6 successful
-   chops), 3 lives, plays until you fail.
-7. **Score → mental status** - final score/level/accuracy go back to Groq
-   (with a deterministic fallback if Groq is unavailable) for a short,
-   supportive status label + summary + coping tip.
+   On login, a returning user who's already completed the assessment is sent
+   straight to game selection for their most recent scenario - not asked to
+   redo the intake form.
+2. **Assessment** - a 24-question, 6-domain intake (4 items each for Stress,
+   Anxiety, Conflict, Unrest, Burnout, Loneliness), styled after the general
+   structure of established brief screeners (PSS-10, GAD-7, UCLA-3, Maslach
+   Burnout Inventory themes - paraphrased, not copied). Answered on the
+   familiar 4-point PHQ/GAD frequency scale.
+3. **Scenario identification is deterministic** - each domain gets a 0-100%
+   score computed directly from that domain's 4 answers (`app/assessment.py`),
+   grounded in the person's own highest-scoring answer. No LLM call, so it
+   can't fail from a Groq outage and gives the same result every time.
+4. **Game selection** - every scenario offers multiple games (currently both
+   "Chopping Vegetables" and "Calm Breathing", each scenario-flavored); the
+   person picks whichever they prefer. Each game tracks its own progress
+   per user - playing one doesn't affect the other's level.
+5. **Continue or restart** - a returning player sees "Continue at Level N"
+   (their highest unlocked level) or "Restart from Level 1". Restarting
+   lets you replay from the start; it never erases previously unlocked
+   progress - your best level/score only ever goes up.
+6. **The game** - centered game panel, progressive difficulty, 3 lives,
+   plays until you fail.
+7. **Score -> mental status** - sent to Groq (with a deterministic fallback)
+   for a short, supportive status label + summary + coping tip. Every
+   played session is stored, along with updated per-game progress.
+
+### Data architecture (3NF)
+
+```
+mg_users
+mg_scenario_categories   - catalog: stress/anxiety/conflict/unrest/burnout/loneliness
+mg_assessment_items      - catalog: the 24 Likert questions, FK -> category
+mg_games                 - catalog: the mini-game mechanics (chopping_vegetables, calm_breathing)
+mg_scenario_games        - join table: which games are offered for which scenario + flavor text
+mg_assessments           - one row per submitted intake form
+mg_assessment_answers    - one row per Likert answer (1NF: no repeating groups/JSON blobs)
+mg_scenario_scores       - one row per category per assessment (the computed relevance/reason)
+mg_user_game_progress    - one row per (user, scenario_game): current_level, best_score, times_played
+mg_game_sessions         - one row per played game (win or lose), full history preserved
+```
+
+Catalog tables are seeded idempotently on every startup from `app/assessment.py`
+(the source of truth in code) - safe to re-run, matched by unique `code`.
+
+No descriptive text is duplicated across tables: e.g. a scenario's label
+lives only in `mg_scenario_categories`, referenced everywhere else by
+`category_id`; an item's text lives only in `mg_assessment_items`. Fact
+tables (`mg_assessment_answers`, `mg_scenario_scores`, `mg_game_sessions`)
+store only IDs and the actual measured values, never denormalized copies
+of catalog data - the standard shape for 3NF (no transitive dependencies).
 
 ### Extending to more games
 
-`GAME_CATALOG` in `backend/app/game_logic.py` maps a scenario id to a
-`GameConfig` (id/title/description/mechanic). The frontend currently only
-implements the `chopping_vegetables` mechanic
-(`frontend/src/components/ChoppingGame.jsx`). To add a second game (e.g. a
-breathing-paced game for anxiety), add a new component, and branch on
-`gameConfig.mechanic` in `frontend/src/pages/Game.jsx`.
+Add a new game to `GAMES` and its per-scenario flavor text to
+`SCENARIO_GAME_FLAVOR` in `backend/app/assessment.py`, add a matching
+React component, and register its `mechanic` string in the
+`GAME_COMPONENTS` map in `frontend/src/pages/Session.jsx`. It'll
+automatically appear as a selectable option for whichever scenarios you
+add it to, with its own independent per-user progress tracking.
 
 ### Moving to your own Neon Postgres
 
