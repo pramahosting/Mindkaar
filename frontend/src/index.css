@@ -511,3 +511,148 @@ a { color: var(--accent-dark); text-decoration: none; }
   0%, 100% { transform: translateX(-50%) scale(1); }
   50% { transform: translateX(-50%) scale(1.08); }
 }
+
+/* ── Assessment form ── */
+.mg-assessment-section {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+.mg-assessment-section:last-of-type { border-bottom: none; }
+.mg-assessment-section-header { margin-bottom: 4px; }
+.mg-assessment-intro { font-size: .85rem; color: var(--text-muted); margin-bottom: 16px; }
+
+.mg-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 20px;
+}
+@media (max-width: 640px) {
+  .mg-two-col { grid-template-columns: 1fr; }
+}
+
+.mg-likert-row { margin-bottom: 18px; }
+.mg-likert-text { font-size: .95rem; color: var(--text-primary); margin-bottom: 10px; }
+.mg-likert-scale {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.mg-likert-option {
+  padding: 10px 6px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  font-size: .78rem;
+  text-align: center;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+.mg-likert-option:hover { border-color: var(--teal-300); }
+.mg-likert-option.selected {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.mg-assessment-progress-bar {
+  height: 8px;
+  background: var(--slate-100);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 20px 0 8px;
+}
+.mg-assessment-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal-400), var(--accent-dark));
+  transition: width .2s;
+}
+
+/* ── Session page: tabs + two-pane layout ── */
+.mg-session-header { margin-bottom: 18px; }
+
+.mg-tab-bar {
+  display: flex;
+  gap: 8px;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 24px;
+}
+.mg-tab {
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  font-size: .92rem;
+  color: var(--text-muted);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+}
+.mg-tab:hover { color: var(--text-primary); }
+.mg-tab.active { color: var(--accent-dark); border-bottom-color: var(--accent); }
+
+.mg-tab-panel { min-height: 300px; }
+
+.mg-two-pane {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+@media (max-width: 760px) {
+  .mg-two-pane { grid-template-columns: 1fr; }
+}
+
+.mg-pane {
+  background: var(--slate-100);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+.mg-pane-scroll { max-height: 560px; overflow-y: auto; }
+.mg-pane-title { font-size: .95rem; margin-bottom: 14px; }
+
+.mg-scenario-hero-compact { padding: 16px 18px; margin-bottom: 0; }
+.mg-scenario-hero-compact .mg-emoji { font-size: 2rem; }
+.mg-scenario-hero-compact h2 { font-size: 1.15rem; }
+.mg-scenario-hero-compact p { font-size: .82rem; }
+
+.mg-question-card {
+  background: #fff;
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+}
+.mg-question-narrative-sm { font-size: .88rem; margin: 8px 0 10px; color: var(--text-primary); }
+.mg-option-list-sm { display: flex; flex-direction: column; gap: 6px; }
+.mg-option-sm {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: .8rem;
+  color: var(--text-secondary);
+}
+
+/* ── Game selection cards ── */
+.mg-game-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+.mg-game-picker-card {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  text-align: center;
+}
+.mg-game-picker-icon { font-size: 2.4rem; margin-bottom: 8px; }
+.mg-game-picker-card h4 { font-size: 1.05rem; margin-bottom: 8px; }
+.mg-game-picker-desc { font-size: .84rem; color: var(--text-secondary); margin-bottom: 16px; min-height: 42px; }
+.mg-game-picker-stats {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  font-size: .76rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}

@@ -8,14 +8,16 @@ export function AppProvider({ children }) {
   const [profile, setProfile] = useState(null)
   const [scenario, setScenario] = useState(null) // { primary, candidates }
   const [questions, setQuestions] = useState(null)
-  const [gameConfig, setGameConfig] = useState(null)
+  const [scenarioGames, setScenarioGames] = useState(null) // list from /scenario-games/:scenario
+  const [selectedGame, setSelectedGame] = useState(null) // one entry from scenarioGames + startingLevel/wasRestart
   const [lastResult, setLastResult] = useState(null)
 
   const resetFlow = () => {
     setProfile(null)
     setScenario(null)
     setQuestions(null)
-    setGameConfig(null)
+    setScenarioGames(null)
+    setSelectedGame(null)
     setLastResult(null)
   }
 
@@ -26,7 +28,8 @@ export function AppProvider({ children }) {
         profile, setProfile,
         scenario, setScenario,
         questions, setQuestions,
-        gameConfig, setGameConfig,
+        scenarioGames, setScenarioGames,
+        selectedGame, setSelectedGame,
         lastResult, setLastResult,
         resetFlow,
       }}

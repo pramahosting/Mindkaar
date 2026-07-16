@@ -20,11 +20,12 @@ export default function Login() {
       const data = await api.login({ email, password })
       setToken(data.access_token)
       setStoredUser(data.user)
+      // Setting user here causes the surrounding PublicOnlyRoute to pick up
+      // the change, check /me/status, and redirect to /games or /profile
+      // as appropriate - no need to duplicate that logic here.
       setUser(data.user)
-      navigate('/profile')
     } catch (err) {
       setError(err.message)
-    } finally {
       setLoading(false)
     }
   }

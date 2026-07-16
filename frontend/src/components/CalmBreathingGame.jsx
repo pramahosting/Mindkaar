@@ -14,16 +14,16 @@ function pointsFor(level) {
   return 10 + level * 5
 }
 
-export default function CalmBreathingGame({ onGameOver }) {
+export default function CalmBreathingGame({ onGameOver, startingLevel = 1 }) {
   const [phase, setPhase] = useState('inhale') // 'inhale' | 'exhale'
   const [beatActive, setBeatActive] = useState(false)
   const [score, setScore] = useState(0)
   const [lives, setLives] = useState(MAX_LIVES)
-  const [level, setLevel] = useState(1)
+  const [level, setLevel] = useState(startingLevel)
   const [levelBanner, setLevelBanner] = useState(false)
   const [gameOver, setGameOver] = useState(false)
 
-  const levelRef = useRef(1)
+  const levelRef = useRef(startingLevel)
   const livesRef = useRef(MAX_LIVES)
   const hitRef = useRef(0)
   const missRef = useRef(0)

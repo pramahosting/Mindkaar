@@ -23,16 +23,16 @@ function pointsFor(level) {
   return 10 + level * 5
 }
 
-export default function ChoppingGame({ onGameOver }) {
+export default function ChoppingGame({ onGameOver, startingLevel = 1 }) {
   const [items, setItems] = useState([])
   const [score, setScore] = useState(0)
   const [lives, setLives] = useState(MAX_LIVES)
-  const [level, setLevel] = useState(1)
+  const [level, setLevel] = useState(startingLevel)
   const [levelBanner, setLevelBanner] = useState(false)
   const [gameOver, setGameOver] = useState(false)
 
   // Refs mirror latest values so timer callbacks never see stale closures.
-  const levelRef = useRef(1)
+  const levelRef = useRef(startingLevel)
   const livesRef = useRef(MAX_LIVES)
   const choppedRef = useRef(0)
   const missedRef = useRef(0)

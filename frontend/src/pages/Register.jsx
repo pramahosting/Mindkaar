@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { api, setToken, setStoredUser } from '../api.js'
 import { useApp } from '../AppContext.jsx'
 import Layout from '../components/Layout.jsx'
@@ -11,7 +11,6 @@ export default function Register() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const { setUser } = useApp()
-  const navigate = useNavigate()
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -21,11 +20,12 @@ export default function Register() {
       const data = await api.register({ name, email, password })
       setToken(data.access_token)
       setStoredUser(data.user)
+      // Setting user here causes the surrounding PublicOnlyRoute to pick up
+      // the change and redirect to /profile (a brand-new account has no
+      // assessment yet, so that's where /me/status will send them).
       setUser(data.user)
-      navigate('/profile')
     } catch (err) {
       setError(err.message)
-    } finally {
       setLoading(false)
     }
   }

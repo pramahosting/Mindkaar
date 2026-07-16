@@ -4,7 +4,7 @@ import { useApp } from '../AppContext.jsx'
 import Layout from '../components/Layout.jsx'
 
 export default function Results() {
-  const { lastResult, resetFlow } = useApp()
+  const { lastResult, setSelectedGame } = useApp()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -13,8 +13,12 @@ export default function Results() {
 
   if (!lastResult) return null
 
-  function playAgain() {
-    resetFlow()
+  function playAnotherRound() {
+    setSelectedGame(null)
+    navigate('/games')
+  }
+
+  function startNewAssessment() {
     navigate('/profile')
   }
 
@@ -31,8 +35,12 @@ export default function Results() {
           <div className="lbl">Final score</div>
         </div>
         <div className="mg-stat-card">
-          <div className="val">{lastResult.max_level}</div>
+          <div className="val">{lastResult.ending_level}</div>
           <div className="lbl">Level reached</div>
+        </div>
+        <div className="mg-stat-card">
+          <div className="val">{lastResult.new_current_level}</div>
+          <div className="lbl">Your best level</div>
         </div>
       </div>
 
@@ -42,8 +50,11 @@ export default function Results() {
       </div>
 
       <div className="mg-btn-row">
-        <button className="mg-btn" onClick={playAgain}>
+        <button className="mg-btn" onClick={playAnotherRound}>
           Play again
+        </button>
+        <button className="mg-btn mg-btn-outline" onClick={startNewAssessment}>
+          Retake assessment
         </button>
       </div>
 

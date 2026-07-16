@@ -58,9 +58,12 @@ export const api = {
   me: () => request('/api/auth/me'),
 
   saveProfile: (profile) => request('/api/mindgym/profile', { method: 'POST', body: profile }),
-  getScenario: (profile) => request('/api/mindgym/scenario', { method: 'POST', body: { profile } }),
+  triage: (profile) => request('/api/mindgym/triage', { method: 'POST', body: profile }),
+  getAssessmentItems: (categories) =>
+    request(`/api/mindgym/assessment${categories && categories.length ? `?categories=${categories.join(',')}` : ''}`),
+  getMyStatus: () => request('/api/mindgym/me/status'),
   getQuestions: (profile, scenario) =>
     request('/api/mindgym/questions', { method: 'POST', body: { profile, scenario } }),
-  getGameConfig: (scenario) => request(`/api/mindgym/game/${encodeURIComponent(scenario)}`),
+  getScenarioGames: (scenario) => request(`/api/mindgym/scenario-games/${encodeURIComponent(scenario)}`),
   submitScore: (payload) => request('/api/mindgym/score', { method: 'POST', body: payload }),
 }

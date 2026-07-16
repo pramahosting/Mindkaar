@@ -2,19 +2,42 @@ import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { AppProvider } from './AppContext.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
+import PublicOnlyRoute from './components/PublicOnlyRoute.jsx'
 import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 import Profile from './pages/Profile.jsx'
-import Scenario from './pages/Scenario.jsx'
-import Game from './pages/Game.jsx'
+import GameSelect from './pages/GameSelect.jsx'
+import Session from './pages/Session.jsx'
 import Results from './pages/Results.jsx'
 
 export default function App() {
   return (
     <AppProvider>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/"
+          element={
+            <PublicOnlyRoute>
+              <Navigate to="/login" replace />
+            </PublicOnlyRoute>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <PublicOnlyRoute>
+              <Login />
+            </PublicOnlyRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicOnlyRoute>
+              <Register />
+            </PublicOnlyRoute>
+          }
+        />
         <Route
           path="/profile"
           element={
@@ -24,18 +47,18 @@ export default function App() {
           }
         />
         <Route
-          path="/scenario"
+          path="/games"
           element={
             <ProtectedRoute>
-              <Scenario />
+              <GameSelect />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/game"
+          path="/session"
           element={
             <ProtectedRoute>
-              <Game />
+              <Session />
             </ProtectedRoute>
           }
         />
@@ -47,7 +70,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AppProvider>
   )
