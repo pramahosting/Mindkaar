@@ -32,58 +32,7 @@ def _profile_lines(profile: ProfileIn) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Step 1: identify the mental scenario from the profile
-# ---------------------------------------------------------------------------
-SCENARIO_CATEGORIES = ["Stress", "Anxiety", "Conflict", "Unrest", "Burnout", "Loneliness"]
-
-
-def build_scenario_prompt(profile: ProfileIn) -> str:
-    categories = ", ".join(SCENARIO_CATEGORIES)
-    return "\n".join(
-        [
-            "Based on this person's profile, rank ALL of the following mental "
-            f"scenario categories by how relevant each is to them right now: {categories}.",
-            "",
-            "Profile:",
-            _profile_lines(profile),
-            "",
-            "For EACH category (all of them, do not skip any), include:",
-            "- id: the category name in lowercase (e.g. \"stress\")",
-            "- label: the category name capitalized (e.g. \"Stress\")",
-            "- relevance: an integer from 0 (not relevant) to 100 (highly relevant)",
-            "- reason: one short sentence on why, specific to this profile",
-            "",
-            "Respond with ONLY this JSON shape:",
-            '{"candidates":[{"id":"stress","label":"Stress","relevance":82,"reason":"..."}, ... one item per category]}',
-        ]
-    )
-
-
-SCENARIO_JSON_SCHEMA = {
-    "type": "object",
-    "properties": {
-        "candidates": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "id": {"type": "string"},
-                    "label": {"type": "string"},
-                    "relevance": {"type": "integer"},
-                    "reason": {"type": "string"},
-                },
-                "required": ["id", "label", "relevance", "reason"],
-                "additionalProperties": False,
-            },
-        }
-    },
-    "required": ["candidates"],
-    "additionalProperties": False,
-}
-
-
-# ---------------------------------------------------------------------------
-# Step 2: ranked questions for the identified scenario
+# Step 1 (ranked questions) for the identified scenario
 # ---------------------------------------------------------------------------
 def build_questions_prompt(profile: ProfileIn, scenario: str) -> str:
     return "\n".join(

@@ -12,17 +12,23 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.config import get_settings
-from app.database import Base, engine
+from app.database import Base, SessionLocal, engine
+from app.migrate import run_lightweight_migrations
 from app.routers import auth, mindgym
+from app.seed import seed_catalog
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 logger = logging.getLogger("mindgym.main")
 
 settings = get_settings()
 
-# Create tables on startup - fine for SQLite/dev; use Alembic migrations
-# instead if/when you move to a shared Postgres/Neon database.
+# Create any brand-new tables, then add any new columns to tables that
+# already existed (create_all alone never alters existing tables).
 Base.metadata.create_all(bind=engine)
+run_lightweight_migrations(engine)
+
+with SessionLocal() as _seed_db:
+    seed_catalog(_seed_db)
 
 app = FastAPI(
     title="Mind Gym API",
