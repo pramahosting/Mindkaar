@@ -83,7 +83,19 @@ _is_sqlite = str(_database_url).startswith("sqlite")
 
 _connect_args = {"check_same_thread": False} if _is_sqlite else {}
 
-engine = create_engine(_database_url, connect_args=_connect_args, echo=False, future=True)
+engine = create_engine(
+    _database_url,
+    connect_args=_connect_args,
+    echo=False,
+    future=True,
+    # Validates each connection with a lightweight ping before using it,
+    # and transparently reconnects if it's gone stale - this is what
+    # fixes the classic "first request after the database has been idle
+    # fails, then it works fine" symptom with serverless/autosuspending
+    # Postgres providers like Neon, whose compute can suspend after
+    # inactivity and silently drop pooled connections.
+    pool_pre_ping=True,
+)
 
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, expire_on_commit=False)
 
