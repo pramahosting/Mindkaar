@@ -126,3 +126,43 @@ This build intentionally does **not** reuse the Neon credentials found
 hardcoded in the TalentIQ package you provided — that's a live, shared
 production database. Point `DATABASE_URL` at your own instance when you're
 ready to move off SQLite.
+
+## Deploying to Northflank (single Dockerfile)
+
+The root `Dockerfile` builds the React frontend and the FastAPI backend into
+one image - the backend serves the built frontend directly, so the whole
+app runs behind a single port. This matches Northflank's one-container-
+per-service model.
+
+1. In Northflank, create a new service from this repo/zip, build type
+   **Dockerfile**, Dockerfile path `Dockerfile` (repo root).
+2. Set these environment variables in Northflank's dashboard (never commit
+   real secrets into the image):
+   - `GROQ_API_KEY` - your Groq key
+   - `SECRET_KEY` - a long random string
+   - `DATABASE_URL` - **use your Neon Postgres connection string here, not
+     the SQLite default.** Northflank containers don't have persistent
+     local disk across redeploys, so a SQLite file would be wiped every
+     time you deploy. See `backend/.env.example` for the connection
+     string format (or use the separate `PG_HOST`/`PG_USER`/`PG_PASSWORD`/
+     etc. fields instead if your password has special characters).
+   - `ALLOWED_ORIGINS` - can be left as-is; same-origin requests in this
+     deployment shape don't trigger CORS anyway.
+3. Northflank injects `PORT` automatically; the container's `CMD` already
+   reads `$PORT` (defaulting to 8000 for local `docker run` testing), so
+   no extra configuration is needed there - just make sure Northflank's
+   port mapping points at whatever `$PORT` it assigns.
+4. Health check path: `/health`.
+
+### Testing the image locally before deploying
+
+```bash
+docker build -t mindgym .
+docker run -p 8000:8000 \
+  -e GROQ_API_KEY=your-key \
+  -e SECRET_KEY=some-long-random-string \
+  -e DATABASE_URL=postgresql+psycopg2://user:pass@host/db?sslmode=require \
+  mindgym
+```
+Then open http://localhost:8000 - both the frontend and API are served
+from that one address.

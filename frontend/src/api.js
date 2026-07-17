@@ -1,4 +1,9 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+// In local dev, app.cmd writes frontend/.env with VITE_API_URL pointing at
+// the separately-running backend (e.g. http://localhost:8000). In the
+// single-container Docker deployment, frontend and backend are served from
+// the same origin, so this defaults to '' (relative requests) when that
+// variable isn't set, rather than assuming a separate localhost backend.
+const BASE_URL = import.meta.env.VITE_API_URL || ''
 
 function getToken() {
   return localStorage.getItem('mg_token')
@@ -62,6 +67,7 @@ export const api = {
   getAssessmentItems: (categories) =>
     request(`/api/mindgym/assessment${categories && categories.length ? `?categories=${categories.join(',')}` : ''}`),
   getMyStatus: () => request('/api/mindgym/me/status'),
+  getLatestAssessment: () => request('/api/mindgym/profile/latest'),
   getQuestions: (profile, scenario) =>
     request('/api/mindgym/questions', { method: 'POST', body: { profile, scenario } }),
   getScenarioGames: (scenario) => request(`/api/mindgym/scenario-games/${encodeURIComponent(scenario)}`),

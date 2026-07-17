@@ -62,7 +62,7 @@ ASSESSMENT_ITEMS = [
     {"code": "loneliness_4", "category": "loneliness", "text": "Wished you had someone to turn to but didn't reach out", "sort_order": 4},
 ]
 
-# The two mini-games actually implemented in the frontend.
+# The four mini-games actually implemented in the frontend.
 GAMES = [
     {
         "code": "chopping_vegetables",
@@ -75,6 +75,18 @@ GAMES = [
         "mechanic": "breath-pacing",
         "base_title": "Calm Breathing",
         "base_description": "Tap right as each guided breath cycle turns - the timing window tightens and the pace quickens every level.",
+    },
+    {
+        "code": "memory_sequence",
+        "mechanic": "sequence-memory",
+        "base_title": "Memory Sequence",
+        "base_description": "Watch a sequence of tiles light up, then repeat it back - the sequence grows longer and faster every level.",
+    },
+    {
+        "code": "sort_your_thoughts",
+        "mechanic": "thought-sorting",
+        "base_title": "Sort Your Thoughts",
+        "base_description": "A thought appears - decide quickly whether to let it go or act on it, before the window closes.",
     },
 ]
 
@@ -128,6 +140,55 @@ SCENARIO_GAME_FLAVOR = {
     ("loneliness", "calm_breathing"): (
         "Calm Breathing",
         "A quiet, grounding moment of company with your own breath.",
+    ),
+
+    ("stress", "memory_sequence"): (
+        "Memory Sequence",
+        "Rebuild focus by holding a growing sequence in mind - a clear counter to a stress-scattered brain.",
+    ),
+    ("stress", "sort_your_thoughts"): (
+        "Sort Your Thoughts",
+        "Quickly triage racing thoughts into 'let go' or 'act on' before the next one piles up.",
+    ),
+    ("anxiety", "memory_sequence"): (
+        "Memory Sequence (Steady Focus)",
+        "Anchors a jumpy mind by giving it one clear, repeatable pattern to hold onto.",
+    ),
+    ("anxiety", "sort_your_thoughts"): (
+        "Sort Your Thoughts",
+        "Practice quickly telling apart a worry worth acting on from one worth releasing.",
+    ),
+    ("conflict", "memory_sequence"): (
+        "Memory Sequence (Cool Down)",
+        "A neutral, absorbing pattern to reset focus after a tense exchange.",
+    ),
+    ("conflict", "sort_your_thoughts"): (
+        "Sort Your Thoughts",
+        "Sort post-argument thoughts into what's worth raising later and what's worth dropping.",
+    ),
+    ("unrest", "memory_sequence"): (
+        "Memory Sequence (Find Focus)",
+        "Gives a restless mind one clear thing to track instead of everything at once.",
+    ),
+    ("unrest", "sort_your_thoughts"): (
+        "Sort Your Thoughts",
+        "Turns scattered, unsettled thoughts into a simple two-pile sort.",
+    ),
+    ("burnout", "memory_sequence"): (
+        "Memory Sequence (Small Focus)",
+        "A short, achievable pattern to rebuild a sense of capability, one round at a time.",
+    ),
+    ("burnout", "sort_your_thoughts"): (
+        "Sort Your Thoughts",
+        "Separates what's actually worth your remaining energy from what isn't, right now.",
+    ),
+    ("loneliness", "memory_sequence"): (
+        "Memory Sequence",
+        "A simple, absorbing focus exercise to spend a quiet moment with.",
+    ),
+    ("loneliness", "sort_your_thoughts"): (
+        "Sort Your Thoughts",
+        "A gentle sort through the thoughts that come up in quiet moments alone.",
     ),
 }
 

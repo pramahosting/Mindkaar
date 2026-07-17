@@ -8,18 +8,18 @@ export default function Results() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!lastResult) navigate('/profile')
+    if (!lastResult) navigate('/profile', { replace: true })
   }, [lastResult, navigate])
 
   if (!lastResult) return null
 
   function playAnotherRound() {
     setSelectedGame(null)
-    navigate('/games')
+    navigate('/games', { replace: true })
   }
 
   function startNewAssessment() {
-    navigate('/profile')
+    navigate('/profile', { replace: true })
   }
 
   return (

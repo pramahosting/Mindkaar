@@ -84,6 +84,21 @@ class MeStatusResponse(BaseModel):
     latest_scenario: Optional[ScenarioCandidate] = None
 
 
+class LatestAssessmentResponse(BaseModel):
+    exists: bool
+    age: Optional[int] = None
+    familyProfile: Optional[str] = None
+    education: Optional[str] = None
+    workStatus: Optional[str] = None
+    children: Optional[str] = None
+    mood: Optional[str] = None
+    sleepHours: Optional[float] = None
+    support: Optional[str] = None
+    goals: Optional[str] = None
+    assessment: dict[str, int] = Field(default_factory=dict)
+    categories: List[str] = Field(default_factory=list)
+
+
 # ── Questions ─────────────────────────────────────────────
 class QuestionsRequest(BaseModel):
     profile: ProfileIn

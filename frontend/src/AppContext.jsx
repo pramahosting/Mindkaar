@@ -12,6 +12,12 @@ export function AppProvider({ children }) {
   const [selectedGame, setSelectedGame] = useState(null) // one entry from scenarioGames + startingLevel/wasRestart
   const [lastResult, setLastResult] = useState(null)
 
+  // Preserves the intake form's in-progress/last-submitted state so
+  // navigating back from the game page to "change my answers" restores
+  // where the person left off instead of starting blank.
+  const [intake, setIntake] = useState(null)
+  const [intakeEntryStep, setIntakeEntryStep] = useState('context') // 'context' | 'likert'
+
   const resetFlow = () => {
     setProfile(null)
     setScenario(null)
@@ -19,6 +25,8 @@ export function AppProvider({ children }) {
     setScenarioGames(null)
     setSelectedGame(null)
     setLastResult(null)
+    setIntake(null)
+    setIntakeEntryStep('context')
   }
 
   return (
@@ -31,6 +39,8 @@ export function AppProvider({ children }) {
         scenarioGames, setScenarioGames,
         selectedGame, setSelectedGame,
         lastResult, setLastResult,
+        intake, setIntake,
+        intakeEntryStep, setIntakeEntryStep,
         resetFlow,
       }}
     >

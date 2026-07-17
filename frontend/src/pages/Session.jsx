@@ -5,10 +5,14 @@ import { useApp } from '../AppContext.jsx'
 import Layout from '../components/Layout.jsx'
 import ChoppingGame from '../components/ChoppingGame.jsx'
 import CalmBreathingGame from '../components/CalmBreathingGame.jsx'
+import MemorySequenceGame from '../components/MemorySequenceGame.jsx'
+import ThoughtSortingGame from '../components/ThoughtSortingGame.jsx'
 
 const GAME_COMPONENTS = {
   'click-timing': ChoppingGame,
   'breath-pacing': CalmBreathingGame,
+  'sequence-memory': MemorySequenceGame,
+  'thought-sorting': ThoughtSortingGame,
 }
 
 const SCENARIO_EMOJI = {
@@ -21,7 +25,7 @@ const SCENARIO_EMOJI = {
 }
 
 export default function Session() {
-  const { profile, scenario, questions, selectedGame, setLastResult } = useApp()
+  const { profile, scenario, questions, selectedGame, setLastResult, setIntakeEntryStep } = useApp()
   const navigate = useNavigate()
 
   const [tab, setTab] = useState('game') // 'game' | 'info'
@@ -30,7 +34,7 @@ export default function Session() {
 
   useEffect(() => {
     if (!scenario || !selectedGame) {
-      navigate('/games')
+      navigate('/games', { replace: true })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -52,7 +56,7 @@ export default function Session() {
         missed: result.missed,
       })
       setLastResult(assessment)
-      navigate('/results')
+      navigate('/results', { replace: true })
     } catch (err) {
       setError(err.message)
       setSubmitting(false)
@@ -61,11 +65,29 @@ export default function Session() {
 
   const GameComponent = GAME_COMPONENTS[selectedGame.mechanic] || ChoppingGame
 
+  function changeAnswers() {
+    setIntakeEntryStep('likert')
+    navigate('/profile')
+  }
+
+  function startOver() {
+    setIntakeEntryStep('context')
+    navigate('/profile')
+  }
+
   return (
     <Layout wide>
       <div className="mg-session-header">
         <span className="mg-badge">{scenario.primary.label} session</span>
         <h1 style={{ marginTop: 8 }}>{selectedGame.title}</h1>
+        <div className="mg-session-back-links">
+          <button className="mg-link-btn" onClick={changeAnswers}>
+            ← Change my answers
+          </button>
+          <button className="mg-link-btn" onClick={startOver}>
+            ← Start over from the beginning
+          </button>
+        </div>
       </div>
 
       <div className="mg-tab-bar">

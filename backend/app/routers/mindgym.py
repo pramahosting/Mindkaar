@@ -31,6 +31,7 @@ from app.prompts import (
 from app.schemas import (
     AssessmentItemOut,
     AssessmentResponse,
+    LatestAssessmentResponse,
     MeStatusResponse,
     ProfileIn,
     QuestionsRequest,
@@ -101,6 +102,46 @@ def triage(payload: ProfileIn, current_user: User = Depends(get_current_user)):
     return TriageResponse(
         recommended=recommended,
         categories=[{"code": c["code"], "label": c["label"]} for c in SCENARIO_CATEGORIES],
+    )
+
+
+@router.get("/profile/latest", response_model=LatestAssessmentResponse)
+def get_latest_assessment(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    """Returns the person's most recently submitted intake so the frontend
+    can pre-fill the form with it, instead of showing it blank - useful
+    when they navigate to /profile in a session where it was never
+    fetched yet (e.g. straight from login -> games -> back to review)."""
+    latest = (
+        db.query(Assessment)
+        .filter(Assessment.user_id == current_user.id)
+        .order_by(Assessment.id.desc())
+        .first()
+    )
+    if latest is None:
+        return LatestAssessmentResponse(exists=False)
+
+    answer_rows = (
+        db.query(AssessmentAnswer, AssessmentItem)
+        .join(AssessmentItem, AssessmentAnswer.item_id == AssessmentItem.id)
+        .filter(AssessmentAnswer.assessment_id == latest.id)
+        .all()
+    )
+    answers = {item.code: answer.value for answer, item in answer_rows}
+    categories = sorted({item.category.code for _, item in answer_rows})
+
+    return LatestAssessmentResponse(
+        exists=True,
+        age=latest.age,
+        familyProfile=latest.family_profile,
+        education=latest.education,
+        workStatus=latest.work_status,
+        children=latest.children,
+        mood=latest.mood,
+        sleepHours=latest.sleep_hours,
+        support=latest.support,
+        goals=latest.goals,
+        assessment=answers,
+        categories=categories,
     )
 
 

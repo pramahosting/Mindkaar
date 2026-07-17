@@ -16,10 +16,12 @@ const SCENARIO_EMOJI = {
 const MECHANIC_ICON = {
   'click-timing': '🔪',
   'breath-pacing': '🫁',
+  'sequence-memory': '🧩',
+  'thought-sorting': '🧠',
 }
 
 export default function GameSelect() {
-  const { scenario, setScenarioGames, setSelectedGame } = useApp()
+  const { scenario, setScenarioGames, setSelectedGame, setIntakeEntryStep } = useApp()
   const navigate = useNavigate()
 
   const [games, setGames] = useState(null)
@@ -27,7 +29,7 @@ export default function GameSelect() {
 
   useEffect(() => {
     if (!scenario) {
-      navigate('/profile')
+      navigate('/profile', { replace: true })
       return
     }
     api
@@ -55,8 +57,17 @@ export default function GameSelect() {
     navigate('/session')
   }
 
+  function backToAnswers() {
+    setIntakeEntryStep('context')
+    navigate('/profile')
+  }
+
   return (
     <Layout wide>
+      <button className="mg-link-btn" style={{ marginBottom: 16 }} onClick={backToAnswers}>
+        ← Back to your answers
+      </button>
+
       <div className="mg-scenario-hero">
         <span className="mg-emoji">{SCENARIO_EMOJI[scenario.primary.id] || '💭'}</span>
         <div>

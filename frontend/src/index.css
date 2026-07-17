@@ -373,6 +373,35 @@ a { color: var(--accent-dark); text-decoration: none; }
 }
 .mg-veggie:active { transform: scale(0.85); }
 .mg-veggie.bad { filter: grayscale(0.3); }
+.mg-veggie.rock { filter: grayscale(0.5); opacity: 0.9; }
+.mg-veggie.bomb {
+  animation: mg-bomb-pulse 0.7s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(239, 68, 68, .55));
+}
+.mg-veggie.exploding {
+  animation: mg-bomb-explode 0.38s ease-out forwards;
+  z-index: 5;
+}
+@keyframes mg-bomb-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+@keyframes mg-bomb-explode {
+  0% { transform: scale(1); }
+  30% { transform: scale(2.2); filter: brightness(1.6); }
+  70% { transform: scale(2.6); filter: brightness(1.3); opacity: 1; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+.mg-game-board.blast-flash {
+  animation: mg-board-blast-flash 0.38s ease-out;
+}
+@keyframes mg-board-blast-flash {
+  0% { background: linear-gradient(180deg, #fdf6ec 0%, #f3e3c8 100%); }
+  15% { background: #fff3f3; box-shadow: inset 0 0 0 8px rgba(239,68,68,.6); }
+  50% { background: #ffdcdc; box-shadow: inset 0 0 0 4px rgba(239,68,68,.4); }
+  100% { background: linear-gradient(180deg, #fdf6ec 0%, #f3e3c8 100%); box-shadow: none; }
+}
 
 .mg-game-overlay {
   position: absolute; inset: 0;
@@ -570,6 +599,20 @@ a { color: var(--accent-dark); text-decoration: none; }
 
 /* ── Session page: tabs + two-pane layout ── */
 .mg-session-header { margin-bottom: 18px; }
+.mg-session-back-links {
+  display: flex;
+  gap: 18px;
+  margin-top: 10px;
+}
+.mg-link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text-secondary);
+  font-size: .82rem;
+  text-decoration: underline;
+}
+.mg-link-btn:hover { color: var(--accent-dark); }
 
 .mg-tab-bar {
   display: flex;
@@ -656,3 +699,117 @@ a { color: var(--accent-dark); text-decoration: none; }
   margin-bottom: 16px;
   flex-wrap: wrap;
 }
+
+/* ── Memory Sequence game ── */
+.mg-memory-board {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  padding: 30px 20px;
+  background: linear-gradient(180deg, #f4f0ff 0%, #e6ddff 100%);
+  border-radius: var(--radius-md);
+  border: 3px solid #cbb8f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.mg-memory-status {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--navy-900);
+  font-size: .95rem;
+  min-height: 22px;
+  text-align: center;
+}
+.mg-memory-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.mg-memory-tile {
+  width: 90px;
+  height: 90px;
+  border-radius: var(--radius-md);
+  border: 3px solid var(--tile-color, #ccc);
+  background: #fff;
+  font-size: 2.2rem;
+  opacity: 0.55;
+  transition: opacity .1s, transform .1s;
+}
+.mg-memory-tile:not(:disabled):hover { opacity: 0.8; }
+.mg-memory-tile:disabled { cursor: default; }
+.mg-memory-tile.active {
+  opacity: 1;
+  background: var(--tile-color, #ccc);
+  transform: scale(1.06);
+}
+.mg-memory-tile.wrong {
+  background: var(--rose-500);
+  border-color: var(--rose-500);
+  opacity: 1;
+}
+
+/* ── Sort Your Thoughts game ── */
+.mg-sort-board {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  padding: 30px 24px;
+  background: linear-gradient(180deg, #f0f9ff 0%, #dbeefe 100%);
+  border-radius: var(--radius-md);
+  border: 3px solid #b8d9f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+.mg-sort-timerbar-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(0,0,0,.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.mg-sort-timerbar-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--teal-400), var(--amber-400));
+  transform-origin: left;
+  animation-name: mg-sort-shrink;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+@keyframes mg-sort-shrink {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+.mg-sort-thought {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--navy-900);
+  text-align: center;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+}
+.mg-sort-thought.wrong { color: var(--rose-500); }
+.mg-sort-buttons {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+.mg-sort-btn {
+  flex: 1;
+  padding: 16px 12px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: .95rem;
+  color: #fff;
+}
+.mg-sort-btn.release { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
+.mg-sort-btn.engage { background: linear-gradient(135deg, var(--teal-400), var(--accent-dark)); }

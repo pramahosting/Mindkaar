@@ -6,7 +6,6 @@ import Layout from './Layout.jsx'
 
 export default function PublicOnlyRoute({ children }) {
   const { user, setScenario } = useApp()
-  const [resolving, setResolving] = useState(!!user)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -24,11 +23,13 @@ export default function PublicOnlyRoute({ children }) {
           navigate('/profile', { replace: true })
         }
       })
-      .catch(() => {
-        // If the status check itself fails (e.g. backend briefly down),
-        // fall back to showing the login page rather than getting stuck
-        // on an endless spinner.
-        if (!cancelled) setResolving(false)
+      .catch((err) => {
+        // An authenticated user should NEVER see the login form again,
+        // even if this status check itself fails for some transient
+        // reason (e.g. a momentary backend hiccup). Default them
+        // somewhere safe instead of falling back to showing login.
+        console.error('Could not check assessment status, defaulting to /profile:', err)
+        if (!cancelled) navigate('/profile', { replace: true })
       })
 
     return () => {
@@ -37,7 +38,7 @@ export default function PublicOnlyRoute({ children }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
-  if (user && resolving) {
+  if (user) {
     return (
       <Layout>
         <div className="mg-loading-screen">

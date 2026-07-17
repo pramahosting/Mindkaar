@@ -1,15 +1,21 @@
 """
 Mind Gym API - FastAPI backend.
 
-Run locally:
+Run locally (API only, frontend served separately by Vite):
     uvicorn app.main:app --reload --port 8000
+
+In a single-container deployment (see the root Dockerfile), the frontend
+is built into backend/static/ and this app serves it directly alongside
+the API, so the whole app runs behind one port.
 """
 
 import logging
+import os
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.config import get_settings
 from app.database import Base, SessionLocal, engine
@@ -57,3 +63,27 @@ async def health() -> dict:
 async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
     logger.exception("Unhandled error on %s %s", request.method, request.url.path)
     return JSONResponse(status_code=500, content={"error": "Internal server error.", "code": "INTERNAL_ERROR"})
+
+
+# ── Serve the built frontend, if present (single-container deployment) ──
+# Registered LAST so it never shadows the /api/... and /health routes
+# above - Starlette matches routes in registration order, and this only
+# catches whatever nothing else matched.
+_STATIC_DIR = os.path.join(os.path.dirname(__file__), "..", "static")
+
+if os.path.isdir(_STATIC_DIR):
+    _assets_dir = os.path.join(_STATIC_DIR, "assets")
+    if os.path.isdir(_assets_dir):
+        app.mount("/assets", StaticFiles(directory=_assets_dir), name="frontend-assets")
+
+    @app.get("/{full_path:path}")
+    async def serve_frontend(full_path: str):
+        candidate = os.path.join(_STATIC_DIR, full_path)
+        if full_path and os.path.isfile(candidate):
+            return FileResponse(candidate)
+        # Any other path (client-side routes like /login, /profile, /games,
+        # /session, /results) falls back to index.html so React Router can
+        # handle it.
+        return FileResponse(os.path.join(_STATIC_DIR, "index.html"))
+else:
+    logger.info("No frontend build found at %s - running API-only (normal for local dev).", _STATIC_DIR)

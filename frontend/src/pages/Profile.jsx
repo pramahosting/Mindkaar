@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../api.js'
 import { useApp } from '../AppContext.jsx'
@@ -19,29 +19,106 @@ const WORK_OPTIONS = ['Employed full-time', 'Employed part-time', 'Self-employed
 const CHILDREN_OPTIONS = ['None', '1', '2', '3+']
 
 export default function Profile() {
-  const { setProfile, setScenario, setQuestions } = useApp()
+  const { setProfile, setScenario, setQuestions, intake, setIntake, intakeEntryStep, setIntakeEntryStep } = useApp()
   const navigate = useNavigate()
 
-  const [step, setStep] = useState('context') // 'context' | 'likert'
+  const [step, setStep] = useState(intake ? intakeEntryStep : 'context')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
   // ── Step 1: context (open-ended, comes first) ──
-  const [age, setAge] = useState('')
-  const [familyProfile, setFamilyProfile] = useState('')
-  const [education, setEducation] = useState('')
-  const [workStatus, setWorkStatus] = useState('')
-  const [children, setChildren] = useState('')
-  const [mood, setMood] = useState('')
-  const [sleepHours, setSleepHours] = useState(7)
-  const [support, setSupport] = useState('')
-  const [goals, setGoals] = useState('')
+  const [age, setAge] = useState(intake?.age ?? '')
+  const [familyProfile, setFamilyProfile] = useState(intake?.familyProfile ?? '')
+  const [education, setEducation] = useState(intake?.education ?? '')
+  const [workStatus, setWorkStatus] = useState(intake?.workStatus ?? '')
+  const [children, setChildren] = useState(intake?.children ?? '')
+  const [mood, setMood] = useState(intake?.mood ?? '')
+  const [sleepHours, setSleepHours] = useState(intake?.sleepHours ?? 7)
+  const [support, setSupport] = useState(intake?.support ?? '')
+  const [goals, setGoals] = useState(intake?.goals ?? '')
 
   // ── Step 2: targeted Likert items ──
-  const [items, setItems] = useState([])
-  const [scale, setScale] = useState([])
-  const [answers, setAnswers] = useState({})
-  const [recommendedLabels, setRecommendedLabels] = useState([])
+  const [items, setItems] = useState(intake?.items ?? [])
+  const [scale, setScale] = useState(intake?.scale ?? [])
+  const [answers, setAnswers] = useState(intake?.answers ?? {})
+  const [recommendedLabels, setRecommendedLabels] = useState(intake?.recommendedLabels ?? [])
+
+  // Reset the entry-step flag once consumed, so a normal fresh visit to
+  // /profile later still defaults to the context step.
+  useEffect(() => {
+    setIntakeEntryStep('context')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // If there's no in-session intake state yet (e.g. arriving here for the
+  // first time this session, such as login -> games -> "back to my
+  // answers"), pull the person's last submitted answers from the server
+  // so the form starts pre-filled instead of blank.
+  const [prefilling, setPrefilling] = useState(!intake)
+
+  useEffect(() => {
+    if (intake) {
+      setPrefilling(false)
+      return
+    }
+    let cancelled = false
+
+    api
+      .getLatestAssessment()
+      .then(async (latest) => {
+        if (cancelled || !latest.exists) return
+
+        setAge(latest.age ?? '')
+        setFamilyProfile(latest.familyProfile ?? '')
+        setEducation(latest.education ?? '')
+        setWorkStatus(latest.workStatus ?? '')
+        setChildren(latest.children ?? '')
+        setMood(latest.mood ?? '')
+        setSleepHours(latest.sleepHours ?? 7)
+        setSupport(latest.support ?? '')
+        setGoals(latest.goals ?? '')
+
+        let prefilledItems = []
+        let prefilledScale = []
+        if (latest.categories && latest.categories.length > 0) {
+          const itemsData = await api.getAssessmentItems(latest.categories)
+          if (cancelled) return
+          prefilledItems = itemsData.items
+          prefilledScale = itemsData.scale
+          setItems(itemsData.items)
+          setScale(itemsData.scale)
+          setAnswers(latest.assessment)
+          setRecommendedLabels(latest.categories.map((code) => CATEGORY_LABELS[code] || code))
+        }
+
+        setIntake({
+          age: latest.age ?? '',
+          familyProfile: latest.familyProfile ?? '',
+          education: latest.education ?? '',
+          workStatus: latest.workStatus ?? '',
+          children: latest.children ?? '',
+          mood: latest.mood ?? '',
+          sleepHours: latest.sleepHours ?? 7,
+          support: latest.support ?? '',
+          goals: latest.goals ?? '',
+          items: prefilledItems,
+          scale: prefilledScale,
+          answers: latest.assessment,
+          recommendedLabels: latest.categories.map((code) => CATEGORY_LABELS[code] || code),
+        })
+      })
+      .catch(() => {
+        // No prior assessment reachable/found - just proceed with a blank form.
+      })
+      .finally(() => {
+        if (!cancelled) setPrefilling(false)
+      })
+
+    return () => {
+      cancelled = true
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   function contextPayload() {
     return {
@@ -71,11 +148,30 @@ export default function Profile() {
       const triage = await api.triage(payload)
       const itemsData = await api.getAssessmentItems(triage.recommended)
 
+      // Keep any answers already held (e.g. pre-filled from a prior
+      // submission) for questions that are still part of the new set,
+      // instead of wiping everything back to blank every time Continue
+      // is pressed.
+      const preservedAnswers = {}
+      itemsData.items.forEach((item) => {
+        if (answers[item.code] !== undefined) {
+          preservedAnswers[item.code] = answers[item.code]
+        }
+      })
+
       setItems(itemsData.items)
       setScale(itemsData.scale)
       setRecommendedLabels(triage.recommended.map((code) => CATEGORY_LABELS[code] || code))
-      setAnswers({})
+      setAnswers(preservedAnswers)
       setStep('likert')
+
+      setIntake({
+        age, familyProfile, education, workStatus, children, mood, sleepHours, support, goals,
+        items: itemsData.items,
+        scale: itemsData.scale,
+        recommendedLabels: triage.recommended.map((code) => CATEGORY_LABELS[code] || code),
+        answers: preservedAnswers,
+      })
     } catch (err) {
       setError(err.message)
     } finally {
@@ -93,7 +189,11 @@ export default function Profile() {
   const allAnswered = totalItems > 0 && answeredCount === totalItems
 
   function setAnswer(itemCode, value) {
-    setAnswers((prev) => ({ ...prev, [itemCode]: value }))
+    setAnswers((prev) => {
+      const next = { ...prev, [itemCode]: value }
+      setIntake((prevIntake) => (prevIntake ? { ...prevIntake, answers: next } : prevIntake))
+      return next
+    })
   }
 
   async function handleLikertSubmit(e) {
@@ -115,7 +215,7 @@ export default function Profile() {
       const questionsData = await api.getQuestions(profilePayload, scenarioData.primary.id)
       setQuestions(questionsData.questions)
 
-      navigate('/games')
+      navigate('/games', { replace: true })
     } catch (err) {
       setError(err.message)
     } finally {
@@ -124,6 +224,17 @@ export default function Profile() {
   }
 
   // ── Step 1 UI: context questions ──
+  if (prefilling) {
+    return (
+      <Layout>
+        <div className="mg-loading-screen">
+          <div className="mg-spinner" style={{ borderColor: 'rgba(0,199,183,.25)', borderTopColor: 'var(--accent)' }} />
+          <p style={{ color: 'var(--text-secondary)' }}>Loading your details…</p>
+        </div>
+      </Layout>
+    )
+  }
+
   if (step === 'context') {
     return (
       <Layout wide>
