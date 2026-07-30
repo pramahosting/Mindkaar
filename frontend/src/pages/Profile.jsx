@@ -211,11 +211,12 @@ export default function Profile() {
       const scenarioData = await api.saveProfile(profilePayload)
       setProfile(profilePayload)
       setScenario(scenarioData)
+      console.log(profilePayload)
 
       const questionsData = await api.getQuestions(profilePayload, scenarioData.primary.id)
       setQuestions(questionsData.questions)
 
-      navigate('/games', { replace: true })
+      navigate('/scenario', { replace: true })
     } catch (err) {
       setError(err.message)
     } finally {

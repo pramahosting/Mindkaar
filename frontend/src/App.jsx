@@ -6,6 +6,7 @@ import PublicOnlyRoute from './components/PublicOnlyRoute.jsx'
 import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 import Profile from './pages/Profile.jsx'
+import Scenario from './pages/Scenario.jsx'
 import GameSelect from './pages/GameSelect.jsx'
 import Session from './pages/Session.jsx'
 import Results from './pages/Results.jsx'
@@ -43,6 +44,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/scenario"
+          element={
+            <ProtectedRoute>
+              <Scenario />
             </ProtectedRoute>
           }
         />

@@ -5,6 +5,7 @@ Kept separate from network/route code so prompts can be reviewed and
 tuned independently.
 """
 
+from app.assessment import SCENARIO_CATEGORIES
 from app.schemas import ProfileIn
 
 BASE_SYSTEM_PROMPT = (
@@ -29,6 +30,48 @@ def _profile_lines(profile: ProfileIn) -> str:
             f"- Goals right now: {profile.goals or 'Not provided'}",
         ]
     )
+
+
+# ---------------------------------------------------------------------------
+# Step 0: triage - which 2-3 categories to ask about in depth
+# ---------------------------------------------------------------------------
+def build_triage_prompt(profile: ProfileIn) -> str:
+    category_lines = "\n".join(f'- {c["code"]}: {c["label"]}' for c in SCENARIO_CATEGORIES)
+    valid_codes = ", ".join(f'"{c["code"]}"' for c in SCENARIO_CATEGORIES)
+
+    return "\n".join(
+        [
+            "A person shared the following open-ended context about how they've been feeling:",
+            "",
+            _profile_lines(profile),
+            "",
+            "From the categories below, choose the 2 or 3 that are MOST relevant to what "
+            "this person described, so the app can ask deeper follow-up questions about "
+            "just those - not all of them.",
+            "",
+            category_lines,
+            "",
+            f"Only use these exact category codes: {valid_codes}. Order them from most to "
+            "least relevant. If the context is too sparse or generic to tell, pick the two "
+            "most broadly-applicable categories rather than guessing at something specific.",
+            "",
+            "Respond with ONLY this JSON shape:",
+            '{"categories":["code1","code2"]}',
+        ]
+    )
+
+
+TRIAGE_JSON_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "categories": {
+            "type": "array",
+            "items": {"type": "string"},
+        }
+    },
+    "required": ["categories"],
+    "additionalProperties": False,
+}
 
 
 # ---------------------------------------------------------------------------

@@ -14,7 +14,7 @@ const SCENARIO_EMOJI = {
 }
 
 export default function Scenario() {
-  const { profile, scenario, questions, setGameConfig } = useApp()
+  const { profile, scenario, questions, setScenarioGames } = useApp()
   const navigate = useNavigate()
 
   const [step, setStep] = useState(-1) // -1 = overview, 0..n-1 = question index, n = done
@@ -44,9 +44,9 @@ export default function Scenario() {
     setError('')
     setLoadingGame(true)
     try {
-      const config = await api.getGameConfig(scenario.primary.id)
-      setGameConfig(config)
-      navigate('/game')
+      const data = await api.getScenarioGames(scenario.primary.id)
+      setScenarioGames(data.games)
+      navigate('/games')
     } catch (err) {
       setError(err.message)
     } finally {

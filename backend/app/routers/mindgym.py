@@ -4,7 +4,8 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.assessment import SCENARIO_CATEGORIES, score_scenarios, triage_categories
+
+from app.assessment import SCENARIO_CATEGORIES, score_scenarios, triage_categories, MIN_CATEGORIES, MAX_CATEGORIES
 from app.auth_utils import get_current_user
 from app.config import get_settings
 from app.database import get_db
@@ -25,8 +26,10 @@ from app.prompts import (
     BASE_SYSTEM_PROMPT,
     QUESTIONS_JSON_SCHEMA,
     STATUS_JSON_SCHEMA,
+    TRIAGE_JSON_SCHEMA,
     build_questions_prompt,
     build_status_prompt,
+    build_triage_prompt,
 )
 from app.schemas import (
     AssessmentItemOut,
@@ -59,6 +62,7 @@ _STATUS_BY_CODE = {
     "EMPTY_RESPONSE": 502,
     "API_ERROR": 502,
 }
+_VALID_CATEGORY_CODES = {c["code"] for c in SCENARIO_CATEGORIES}
 
 
 def _raise_http(err: GroqCallError) -> None:
@@ -92,13 +96,41 @@ def get_assessment_items(
                                                    {"value": 3, "label": "Nearly every day"}])
 
 
+
 @router.post("/triage", response_model=TriageResponse)
-def triage(payload: ProfileIn, current_user: User = Depends(get_current_user)):
-    """Deterministic, keyword-based triage (no LLM call) over the
-    open-ended context fields - picks 2-3 categories worth asking about
-    in depth, instead of showing all 6 categories / 24 questions at once."""
-    signals = [payload.mood, payload.goals, payload.support, payload.workStatus, payload.familyProfile]
-    recommended = triage_categories(signals)
+async def triage(payload: ProfileIn, current_user: User = Depends(get_current_user)):
+    """LLM-based triage over the open-ended context fields - picks 2-3
+    categories worth asking about in depth, instead of showing all 6
+    categories / 24 questions at once. Falls back to the deterministic
+    keyword-based triage_categories() if the LLM call fails or returns
+    something unusable, so an LLM outage never blocks the flow."""
+    recommended: list[str] = []
+
+    try:
+        raw_codes = await generate_structured_json(
+            system_prompt=BASE_SYSTEM_PROMPT,
+            user_prompt=build_triage_prompt(payload),
+            schema_name="triage",
+            schema=TRIAGE_JSON_SCHEMA,
+            result_key="categories",
+        )
+        # De-dupe, drop anything not a real category code, cap at MAX_CATEGORIES.
+        seen = set()
+        for code in raw_codes:
+            code = str(code).strip().lower()
+            if code in _VALID_CATEGORY_CODES and code not in seen:
+                seen.add(code)
+                recommended.append(code)
+        recommended = recommended[:MAX_CATEGORIES]
+
+        if len(recommended) < MIN_CATEGORIES:
+            raise ValueError("LLM returned too few valid category codes")
+
+    except (GroqCallError, ValueError, TypeError) as exc:
+        logger.warning("LLM triage failed (%s), falling back to keyword triage", exc)
+        signals = [payload.mood, payload.goals, payload.support, payload.workStatus, payload.familyProfile]
+        recommended = triage_categories(signals)
+
     return TriageResponse(
         recommended=recommended,
         categories=[{"code": c["code"], "label": c["label"]} for c in SCENARIO_CATEGORIES],
