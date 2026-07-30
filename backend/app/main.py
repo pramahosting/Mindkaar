@@ -1,89 +1,36 @@
-"""
-Mind Gym API - FastAPI backend.
-
-Run locally (API only, frontend served separately by Vite):
-    uvicorn app.main:app --reload --port 8000
-
-In a single-container deployment (see the root Dockerfile), the frontend
-is built into backend/static/ and this app serves it directly alongside
-the API, so the whole app runs behind one port.
-"""
-
-import logging
-import os
-
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse
 
-from app.config import get_settings
-from app.database import Base, SessionLocal, engine
-from app.migrate import run_lightweight_migrations
-from app.routers import auth, mindgym
-from app.seed import seed_catalog
+from app.config import settings
+from app.database import Base, engine
+from app.api.routes import router
+from app.seed_data import seed_if_empty
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
-logger = logging.getLogger("mindgym.main")
-
-settings = get_settings()
-
-# Create any brand-new tables, then add any new columns to tables that
-# already existed (create_all alone never alters existing tables).
-Base.metadata.create_all(bind=engine)
-run_lightweight_migrations(engine)
-
-with SessionLocal() as _seed_db:
-    seed_catalog(_seed_db)
-
-app = FastAPI(
-    title="Mind Gym API",
-    description="Profile -> scenario -> ranked questions -> mini-game -> mental-status assessment, powered by Groq.",
-    version="1.0.0",
-)
+app = FastAPI(title="Mental Gym API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.allowed_origins_list,
+    allow_origins=[settings.frontend_origin, "http://localhost:3000", "http://127.0.0.1:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.include_router(auth.router)
-app.include_router(mindgym.router)
 
-
-@app.get("/health")
-async def health() -> dict:
-    return {"status": "ok"}
+@app.on_event("startup")
+def on_startup():
+    Base.metadata.create_all(bind=engine)
+    seed_if_empty()
 
 
 @app.exception_handler(Exception)
-async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
-    logger.exception("Unhandled error on %s %s", request.method, request.url.path)
-    return JSONResponse(status_code=500, content={"error": "Internal server error.", "code": "INTERNAL_ERROR"})
+async def unhandled_exception_handler(request: Request, exc: Exception):
+    # Never leak stack traces to the client (see spec section 28).
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Something went wrong on the server. Please try again."},
+    )
 
 
-# ── Serve the built frontend, if present (single-container deployment) ──
-# Registered LAST so it never shadows the /api/... and /health routes
-# above - Starlette matches routes in registration order, and this only
-# catches whatever nothing else matched.
-_STATIC_DIR = os.path.join(os.path.dirname(__file__), "..", "static")
-
-if os.path.isdir(_STATIC_DIR):
-    _assets_dir = os.path.join(_STATIC_DIR, "assets")
-    if os.path.isdir(_assets_dir):
-        app.mount("/assets", StaticFiles(directory=_assets_dir), name="frontend-assets")
-
-    @app.get("/{full_path:path}")
-    async def serve_frontend(full_path: str):
-        candidate = os.path.join(_STATIC_DIR, full_path)
-        if full_path and os.path.isfile(candidate):
-            return FileResponse(candidate)
-        # Any other path (client-side routes like /login, /profile, /games,
-        # /session, /results) falls back to index.html so React Router can
-        # handle it.
-        return FileResponse(os.path.join(_STATIC_DIR, "index.html"))
-else:
-    logger.info("No frontend build found at %s - running API-only (normal for local dev).", _STATIC_DIR)
+app.include_router(router, prefix="/api")

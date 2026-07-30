@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgb(71 85 105);
+  border-radius: 999px;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid rgb(124 139 255);
+  outline-offset: 2px;
+}

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Mental Gym</title>
+<style>
+  body { background:#020617; color:#e2e8f0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; margin:0; }
+  .wrap { max-width:1000px; margin:0 auto; padding:32px 24px; }
+  .card { background:#0f172a; border:1px solid #1e293b; border-radius:12px; padding:20px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  h1 { color:#fff; font-size:26px; margin:4px 0; }
+  .badge { border:1px solid #334155; color:#94a3b8; border-radius:999px; padding:3px 10px; font-size:11px; }
+  .btn { background:#5b6bf5; color:#fff; border:none; border-radius:8px; padding:10px 16px; font-size:14px; cursor:pointer; width:100%; }
+  .btn:disabled { opacity:.5; cursor:not-allowed; }
+  textarea { width:100%; background:#1e293b; border:1px solid #334155; border-radius:8px; color:#e2e8f0; padding:10px; font-size:13px; box-sizing:border-box; }
+  .scenario-card { background:#0f172a; border:1px solid #1e293b; border-radius:12px; padding:18px; margin-bottom:14px; }
+  #app { display:none; }
+  #dashboard, #simulation, #results { display:none; }
+  .mic { width:64px; height:64px; border-radius:50%; border:2px solid #5b6bf5; background:rgba(91,107,245,.1); display:flex; align-items:center; justify-content:center; font-size:26px; margin:0 auto; cursor:pointer;}
+  .mic.listening { border-color:#ef4444; background:rgba(239,68,68,.15); }
+  .avatar-wrap { display:flex; flex-direction:column; align-items:center; padding:12px 0; }
+  .transcript div { font-size:13px; margin-bottom:6px; color:#cbd5e1; }
+  .transcript b { color:#fff; }
+  .score-box { background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:16px;text-align:center; }
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+
+  <div id="dashboard">
+    <p class="badge" style="color:#7c8bff;border-color:#7c8bff;">MENTAL GYM</p>
+    <h1>AI-powered emotional intelligence training</h1>
+    <p style="color:#94a3b8;max-width:600px;">Choose a scenario and have a real conversation with an AI character.</p>
+    <div id="scenario-list" style="margin-top:20px;"></div>
+  </div>
+
+  <div id="simulation">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <span style="color:#94a3b8;font-size:13px;cursor:pointer;" onclick="showDashboard()">&larr; Exit</span>
+      <span class="badge">Demo mode</span>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <p id="char-name" style="color:#fff;font-weight:600;margin:0;"></p>
+        <p id="char-role" style="color:#64748b;font-size:12px;margin:2px 0 12px;"></p>
+        <div class="avatar-wrap">
+          <div id="avatar-circle" style="width:150px;height:150px;border-radius:50%;background:#1e293b;border:3px solid #ef4444;display:flex;align-items:center;justify-content:center;">
+            <svg width="90" height="90" viewBox="0 0 200 200">
+              <circle cx="100" cy="95" r="55" fill="#f1c9a1"/>
+              <line id="brow-l" x1="65" y1="76" x2="85" y2="84" stroke="#4a2c1a" stroke-width="4" stroke-linecap="round"/>
+              <line id="brow-r" x1="135" y1="76" x2="115" y2="84" stroke="#4a2c1a" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="80" cy="95" r="6" fill="#1e293b"/><circle cx="120" cy="95" r="6" fill="#1e293b"/>
+              <path id="mouth" d="M 65 128 Q 100 112 135 128" stroke="#7a3b2e" stroke-width="5" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+          <div style="margin-top:10px;display:flex;align-items:center;gap:6px;">
+            <span id="emo-dot" style="width:9px;height:9px;border-radius:50%;background:#ef4444;display:inline-block;"></span>
+            <span id="emo-label" style="font-size:13px;">Angry</span>
+            <span id="emo-intensity" style="color:#64748b;font-size:11px;"></span>
+          </div>
+        </div>
+        <div id="question-box" style="background:#1e293b;border-radius:8px;padding:12px 14px;font-size:13px;margin-top:12px;"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card">
+          <p style="color:#7c8bff;font-size:11px;margin:0;">Scenario</p>
+          <p id="scenario-title" style="color:#fff;font-weight:600;font-size:15px;margin:2px 0 6px;"></p>
+          <p id="scenario-obj" style="color:#94a3b8;font-size:12px;margin:0;"></p>
+          <p id="progress-label" style="color:#64748b;font-size:11px;margin:10px 0 4px;"></p>
+          <div style="height:5px;border-radius:999px;background:#1e293b;"><div id="progress-bar" style="height:5px;width:0%;border-radius:999px;background:#5b6bf5;"></div></div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <p style="font-size:13px;margin:0 0 10px;">Your response</p>
+          <div class="mic" id="mic-btn" onclick="toggleMic()">&#127908;</div>
+          <p id="mic-label" style="color:#94a3b8;font-size:12px;margin:8px 0 12px;">Click to answer</p>
+          <textarea id="response-text" rows="3" placeholder="You said: your transcribed response will appear here (or type it directly)"></textarea>
+          <button class="btn" style="margin-top:10px;" id="submit-btn" onclick="submitResponse()">Submit response</button>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <p style="font-size:13px;margin:0 0 8px;">Conversation transcript</p>
+      <div class="transcript" id="transcript"></div>
+    </div>
+    <div id="relevance-warning" style="display:none;margin-top:12px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:#fbbf24;border-radius:8px;padding:10px 14px;font-size:13px;"></div>
+  </div>
+
+  <div id="results">
+    <span style="color:#94a3b8;font-size:13px;cursor:pointer;" onclick="showDashboard()">&larr; Back to dashboard</span>
+    <p class="badge" style="color:#7c8bff;border-color:#7c8bff;margin-top:14px;">SIMULATION COMPLETE</p>
+    <h1 id="results-title"></h1>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;">
+      <div class="score-box" style="border-color:#5b6bf5;background:rgba(91,107,245,.08);">
+        <p style="color:#7c8bff;font-size:11px;margin:0;">Overall score</p>
+        <p id="overall-score" style="font-size:34px;font-weight:700;color:#fff;margin:4px 0;"></p>
+      </div>
+      <div class="score-box"><p style="color:#64748b;font-size:11px;">Empathy</p><p id="s-empathy" style="font-size:22px;font-weight:600;color:#fff;"></p></div>
+      <div class="score-box"><p style="color:#64748b;font-size:11px;">Communication</p><p id="s-comm" style="font-size:22px;font-weight:600;color:#fff;"></p></div>
+      <div class="score-box"><p style="color:#64748b;font-size:11px;">Active listening</p><p id="s-listen" style="font-size:22px;font-weight:600;color:#fff;"></p></div>
+      <div class="score-box"><p style="color:#64748b;font-size:11px;">Emotional awareness</p><p id="s-aware" style="font-size:22px;font-weight:600;color:#fff;"></p></div>
+      <div class="score-box"><p style="color:#64748b;font-size:11px;">Conflict resolution</p><p id="s-conflict" style="font-size:22px;font-weight:600;color:#fff;"></p></div>
+    </div>
+    <div class="card" style="margin-top:20px;">
+      <p style="font-size:13px;margin:0 0 8px;">AI feedback</p>
+      <p id="feedback-text" style="color:#cbd5e1;font-size:13px;"></p>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <p style="font-size:13px;margin:0 0 8px;">Full transcript</p>
+      <div class="transcript" id="results-transcript"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const API = "http://127.0.0.1:8000/api";
+let sessionId = null, currentScenario = null;
+
+async function loadDashboard() {
+  const health = await fetch(API + "/health").then(r => r.json());
+  const scenarios = await fetch(API + "/scenarios").then(r => r.json());
+  const list = document.getElementById("scenario-list");
+  list.innerHTML = "";
+  scenarios.forEach(s => {
+    const div = document.createElement("div");
+    div.className = "scenario-card";
+    div.innerHTML = `<div style="display:flex;justify-content:space-between;">
+        <h3 style="color:#fff;margin:0;">${s.title}</h3>
+        <span class="badge">${s.difficulty}</span>
+      </div>
+      <p style="color:#94a3b8;font-size:13px;">${s.description}</p>
+      <p style="color:#64748b;font-size:11px;">Character: ${s.character.name} (${s.character.role})</p>
+      <button class="btn" style="margin-top:10px;" onclick="startSimulation('${s.id}')">Start simulation</button>`;
+    list.appendChild(div);
+  });
+  document.getElementById("app").style.display = "block";
+  showDashboard();
+}
+
+function showDashboard() {
+  document.getElementById("dashboard").style.display = "block";
+  document.getElementById("simulation").style.display = "none";
+  document.getElementById("results").style.display = "none";
+}
+
+async function startSimulation(scenarioId) {
+  const res = await fetch(API + "/simulations/start", {
+    method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({scenario_id: scenarioId})
+  }).then(r => r.json());
+  sessionId = res.session_id;
+  currentScenario = res.scenario;
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("results").style.display = "none";
+  document.getElementById("simulation").style.display = "block";
+  document.getElementById("char-name").textContent = res.scenario.character.name;
+  document.getElementById("char-role").textContent = res.scenario.character.role;
+  document.getElementById("scenario-title").textContent = res.scenario.title;
+  document.getElementById("scenario-obj").textContent = res.scenario.objective;
+  document.getElementById("question-box").textContent = '"' + res.first_question + '"';
+  document.getElementById("transcript").innerHTML = `<div><b>${res.scenario.character.name}: </b>${res.first_question}</div>`;
+  updateEmotion(res.emotion);
+  updateProgress(res.question_index, res.total_questions);
+  document.getElementById("relevance-warning").style.display = "none";
+}
+
+function updateEmotion(emotion) {
+  const colors = {anger:"#ef4444", frustration:"#f97316", calm:"#34d399", neutral:"#94a3b8"};
+  const labels = {anger:"Angry", frustration:"Frustrated", calm:"Calm", neutral:"Neutral"};
+  const c = colors[emotion.primary_emotion] || "#94a3b8";
+  document.getElementById("avatar-circle").style.borderColor = c;
+  document.getElementById("emo-dot").style.background = c;
+  document.getElementById("emo-label").textContent = labels[emotion.primary_emotion] || emotion.primary_emotion;
+  document.getElementById("emo-intensity").textContent = `(${Math.round(emotion.intensity*100)}% intensity)`;
+  const browAngle = emotion.primary_emotion === "anger" ? -12 : emotion.primary_emotion === "calm" ? 6 : -4;
+  document.getElementById("brow-l").setAttribute("y1", 76 + browAngle*0.3);
+  document.getElementById("brow-r").setAttribute("y1", 76 + browAngle*0.3);
+}
+
+function updateProgress(idx, total) {
+  document.getElementById("progress-label").textContent = `Question ${Math.min(idx+1,total)} of ${total}`;
+  document.getElementById("progress-bar").style.width = `${Math.min(idx+1,total)/total*100}%`;
+}
+
+let listening = false;
+function toggleMic() {
+  const btn = document.getElementById("mic-btn");
+  const label = document.getElementById("mic-label");
+  listening = !listening;
+  if (listening) {
+    btn.classList.add("listening");
+    label.textContent = "Listening... click to stop";
+  } else {
+    btn.classList.remove("listening");
+    label.textContent = "Transcription ready";
+  }
+}
+
+async function submitResponse() {
+  const text = document.getElementById("response-text").value.trim();
+  if (!text) return;
+  document.getElementById("submit-btn").disabled = true;
+  document.getElementById("submit-btn").textContent = "Analyzing...";
+
+  const res = await fetch(`${API}/simulations/${sessionId}/respond`, {
+    method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({user_response: text})
+  }).then(r => r.json());
+
+  const t = document.getElementById("transcript");
+  t.innerHTML += `<div><b>You: </b>${text}</div><div><b>${currentScenario.character.name}: </b>${res.character_response}</div>`;
+  updateEmotion(res.emotion);
+  updateProgress(res.question_index, res.total_questions);
+
+  const warn = document.getElementById("relevance-warning");
+  if (!res.is_relevant) {
+    warn.style.display = "block";
+    warn.textContent = "Your response does not appear to address the current question.";
+  } else {
+    warn.style.display = "none";
+  }
+
+  document.getElementById("response-text").value = "";
+  document.getElementById("submit-btn").disabled = false;
+  document.getElementById("submit-btn").textContent = "Submit response";
+  document.getElementById("mic-label").textContent = "Click to answer";
+
+  if (res.should_continue && res.next_question) {
+    document.getElementById("question-box").textContent = '"' + res.next_question + '"';
+  } else {
+    await fetch(`${API}/simulations/${sessionId}/complete`, {method:"POST"});
+    showResults();
+  }
+}
+
+async function showResults() {
+  const res = await fetch(`${API}/simulations/${sessionId}/results`).then(r => r.json());
+  document.getElementById("simulation").style.display = "none";
+  document.getElementById("results").style.display = "block";
+  document.getElementById("results-title").textContent = res.scenario_title;
+  const e = res.evaluation;
+  document.getElementById("overall-score").textContent = e.overall_score;
+  document.getElementById("s-empathy").textContent = e.empathy_score;
+  document.getElementById("s-comm").textContent = e.communication_score;
+  document.getElementById("s-listen").textContent = e.active_listening_score;
+  document.getElementById("s-aware").textContent = e.emotional_awareness_score;
+  document.getElementById("s-conflict").textContent = e.conflict_resolution_score;
+  document.getElementById("feedback-text").textContent = e.feedback;
+  const rt = document.getElementById("results-transcript");
+  rt.innerHTML = res.transcript.map(m => `<div><b>${m.sender === "ai" ? currentScenario.character.name : "You"}: </b>${m.message}</div>`).join("");
+}
+
+loadDashboard();
+</script>
+</body>
+</html>
