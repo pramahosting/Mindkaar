@@ -202,20 +202,51 @@ MAX_CATEGORIES = 3
 # itself - the actual scoring still comes entirely from the person's own
 # Likert answers in score_scenarios() below.
 CATEGORY_KEYWORDS = {
-    "stress": ["stress", "overwhelm", "pressure", "deadline", "busy", "juggling", "too much", "swamped"],
-    "anxiety": ["anxious", "anxiety", "worry", "worried", "nervous", "panic", "on edge", "dread", "fear"],
-    "conflict": ["conflict", "argue", "argument", "fight", "tension", "disagree", "misunderstood", "yelling"],
-    "unrest": ["restless", "unsettled", "uneasy", "unstable", "chaotic", "can't focus", "distracted", "scattered"],
-    "burnout": ["burnout", "burnt out", "burned out", "exhausted", "drained", "numb", "detached", "no motivation", "pointless"],
-    "loneliness": ["lonely", "alone", "isolated", "no one", "no-one", "left out", "disconnected", "no friends"],
+    "stress": [
+        "stress", "stressed", "overwhelm", "overwhelmed", "pressure", "deadline", "deadlines",
+        "busy", "juggling", "too much", "swamped", "workload", "piling", "piling up",
+        "no time", "so much to do", "can't keep up", "cant keep up", "a lot going on",
+        "a lot on my plate", "manager", "boss", "demands", "rushed", "racing around",
+    ],
+    "anxiety": [
+        "anxious", "anxiety", "worry", "worried", "worrying", "nervous", "panic",
+        "on edge", "dread", "fear", "scared", "afraid", "racing thoughts",
+        "can't relax", "cant relax", "overthinking", "what if", "uneasy feeling",
+        "knot in my stomach", "can't stop thinking", "cant stop thinking",
+    ],
+    "conflict": [
+        "conflict", "argue", "argued", "arguing", "argument", "fight", "fighting",
+        "tension", "tense", "disagree", "disagreement", "misunderstood", "yelling",
+        "shouted", "shouting", "confrontation", "falling out", "fell out", "clash",
+        "don't know how to fix it", "dont know how to fix it", "at odds",
+    ],
+    "unrest": [
+        "restless", "unsettled", "uneasy", "unstable", "chaotic", "can't focus",
+        "cant focus", "distracted", "scattered", "all over the place", "on edge",
+        "unpredictable", "in flux", "can't sit still", "cant sit still", "jumpy",
+        "everything is changing", "out of control",
+    ],
+    "burnout": [
+        "burnout", "burnt out", "burned out", "exhausted", "drained", "numb",
+        "detached", "no motivation", "pointless", "not myself", "checked out",
+        "running on empty", "can't keep going", "cant keep going", "tired all the time",
+        "no energy", "depleted", "over it", "going through the motions", "down lately",
+        "feeling down", "not been myself",
+    ],
+    "loneliness": [
+        "lonely", "alone", "isolated", "no one", "no-one", "nobody", "left out",
+        "disconnected", "no friends", "no one understands", "nobody understands",
+        "no one to talk to", "by myself", "on my own", "left behind", "excluded",
+    ],
 }
 
 
 def triage_categories(text_signals: List[str]) -> List[str]:
     """Scans the person's open-ended context text for keyword matches per
     category and returns the top MIN-MAX categories worth asking about in
-    depth. Falls back to stress+anxiety (the two most common patterns) if
-    nothing matches, so there's always something to assess."""
+    depth. Falls back to stress+anxiety (the two most common patterns) only
+    if literally nothing matched at all, so there's always something to
+    assess - this should be rare given the breadth of phrasing above."""
     combined = " ".join(t for t in text_signals if t).lower()
 
     scores = []

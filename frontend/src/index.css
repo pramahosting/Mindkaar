@@ -813,3 +813,376 @@ a { color: var(--accent-dark); text-decoration: none; }
 }
 .mg-sort-btn.release { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
 .mg-sort-btn.engage { background: linear-gradient(135deg, var(--teal-400), var(--accent-dark)); }
+
+.mg-brand-link {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ══════════════════════════════════════════════════════════
+   Run Simulation (voice roleplay) feature
+   ══════════════════════════════════════════════════════════ */
+
+.mg-topbar-nav { display: flex; gap: 6px; }
+.mg-topbar-nav-link {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.18);
+  color: var(--slate-200);
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: .85rem;
+  font-weight: 600;
+  transition: background .15s, border-color .15s;
+}
+.mg-topbar-nav-link:hover { background: rgba(255,255,255,.08); }
+.mg-topbar-nav-link.active {
+  background: rgba(0,199,183,.16);
+  border-color: rgba(0,199,183,.5);
+  color: var(--teal-300);
+}
+
+.sim-difficulty-badge {
+  text-transform: capitalize;
+  font-size: .72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.sim-difficulty-easy { color: #16a34a; border-color: #86efac; background: #f0fdf4; }
+.sim-difficulty-medium { color: #b45309; border-color: #fcd34d; background: #fffbeb; }
+.sim-difficulty-hard { color: #be123c; border-color: #fda4af; background: #fff1f2; }
+
+.sim-scenario-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+/* ── Avatar ── */
+.sim-avatar-wrap { display: flex; flex-direction: column; align-items: center; }
+.sim-avatar-ring { position: relative; border-radius: 28px; transition: box-shadow .4s ease; }
+.sim-avatar-bob { animation: sim-bob 2.2s ease-in-out infinite; }
+@keyframes sim-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.sim-avatar-mouth-talk { animation: sim-mouth-pulse .5s ease-in-out infinite; }
+@keyframes sim-mouth-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .5; }
+}
+.sim-avatar-tag { margin-top: 14px; display: flex; align-items: center; gap: 8px; }
+.sim-avatar-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+.sim-avatar-label { font-size: .92rem; font-weight: 600; color: var(--text-primary); }
+.sim-avatar-intensity { font-size: .78rem; color: var(--text-muted); }
+.sim-avatar-speaking {
+  margin-top: 8px;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+}
+
+/* ── Mic button ── */
+.sim-mic-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.sim-mic-btn {
+  width: 76px; height: 76px;
+  border-radius: 50%;
+  border: 2.5px solid var(--accent);
+  background: rgba(0,199,183,.1);
+  font-size: 1.7rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s, border-color .15s;
+}
+.sim-mic-btn:hover:not(:disabled) { background: rgba(0,199,183,.18); }
+.sim-mic-btn:disabled { opacity: .4; cursor: not-allowed; }
+.sim-mic-btn.listening {
+  border-color: var(--rose-500);
+  background: rgba(244,63,94,.14);
+  animation: mg-pulse 0.9s ease-in-out infinite;
+}
+.sim-mic-status { font-size: .85rem; color: var(--text-secondary); }
+.sim-interim { font-size: .88rem; font-style: italic; color: var(--text-muted); }
+
+/* ── Run layout ── */
+.sim-run-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.sim-run-topbar-actions { display: flex; align-items: center; gap: 10px; }
+.sim-pill-btn { padding: 6px 16px; font-size: .8rem; border-radius: 999px; width: auto; }
+.sim-mode-badge {
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: .78rem;
+  color: var(--text-secondary);
+}
+.sim-warning {
+  border: 1px solid #fcd34d;
+  background: #fffbeb;
+  color: #92400e;
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: .88rem;
+  margin-bottom: 20px;
+}
+
+.sim-run-grid {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+  gap: 20px;
+}
+@media (max-width: 860px) {
+  .sim-run-grid { grid-template-columns: 1fr; }
+}
+.sim-run-avatar-panel { display: flex; flex-direction: column; gap: 16px; align-items: stretch; }
+.sim-run-role { font-size: .8rem; color: var(--text-muted); }
+.sim-avatar-container { display: flex; justify-content: center; padding: 12px 0; }
+.sim-question-bubble {
+  background: var(--bg-page);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  font-size: .95rem;
+  color: var(--text-primary);
+}
+
+.sim-run-response-col { display: flex; flex-direction: column; gap: 20px; }
+.sim-progress-label { font-size: .78rem; color: var(--text-muted); margin: 10px 0 6px; }
+.sim-response-inner { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.sim-textarea {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-size: .9rem;
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  resize: vertical;
+}
+.sim-textarea:disabled { opacity: .6; }
+
+/* ── Transcript ── */
+.sim-transcript-panel { margin-top: 22px; }
+.sim-transcript-scroll {
+  max-height: 260px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 6px;
+}
+.sim-transcript-scroll.tall { max-height: 340px; }
+.sim-transcript-line { font-size: .88rem; color: var(--text-secondary); }
+.sim-transcript-line.ai { color: var(--text-secondary); }
+.sim-transcript-line.user { color: var(--accent-dark); }
+.sim-transcript-sender { font-weight: 700; }
+
+/* ── Results ── */
+.sim-score-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 26px;
+}
+@media (min-width: 640px) {
+  .sim-score-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.sim-score-card {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  background: var(--bg-card);
+}
+.sim-score-overall {
+  grid-column: span 2;
+  border-color: rgba(0,199,183,.4);
+  background: rgba(0,199,183,.07);
+}
+@media (min-width: 640px) { .sim-score-overall { grid-column: span 1; } }
+.sim-score-label { font-size: .78rem; color: var(--text-muted); }
+.sim-score-value { font-size: 2.4rem; font-weight: 700; color: var(--text-primary); margin-top: 4px; }
+.sim-score-value.small { font-size: 1.6rem; }
+.sim-score-outof { font-size: .75rem; color: var(--text-muted); }
+
+.sim-two-col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 20px;
+}
+@media (min-width: 640px) { .sim-two-col { grid-template-columns: 1fr 1fr; } }
+.sim-list-heading { font-weight: 700; margin-bottom: 10px; font-size: .92rem; }
+.sim-list-heading.strengths { color: #16a34a; }
+.sim-list-heading.weaknesses { color: #b45309; }
+.sim-list { list-style: disc; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.sim-list li { font-size: .88rem; color: var(--text-secondary); }
+
+/* ── Emotion chart ── */
+.sim-chart-svg { width: 100%; height: auto; }
+.sim-chart-legend { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; }
+.sim-chart-legend-item { display: flex; align-items: center; gap: 7px; font-size: .8rem; color: var(--text-secondary); }
+.sim-chart-legend-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+
+/* ── Assessment <-> Run Simulation recommendation ── */
+.sim-recommend-banner {
+  border: 1.5px solid rgba(0,199,183,.4);
+  background: rgba(0,199,183,.08);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: .88rem;
+  margin: 16px 0 20px;
+}
+.sim-recommended-card {
+  border-color: rgba(0,199,183,.5) !important;
+  box-shadow: 0 0 0 2px rgba(0,199,183,.12);
+}
+.sim-recommended-tag {
+  display: inline-block;
+  font-size: .7rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+  background: rgba(0,199,183,.12);
+  border-radius: 999px;
+  padding: 3px 10px;
+  margin-bottom: 8px;
+}
+
+/* ── Global back button (top of each page's content card) ──
+   Reuses .mg-btn.mg-btn-outline for visual consistency with the existing
+   "Back" button on the Profile page's likert step, just sized to content
+   instead of the row-sharing width:100% those buttons normally use. */
+.mg-back-btn {
+  width: auto;
+  display: inline-flex;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  font-size: .88rem;
+}
+.mg-back-btn span { font-size: 1rem; }
+.mg-back-btn-bottom {
+  margin-bottom: 0;
+  margin-top: 24px;
+}
+
+/* ── Scenario reveal: two-pane layout (scenario | reflection questions) ── */
+.sim-scenario-two-pane {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .sim-scenario-two-pane { grid-template-columns: 1fr; }
+}
+.sim-scenario-pane-left { position: sticky; top: 20px; }
+@media (max-width: 860px) { .sim-scenario-pane-left { position: static; } }
+
+.sim-scenario-questions-scroll {
+  max-height: 55vh;
+  overflow-y: auto;
+  padding-right: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  /* Make the scrollbar clearly visible rather than the near-invisible
+     default, since this pane is meant to be scrolled through. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg-page);
+}
+.sim-scenario-questions-scroll::-webkit-scrollbar { width: 10px; }
+.sim-scenario-questions-scroll::-webkit-scrollbar-track {
+  background: var(--bg-page);
+  border-radius: 999px;
+}
+.sim-scenario-questions-scroll::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 999px;
+  border: 2px solid var(--bg-page);
+}
+.sim-scenario-questions-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dark);
+}
+
+.sim-scenario-question-block {
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.sim-scenario-question-block:last-child {
+  border-bottom: none;
+  padding-bottom: 4px;
+}
+
+/* ── Real human photo avatar (Run Simulation) ── */
+.sim-avatar-photo-ring {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  transition: box-shadow .4s ease;
+  overflow: hidden;
+  border: 4px solid var(--bg-card);
+}
+.sim-avatar-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: var(--bg-page);
+}
+
+/* Mouth-region overlay: a small crop of the same photo, positioned over
+   the approximate mouth location for a front-facing headshot. While
+   isSpeaking, it animates open/closed to give a real-time talking
+   gesture, since a single static photo can't otherwise show one. */
+.sim-mouth-overlay {
+  position: absolute;
+  left: 68px;
+  top: 132px;
+  width: 64px;
+  height: 22px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-size: 200px 200px;
+  background-position: -68px -132px;
+  background-repeat: no-repeat;
+  transform-origin: 50% 40%;
+}
+.sim-mouth-talking {
+  animation: sim-mouth-jaw 0.32s ease-in-out infinite;
+}
+@keyframes sim-mouth-jaw {
+  0%, 100% { transform: scaleY(1) translateY(0); }
+  50% { transform: scaleY(1.55) translateY(2px); }
+}
+.sim-mouth-gap {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 60%;
+  height: 40%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #3a1518;
+  opacity: 0;
+}
+.sim-mouth-talking .sim-mouth-gap {
+  animation: sim-mouth-gap-pulse 0.32s ease-in-out infinite;
+}
+@keyframes sim-mouth-gap-pulse {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.6; }
+}

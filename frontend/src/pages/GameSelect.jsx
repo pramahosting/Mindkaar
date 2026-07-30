@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { api } from '../api.js'
 import { useApp } from '../AppContext.jsx'
 import Layout from '../components/Layout.jsx'
+import { recommendedSimSlug } from '../lib/scenarioMapping.js'
 
 const SCENARIO_EMOJI = {
   stress: '🔥',
@@ -21,7 +22,7 @@ const MECHANIC_ICON = {
 }
 
 export default function GameSelect() {
-  const { scenario, setScenarioGames, setSelectedGame, setIntakeEntryStep } = useApp()
+  const { scenario, setScenarioGames, setSelectedGame } = useApp()
   const navigate = useNavigate()
 
   const [games, setGames] = useState(null)
@@ -57,23 +58,13 @@ export default function GameSelect() {
     navigate('/session')
   }
 
-  function backToAnswers() {
-    setIntakeEntryStep('context')
-    navigate('/profile')
-  }
-
   return (
-    <Layout wide>
-      <button className="mg-link-btn" style={{ marginBottom: 16 }} onClick={backToAnswers}>
-        ← Back to your answers
-      </button>
-
+    <Layout wide backPosition="bottom">
       <div className="mg-scenario-hero">
         <span className="mg-emoji">{SCENARIO_EMOJI[scenario.primary.id] || '💭'}</span>
         <div>
           <span className="mg-badge">Your scenario</span>
           <h2>{scenario.primary.label}</h2>
-          <p>{scenario.primary.reason}</p>
         </div>
       </div>
 
@@ -110,6 +101,16 @@ export default function GameSelect() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {recommendedSimSlug(scenario) && (
+        <div className="sim-recommend-banner" style={{ marginTop: 24 }}>
+          Want to practice this scenario as a real conversation instead? Try{' '}
+          <button className="mg-link-btn" onClick={() => navigate('/simulation')}>
+            Run Simulation
+          </button>{' '}
+          — we've matched a scenario there to what you're working on.
         </div>
       )}
     </Layout>

@@ -24,6 +24,8 @@ export function setStoredUser(user) {
   else localStorage.removeItem('mg_user')
 }
 
+export class ApiError extends Error {}
+
 async function request(path, { method = 'GET', body, auth = true } = {}) {
   const headers = { 'Content-Type': 'application/json' }
   if (auth) {
@@ -51,7 +53,7 @@ async function request(path, { method = 'GET', body, auth = true } = {}) {
       detail?.error ||
       data?.error ||
       `Request failed (${res.status})`
-    throw new Error(message)
+    throw new ApiError(message)
   }
 
   return data
@@ -72,4 +74,15 @@ export const api = {
     request('/api/mindgym/questions', { method: 'POST', body: { profile, scenario } }),
   getScenarioGames: (scenario) => request(`/api/mindgym/scenario-games/${encodeURIComponent(scenario)}`),
   submitScore: (payload) => request('/api/mindgym/score', { method: 'POST', body: payload }),
+
+  // ── Run Simulation (voice roleplay) ──
+  listSimScenarios: () => request('/api/simulation/scenarios'),
+  personalizeSimulation: (payload) => request('/api/simulation/personalize', { method: 'POST', body: payload }),
+  startSimulation: (scenarioId) =>
+    request('/api/simulation/start', { method: 'POST', body: { scenario_id: scenarioId } }),
+  getSimSession: (sessionId) => request(`/api/simulation/${sessionId}`),
+  respondToSim: (sessionId, userResponse) =>
+    request(`/api/simulation/${sessionId}/respond`, { method: 'POST', body: { user_response: userResponse } }),
+  completeSimulation: (sessionId) => request(`/api/simulation/${sessionId}/complete`, { method: 'POST' }),
+  getSimResults: (sessionId) => request(`/api/simulation/${sessionId}/results`),
 }

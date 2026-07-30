@@ -1,8 +1,11 @@
 # Mind Gym
 
 A personalized mental-wellness mini-game platform: registration/login, a
-profile intake, Groq-powered scenario + question generation, a progressive
-difficulty mini-game, and a final score → mental-status readout.
+profile intake, Groq-powered scenario + question generation, an interactive
+scenario reveal with reflection questions, a progressive difficulty
+mini-game, a final score → mental-status readout, and a separate **Run
+Simulation** mode where you have a real spoken conversation with an AI
+character whose emotional state reacts to you in real time.
 
 ## Quick start (Windows)
 
@@ -16,8 +19,9 @@ Double-click `app.cmd` at the project root. It will:
 **Before your first real session**, edit `backend/.env` and set `GROQ_API_KEY`
 (get one free at https://console.groq.com/keys). Without it, registration,
 login, and the game itself all work — but scenario identification, question
-generation, and the final mental-status read fall back to a fixed
-deterministic result instead of Groq.
+generation, the final mental-status read, and the Run Simulation feature's
+character responses all fall back to a fixed deterministic result instead
+of Groq.
 
 ## Manual setup (Mac/Linux/Windows)
 
@@ -63,19 +67,55 @@ backend/    FastAPI + SQLite (swap DATABASE_URL for your own Neon Postgres
    score computed directly from that domain's 4 answers (`app/assessment.py`),
    grounded in the person's own highest-scoring answer. No LLM call, so it
    can't fail from a Groq outage and gives the same result every time.
-4. **Game selection** - every scenario offers multiple games (currently both
+4. **Scenario reveal + reflection questions** - before picking a game, the
+   person sees their identified scenario alongside a comparison of how it
+   scored against the other candidate scenarios, then works through a short
+   set of Groq-generated reflection questions (simplest first) with
+   multiple-choice options, at their own pace.
+5. **Game selection** - every scenario offers multiple games (currently both
    "Chopping Vegetables" and "Calm Breathing", each scenario-flavored); the
    person picks whichever they prefer. Each game tracks its own progress
    per user - playing one doesn't affect the other's level.
-5. **Continue or restart** - a returning player sees "Continue at Level N"
+6. **Continue or restart** - a returning player sees "Continue at Level N"
    (their highest unlocked level) or "Restart from Level 1". Restarting
    lets you replay from the start; it never erases previously unlocked
    progress - your best level/score only ever goes up.
-6. **The game** - centered game panel, progressive difficulty, 3 lives,
+7. **The game** - centered game panel, progressive difficulty, 3 lives,
    plays until you fail.
-7. **Score -> mental status** - sent to Groq (with a deterministic fallback)
+8. **Score -> mental status** - sent to Groq (with a deterministic fallback)
    for a short, supportive status label + summary + coping tip. Every
    played session is stored, along with updated per-game progress.
+
+### Run Simulation (voice roleplay)
+
+A second, independent training mode reachable from the "Run Simulation" link
+in the top nav once logged in - it doesn't require completing the intake
+assessment first:
+
+1. **Pick a scenario** - four built-in roleplay scenarios (Angry Customer,
+   Workplace Conflict, Anxious Student, Sad Friend), each with its own AI
+   character and starting emotional state.
+2. **Have a real spoken conversation** - the character's opening line is
+   read aloud (browser SpeechSynthesis); you reply with your microphone
+   (browser Web Speech API transcribes it, and you can review/edit before
+   submitting, or just type instead).
+3. **Live analysis** - each response is analyzed by Groq (empathy,
+   relevance, communication, active listening, de-escalation) and the
+   character's anger/frustration/trust/calmness update and animate an SVG
+   avatar accordingly; off-topic responses get flagged instead of silently
+   accepted.
+4. **Demo mode fallback** - if `GROQ_API_KEY` isn't set, or a Groq call
+   fails or returns invalid JSON, that turn automatically falls back to a
+   deterministic rule-based analysis, so the simulation always keeps
+   working.
+5. **Results** - after the configured number of exchanges you get overall +
+   category scores, strengths/weaknesses, AI feedback, an emotion-journey
+   chart, and the full transcript.
+
+Simulation data lives in its own `sim_*`-prefixed tables (see below),
+namespaced separately from the assessment/game tables above, and every
+session is tied to the logged-in `mg_users` row - one person's sessions are
+never visible to another.
 
 ### Data architecture (3NF)
 
@@ -90,6 +130,14 @@ mg_assessment_answers    - one row per Likert answer (1NF: no repeating groups/J
 mg_scenario_scores       - one row per category per assessment (the computed relevance/reason)
 mg_user_game_progress    - one row per (user, scenario_game): current_level, best_score, times_played
 mg_game_sessions         - one row per played game (win or lose), full history preserved
+
+sim_characters           - catalog: the roleplay AI characters (Alex, Jordan, Sam, Riley)
+sim_scenarios            - catalog: the 4 roleplay scenarios, FK -> character
+sim_sessions             - one row per simulation run, FK -> user (mg_users), scenario
+sim_messages             - full conversation transcript (ai/user turns), FK -> session
+sim_user_responses       - one row per user turn with its per-turn scores, FK -> session
+sim_emotion_states       - one row per emotion snapshot over the conversation, FK -> session
+sim_evaluation_results   - one row per completed session's final evaluation, FK -> session
 ```
 
 Catalog tables are seeded idempotently on every startup from `app/assessment.py`

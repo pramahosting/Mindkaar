@@ -1,13 +1,41 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { getStoredUser } from './api.js'
 
 const AppCtx = createContext(null)
 
+function readJSON(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key)
+    return raw ? JSON.parse(raw) : fallback
+  } catch {
+    return fallback
+  }
+}
+
+function writeJSON(key, value) {
+  try {
+    if (value === null || value === undefined) {
+      localStorage.removeItem(key)
+    } else {
+      localStorage.setItem(key, JSON.stringify(value))
+    }
+  } catch {
+    // ignore storage errors (e.g. private browsing quota)
+  }
+}
+
 export function AppProvider({ children }) {
   const [user, setUser] = useState(() => getStoredUser())
   const [profile, setProfile] = useState(null)
-  const [scenario, setScenario] = useState(null) // { primary, candidates }
-  const [questions, setQuestions] = useState(null)
+
+  // scenario, questions, and reflectionAnswers are seeded from localStorage
+  // on load and kept in sync with it below, so a page refresh (or coming
+  // back later) restores them the same way the backend-saved intake
+  // answers are already restored via getLatestAssessment().
+  const [scenario, setScenario] = useState(() => readJSON('mg_scenario', null)) // { primary, candidates }
+  const [questions, setQuestions] = useState(() => readJSON('mg_questions', null))
+  const [reflectionAnswers, setReflectionAnswers] = useState(() => readJSON('mg_reflection_answers', {}))
+
   const [scenarioGames, setScenarioGames] = useState(null) // list from /scenario-games/:scenario
   const [selectedGame, setSelectedGame] = useState(null) // one entry from scenarioGames + startingLevel/wasRestart
   const [lastResult, setLastResult] = useState(null)
@@ -18,6 +46,10 @@ export function AppProvider({ children }) {
   const [intake, setIntake] = useState(null)
   const [intakeEntryStep, setIntakeEntryStep] = useState('context') // 'context' | 'likert'
 
+  useEffect(() => { writeJSON('mg_scenario', scenario) }, [scenario])
+  useEffect(() => { writeJSON('mg_questions', questions) }, [questions])
+  useEffect(() => { writeJSON('mg_reflection_answers', reflectionAnswers) }, [reflectionAnswers])
+
   const resetFlow = () => {
     setProfile(null)
     setScenario(null)
@@ -27,6 +59,7 @@ export function AppProvider({ children }) {
     setLastResult(null)
     setIntake(null)
     setIntakeEntryStep('context')
+    setReflectionAnswers({})
   }
 
   return (
@@ -41,6 +74,7 @@ export function AppProvider({ children }) {
         lastResult, setLastResult,
         intake, setIntake,
         intakeEntryStep, setIntakeEntryStep,
+        reflectionAnswers, setReflectionAnswers,
         resetFlow,
       }}
     >

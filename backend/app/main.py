@@ -20,8 +20,10 @@ from fastapi.staticfiles import StaticFiles
 from app.config import get_settings
 from app.database import Base, SessionLocal, engine
 from app.migrate import run_lightweight_migrations
-from app.routers import auth, mindgym
+from app.routers import auth, mindgym, simulation
 from app.seed import seed_catalog
+from app import sim_models  # noqa: F401 - registers sim_* tables with Base.metadata
+from app.sim_seed import seed_sim_if_empty
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 logger = logging.getLogger("mindgym.main")
@@ -35,6 +37,9 @@ run_lightweight_migrations(engine)
 
 with SessionLocal() as _seed_db:
     seed_catalog(_seed_db)
+
+with SessionLocal() as _sim_seed_db:
+    seed_sim_if_empty(_sim_seed_db)
 
 app = FastAPI(
     title="Mind Gym API",
@@ -52,6 +57,7 @@ app.add_middleware(
 
 app.include_router(auth.router)
 app.include_router(mindgym.router)
+app.include_router(simulation.router)
 
 
 @app.get("/health")

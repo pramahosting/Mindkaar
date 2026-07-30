@@ -19,7 +19,7 @@ const WORK_OPTIONS = ['Employed full-time', 'Employed part-time', 'Self-employed
 const CHILDREN_OPTIONS = ['None', '1', '2', '3+']
 
 export default function Profile() {
-  const { setProfile, setScenario, setQuestions, intake, setIntake, intakeEntryStep, setIntakeEntryStep } = useApp()
+  const { scenario, setProfile, setScenario, setQuestions, intake, setIntake, intakeEntryStep, setIntakeEntryStep, setReflectionAnswers } = useApp()
   const navigate = useNavigate()
 
   const [step, setStep] = useState(intake ? intakeEntryStep : 'context')
@@ -208,6 +208,7 @@ export default function Profile() {
     const profilePayload = { ...contextPayload(), assessment: answers }
 
     try {
+      const previousCategoryId = scenario?.primary?.id
       const scenarioData = await api.saveProfile(profilePayload)
       setProfile(profilePayload)
       setScenario(scenarioData)
@@ -215,7 +216,16 @@ export default function Profile() {
       const questionsData = await api.getQuestions(profilePayload, scenarioData.primary.id)
       setQuestions(questionsData.questions)
 
-      navigate('/games', { replace: true })
+      // Only reset previously-answered reflection questions if the
+      // identified scenario category actually changed - resubmitting the
+      // same answers (e.g. after using Back to review, then continuing
+      // without changes) should keep what was already answered instead of
+      // wiping it, the same way the intake answers above are preserved.
+      if (scenarioData.primary.id !== previousCategoryId) {
+        setReflectionAnswers({})
+      }
+
+      navigate('/scenario', { replace: true })
     } catch (err) {
       setError(err.message)
     } finally {

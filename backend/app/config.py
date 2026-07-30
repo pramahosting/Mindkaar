@@ -50,6 +50,9 @@ class Settings(BaseSettings):
     questions_timeout_seconds: float = 60.0
     status_timeout_seconds: float = 30.0
 
+    # Timeout for the "Run Simulation" feature's per-turn Groq call.
+    simulation_timeout_seconds: float = 30.0
+
     @property
     def allowed_origins_list(self) -> List[str]:
         if self.allowed_origins.strip() == "*":

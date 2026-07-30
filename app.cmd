@@ -87,7 +87,6 @@ if not defined PYCMD (
     echo         ^(check "Add python.exe to PATH" during install - you do NOT
     echo         need to uninstall your existing Python version, both can
     echo         coexist and this script will pick the right one^).
-    pause
     exit /b 1
 )
 
@@ -115,7 +114,6 @@ if not exist "venv" (
     %PYCMD% -m venv venv
     if errorlevel 1 (
         echo [ERROR] Failed to create virtual environment.
-        pause
         exit /b 1
     )
 )
@@ -125,7 +123,6 @@ call "%BACKEND_DIR%\venv\Scripts\python.exe" -m pip install --upgrade pip --no-c
 call "%BACKEND_DIR%\venv\Scripts\pip.exe" install --no-cache-dir --prefer-binary -q -r requirements.txt
 if errorlevel 1 (
     echo [ERROR] pip install failed. Check the output above.
-    pause
     exit /b 1
 )
 
@@ -140,7 +137,6 @@ if not exist "node_modules" (
     call npm install
     if errorlevel 1 (
         echo [ERROR] npm install failed. Check the output above.
-        pause
         exit /b 1
     )
 ) else (
@@ -184,5 +180,4 @@ echo  Frontend: %FRONTEND_URL%
 echo  Close the two console windows to stop each service.
 echo ==============================================
 echo.
-pause
 endlocal
