@@ -1208,3 +1208,61 @@ a { color: var(--accent-dark); text-decoration: none; }
   0%, 100% { box-shadow: 0 6px 20px rgba(245,158,11,.45); }
   50% { box-shadow: 0 6px 26px rgba(245,158,11,.7); }
 }
+
+/* ── Hand gestures + head movement while speaking ── */
+.sim-avatar-stage {
+  position: relative;
+  width: 200px;
+  height: 240px;
+}
+.sim-avatar-stage .sim-avatar-photo-ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.sim-hand {
+  --sim-hand-color: #e2b184;
+  position: absolute;
+  width: 46px;
+  height: 55px;
+  bottom: 4px;
+  filter: drop-shadow(0 3px 4px rgba(0,0,0,.18));
+  transform-origin: 50% 90%;
+  transition: opacity .3s;
+}
+.sim-hand-left {
+  left: 6px;
+  transform: rotate(8deg);
+}
+.sim-hand-right {
+  right: 6px;
+  transform: scaleX(-1) rotate(8deg);
+}
+
+.sim-hand-talking-left {
+  animation: sim-hand-gesture-left 0.62s ease-in-out infinite;
+}
+.sim-hand-talking-right {
+  animation: sim-hand-gesture-right 0.74s ease-in-out infinite;
+}
+@keyframes sim-hand-gesture-left {
+  0%, 100% { transform: rotate(4deg) translateY(0) translateX(0); }
+  40% { transform: rotate(-10deg) translateY(-9px) translateX(-3px); }
+  70% { transform: rotate(2deg) translateY(-3px) translateX(0); }
+}
+@keyframes sim-hand-gesture-right {
+  0%, 100% { transform: scaleX(-1) rotate(4deg) translateY(0) translateX(0); }
+  45% { transform: scaleX(-1) rotate(-12deg) translateY(-11px) translateX(-4px); }
+  75% { transform: scaleX(-1) rotate(3deg) translateY(-2px) translateX(0); }
+}
+
+.sim-head-talking {
+  animation: sim-head-bob 1.4s ease-in-out infinite;
+}
+@keyframes sim-head-bob {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  25% { transform: rotate(-1.2deg) translateY(-1px); }
+  50% { transform: rotate(0.6deg) translateY(0); }
+  75% { transform: rotate(-0.6deg) translateY(-1px); }
+}
