@@ -26,6 +26,7 @@ class SimCharacter(Base):
     __tablename__ = "sim_characters"
 
     id = Column(String, primary_key=True, default=gen_id)
+    slug = Column(String, nullable=True)  # stable lookup key, e.g. "reflection_guide"
     name = Column(String, nullable=False)
     role = Column(String, nullable=False)
     personality = Column(Text, nullable=False)

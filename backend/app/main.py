@@ -23,7 +23,7 @@ from app.migrate import run_lightweight_migrations
 from app.routers import auth, mindgym, simulation
 from app.seed import seed_catalog
 from app import sim_models  # noqa: F401 - registers sim_* tables with Base.metadata
-from app.sim_seed import seed_sim_if_empty
+from app.sim_seed import seed_sim_if_empty, ensure_reflection_guide_character
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 logger = logging.getLogger("mindgym.main")
@@ -40,6 +40,7 @@ with SessionLocal() as _seed_db:
 
 with SessionLocal() as _sim_seed_db:
     seed_sim_if_empty(_sim_seed_db)
+    ensure_reflection_guide_character(_sim_seed_db)
 
 app = FastAPI(
     title="Mind Gym API",

@@ -1,20 +1,8 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
 
-from app.sim_models import SimScenario
-
-# Maps an assessment scenario category (from app/assessment.py) to whichever
-# of the 4 shared simulation scenarios is the closest thematic fit - used
-# to borrow that scenario's character/context/objective when building a
-# personalized one (mirrors frontend/src/lib/scenarioMapping.js).
-CATEGORY_TO_SCENARIO_SLUG = {
-    "anxiety": "anxious_student",
-    "conflict": "workplace_conflict",
-    "loneliness": "sad_friend",
-    "burnout": "sad_friend",
-    "stress": "angry_customer",
-    "unrest": "angry_customer",
-}
+from app.sim_models import SimScenario, SimCharacter
+from app.sim_seed import REFLECTION_GUIDE_SLUG
 
 CATEGORY_TITLES = {
     "stress": "Handling the Pressure",
@@ -49,41 +37,51 @@ def upsert_personal_scenario(
     same category) a scenario personal to this user, whose question
     sequence is exactly their own reflection questions rather than
     anything LLM-improvised - see sim_simulation_service.process_turn for
-    where that's enforced during the actual conversation."""
+    where that's enforced during the actual conversation.
+
+    Uses the dedicated reflection-guide character (Morgan) rather than
+    borrowing one of the 4 combative/distressed characters - those are
+    built around the user de-escalating *them*, which makes no sense for
+    a conversation whose actual content is introspective questions about
+    the user's own experience."""
     questions = [q.strip() for q in questions if q and q.strip()]
     if not questions:
         raise ValueError("At least one reflection question is required.")
 
-    base_slug = CATEGORY_TO_SCENARIO_SLUG.get(category, "angry_customer")
-    base_scenario = (
-        db.query(SimScenario)
-        .filter(SimScenario.slug == base_slug, SimScenario.user_id.is_(None))
-        .first()
-    )
-    if not base_scenario:
-        base_scenario = db.query(SimScenario).filter(SimScenario.user_id.is_(None)).first()
-    if not base_scenario:
-        raise ValueError("No base scenario catalog found to personalize from.")
+    guide = db.query(SimCharacter).filter(SimCharacter.slug == REFLECTION_GUIDE_SLUG).first()
+    if not guide:
+        raise ValueError("Reflection guide character is not set up yet - try again in a moment.")
 
     slug = f"personal_{user_id}_{category}"
     title = CATEGORY_TITLES.get(category, "Your Personalized Conversation")
+    label_lower = category_label.lower()
 
     scenario = db.query(SimScenario).filter(SimScenario.slug == slug).first()
     if not scenario:
-        scenario = SimScenario(slug=slug, user_id=user_id, character_id=base_scenario.character_id)
+        scenario = SimScenario(slug=slug, user_id=user_id, character_id=guide.id)
         db.add(scenario)
+    else:
+        scenario.character_id = guide.id  # in case this scenario predates the guide character
 
     scenario.title = title
     scenario.description = (
-        f"A conversation built from your own reflection questions about {category_label.lower()}, "
-        "with a character that reacts to how you actually respond."
+        f"A conversation built from your own reflection questions about {label_lower}, "
+        "with a guide who reacts to how you actually respond."
     )
-    scenario.context = base_scenario.context
-    scenario.objective = base_scenario.objective
-    scenario.difficulty = base_scenario.difficulty
+    scenario.context = (
+        f"This is a reflective conversation about the {label_lower} you described in your "
+        "assessment. Morgan will ask you the questions you're about to explore, one at a "
+        "time, and respond to what you actually say - there's no script to perform, just "
+        "your own honest answers."
+    )
+    scenario.objective = (
+        "Answer as honestly and specifically as you can. There's no right or wrong response "
+        "here - the goal is simply to notice your own patterns as you talk them through out loud."
+    )
+    scenario.difficulty = "medium"
     scenario.opening_line = questions[0]
     scenario.total_questions = len(questions)
-    scenario.evaluation_criteria = base_scenario.evaluation_criteria
+    scenario.evaluation_criteria = ["openness", "relevance", "communication", "active_listening"]
     scenario.custom_questions = questions
 
     db.commit()

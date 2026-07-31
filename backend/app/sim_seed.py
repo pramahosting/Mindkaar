@@ -5,6 +5,33 @@ always has the 4 demo roleplay scenarios available.
 """
 from app.sim_models import SimCharacter, SimScenario
 
+# Used for every personalized ("Built for you") scenario, regardless of
+# category - a warm, curious listener asking the person's own reflection
+# questions is a completely different role from the 4 combative/distressed
+# characters below (angry customer, upset coworker, etc.), so it gets its
+# own dedicated persona rather than borrowing one of theirs. See
+# ensure_reflection_guide_character() below for how this gets added to an
+# already-seeded database.
+REFLECTION_GUIDE_SLUG = "reflection_guide"
+REFLECTION_GUIDE = dict(
+    slug=REFLECTION_GUIDE_SLUG,
+    name="Morgan",
+    role="Reflective Guide",
+    personality=(
+        "Morgan is a warm, curious, non-judgmental listener helping someone think "
+        "through their own reflection questions out loud. Morgan never lectures or "
+        "rushes to fix things - they ask each question genuinely, listen closely to "
+        "the answer, and respond with brief, specific reflections that show they "
+        "were really listening before moving to the next question. Morgan grows "
+        "warmer and more engaged when the person answers honestly and specifically, "
+        "and gently, gently encourages more detail (without any pressure) when an "
+        "answer is very short or seems to be avoiding the question."
+    ),
+    avatar="guide",
+    initial_emotion={"primary": "calm", "intensity": 0.35, "anger": 0.03,
+                      "frustration": 0.08, "trust": 0.55, "calmness": 0.75},
+)
+
 CHARACTERS = [
     dict(
         slug="alex_customer",
@@ -123,8 +150,7 @@ def seed_sim_if_empty(db) -> None:
 
     char_by_slug = {}
     for c in CHARACTERS:
-        data = {k: v for k, v in c.items() if k != "slug"}
-        char = SimCharacter(**data)
+        char = SimCharacter(**c)
         db.add(char)
         db.flush()  # get generated id
         char_by_slug[c["slug"]] = char.id
@@ -134,4 +160,16 @@ def seed_sim_if_empty(db) -> None:
         scenario = SimScenario(character_id=char_by_slug[s["character_slug"]], **data)
         db.add(scenario)
 
+    db.commit()
+
+
+def ensure_reflection_guide_character(db) -> None:
+    """Adds Morgan (the personalized-scenario character) even to a database
+    that was already seeded before this character existed - seed_sim_if_empty
+    above only runs once against an empty database, so a separate,
+    always-runs-on-startup check is needed for anything added later."""
+    exists = db.query(SimCharacter).filter(SimCharacter.slug == REFLECTION_GUIDE_SLUG).first()
+    if exists:
+        return
+    db.add(SimCharacter(**REFLECTION_GUIDE))
     db.commit()

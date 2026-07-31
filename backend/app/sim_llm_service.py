@@ -55,7 +55,7 @@ personality: {character['personality']}
 SCENARIO
 title: {scenario['title']}
 context: {scenario['context']}
-objective for the user (a customer-service-like rep, friend, or coworker): {scenario['objective']}
+objective for the person you're talking to: {scenario['objective']}
 
 Respond ONLY with a single JSON object, no markdown fences, no extra text,
 matching EXACTLY this schema:
@@ -196,23 +196,44 @@ def _demo_analyze(scenario: dict, character: dict, current_emotion: dict,
     else:
         primary = "neutral"
 
-    responses_good = [
-        "...okay. I appreciate you actually listening to me for once.",
-        "That helps a little. I just want this sorted out properly.",
-        "Alright. I'm still not thrilled, but thank you for hearing me out.",
-    ]
-    responses_bad = [
-        "Wow. That's really not the answer I was hoping for.",
-        "So you're not even going to try to help me?",
-        "That's exactly the kind of response that got us here in the first place.",
-    ]
-    responses_neutral = [
-        "Okay... I guess we'll see.",
-        "Right. So what happens now?",
-    ]
-    responses_irrelevant = [
-        "...I don't think that answers what I asked. Can you address my actual concern?",
-    ]
+    is_guide = character.get("role") == "Reflective Guide"
+
+    if is_guide:
+        responses_good = [
+            "That's really honest - thank you for putting that into words.",
+            "I can hear that clearly. That makes a lot of sense given what you described.",
+            "That's a specific, thoughtful answer - it says a lot.",
+        ]
+        responses_bad = [
+            "That's alright - take your time, there's no rush to have a perfect answer.",
+            "Fair enough. Whenever you're ready, feel free to say a bit more.",
+            "No pressure at all - even a rough first attempt at an answer is useful.",
+        ]
+        responses_neutral = [
+            "Okay, noted. Let's keep going.",
+            "Got it. Let's see what comes up with the next one.",
+        ]
+        responses_irrelevant = [
+            "I don't think that quite answers the question - want to try again in your own words?",
+        ]
+    else:
+        responses_good = [
+            "...okay. I appreciate you actually listening to me for once.",
+            "That helps a little. I just want this sorted out properly.",
+            "Alright. I'm still not thrilled, but thank you for hearing me out.",
+        ]
+        responses_bad = [
+            "Wow. That's really not the answer I was hoping for.",
+            "So you're not even going to try to help me?",
+            "That's exactly the kind of response that got us here in the first place.",
+        ]
+        responses_neutral = [
+            "Okay... I guess we'll see.",
+            "Right. So what happens now?",
+        ]
+        responses_irrelevant = [
+            "...I don't think that answers what I asked. Can you address my actual concern?",
+        ]
 
     if not is_relevant:
         character_response = responses_irrelevant[0]
