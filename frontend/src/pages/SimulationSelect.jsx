@@ -122,15 +122,16 @@ export default function SimulationSelect() {
 
       {hasPersonalScenario && (
         <div className="sim-recommend-banner">
-          The scenario marked <strong>Built for you</strong> below asks your own reflection questions from the
-          assessment as a real conversation - that's the one worth starting with.
+          <p style={{ margin: 0 }}>
+            The scenario marked <strong>Built for you</strong> below asks your own reflection questions from
+            the assessment as a real conversation - that's the one worth starting with.
+          </p>
           {canBuildPersonal && (
-            <>
-              {' '}Retaken the assessment, or does it look out of date?{' '}
-              <button className="mg-link-btn" onClick={handleBuildPersonal} disabled={personalizing}>
+            <div className="sim-refresh-row">
+              <button className="mg-btn sim-refresh-btn" onClick={handleBuildPersonal} disabled={personalizing}>
                 {personalizing ? 'Refreshing…' : 'Refresh it with my latest answers'}
               </button>
-            </>
+            </div>
           )}
         </div>
       )}
