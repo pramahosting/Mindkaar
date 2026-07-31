@@ -1186,3 +1186,25 @@ a { color: var(--accent-dark); text-decoration: none; }
   0%, 100% { opacity: 0; }
   50% { opacity: 0.6; }
 }
+
+/* ── Refresh personalized simulation button ── */
+.sim-refresh-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
+.sim-refresh-btn {
+  width: auto;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  box-shadow: 0 6px 20px rgba(245,158,11,.45);
+  animation: sim-refresh-glow 2.2s ease-in-out infinite;
+}
+.sim-refresh-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(245,158,11,.55);
+}
+@keyframes sim-refresh-glow {
+  0%, 100% { box-shadow: 0 6px 20px rgba(245,158,11,.45); }
+  50% { box-shadow: 0 6px 26px rgba(245,158,11,.7); }
+}
