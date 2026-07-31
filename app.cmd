@@ -184,4 +184,5 @@ echo  Frontend: %FRONTEND_URL%
 echo  Close the two console windows to stop each service.
 echo ==============================================
 echo.
+pause
 endlocal
