@@ -1,0 +1,20 @@
+# Backend
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/*.db
+backend/.env
+backend/static/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# General
+.git/
+.gitignore
+*.md
+.DS_Store
+Thumbs.db
+app.cmd
