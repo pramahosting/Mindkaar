@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { AppProvider } from './AppContext.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import PublicOnlyRoute from './components/PublicOnlyRoute.jsx'
+import Landing from './pages/Landing.jsx'
 import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 import Profile from './pages/Profile.jsx'
@@ -22,7 +23,7 @@ export default function App() {
           path="/"
           element={
             <PublicOnlyRoute>
-              <Navigate to="/login" replace />
+              <Landing />
             </PublicOnlyRoute>
           }
         />

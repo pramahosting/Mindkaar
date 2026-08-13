@@ -33,7 +33,7 @@ export default function Register() {
   return (
     <Layout>
       <h1>Create your account</h1>
-      <p className="mg-subtitle">Join Mind Gym to start your personalized session.</p>
+      <p className="mg-subtitle">Join Mindkaar to start your personalized session.</p>
 
       {error && <div className="mg-error">{error}</div>}
 

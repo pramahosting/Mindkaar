@@ -1,29 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 :root {
-  --navy-950: #050d1a;
-  --navy-900: #0a1628;
-  --navy-800: #0f2040;
-  --teal-500: #00c7b7;
-  --teal-400: #1dd9c8;
-  --teal-300: #5ee8db;
-  --amber-400: #fbbf24;
-  --violet-500: #8b5cf6;
-  --rose-500: #f43f5e;
-  --slate-100: #f1f5f9;
-  --slate-200: #e2e8f0;
-  --slate-400: #94a3b8;
-  --slate-600: #475569;
-  --slate-800: #1e293b;
+  /* ── Mindkaar palette: "aurora" — a deep plum base with electric-violet,
+     coral, mint and sunflare accents. Warmer and more alive than a clinical
+     navy/teal wellness app, without tipping into neon. ── */
+  --navy-950: #150f2e;   /* void - deepest background */
+  --navy-900: #1b1440;   /* deep plum */
+  --navy-800: #241c56;   /* raised dark surface */
+  --teal-500: #22d3ac;   /* mint - growth / success */
+  --teal-400: #3fe6c2;
+  --teal-300: #7ff2d9;
+  --amber-400: #ffc857;  /* sunflare - joy / highlight */
+  --violet-500: #7c5cff; /* electric violet - primary brand */
+  --violet-600: #6a3ff2;
+  --rose-500: #ff6b5b;   /* coral pulse - warmth / secondary */
+  --sky-400: #38bdf8;    /* clear sky - trust / calm-alert */
+  --pink-400: #f472b6;   /* bloom pink - fifth accent, used sparingly */
+  --slate-100: #f4f1ff;
+  --slate-200: #e6e0ff;
+  --slate-400: #9c93c9;
+  --slate-600: #5b5490;
+  --slate-800: #241c56;
 
-  --bg-page: #f8fafd;
+  --bg-page: #faf8ff;
   --bg-card: #ffffff;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --border: #e2e8f0;
-  --accent: var(--teal-500);
-  --accent-dark: #009e90;
+  --text-primary: #1b1440;
+  --text-secondary: #5b5490;
+  --text-muted: #9c93c9;
+  --border: #e6e0ff;
+  --accent: var(--violet-500);
+  --accent-dark: var(--violet-600);
 
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
@@ -31,8 +37,8 @@
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 22px;
-  --shadow-card: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05);
-  --shadow-lg: 0 12px 40px rgba(5,13,26,.16);
+  --shadow-card: 0 1px 3px rgba(21,15,46,.06), 0 4px 16px rgba(21,15,46,.06);
+  --shadow-lg: 0 12px 40px rgba(21,15,46,.18);
 }
 
 * , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,7 +47,7 @@ html, body, #root { height: 100%; }
 
 body {
   font-family: var(--font-body);
-  background: radial-gradient(circle at top left, #0f2040 0%, #050d1a 45%, #050d1a 100%);
+  background: radial-gradient(circle at top left, #241c56 0%, #150f2e 45%, #150f2e 100%);
   color: var(--text-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -191,14 +197,14 @@ a { color: var(--accent-dark); text-decoration: none; }
   padding: 13px 18px;
   border: none;
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, var(--teal-400), var(--accent-dark));
+  background: var(--accent-dark);
   color: #fff;
   font-weight: 600;
   font-size: .95rem;
-  box-shadow: 0 6px 18px rgba(0,199,183,.35);
+  box-shadow: 0 6px 18px rgba(124,92,255,.35);
   transition: transform .12s, box-shadow .12s;
 }
-.mg-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(0,199,183,.45); }
+.mg-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(124,92,255,.45); }
 .mg-btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
 
 .mg-btn-secondary {
@@ -235,7 +241,7 @@ a { color: var(--accent-dark); text-decoration: none; }
   display: inline-block;
   padding: 4px 12px;
   border-radius: 999px;
-  background: rgba(0,199,183,.12);
+  background: rgba(124,92,255,.12);
   color: var(--accent-dark);
   font-size: .78rem;
   font-weight: 700;
@@ -478,7 +484,7 @@ a { color: var(--accent-dark); text-decoration: none; }
   color: var(--slate-100);
   padding: 60px 20px;
 }
-.mg-loading-screen .mg-spinner { border-color: rgba(0,199,183,.25); border-top-color: var(--teal-400); width: 32px; height: 32px; border-width: 3px; }
+.mg-loading-screen .mg-spinner { border-color: rgba(124,92,255,.25); border-top-color: var(--teal-400); width: 32px; height: 32px; border-width: 3px; }
 
 /* ── Calm Breathing game ── */
 .mg-breath-board {
@@ -498,7 +504,7 @@ a { color: var(--accent-dark); text-decoration: none; }
   height: 160px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, var(--teal-300), var(--teal-500) 60%, var(--accent-dark) 100%);
-  box-shadow: 0 0 0 14px rgba(0,199,183,.12), 0 0 0 28px rgba(0,199,183,.06);
+  box-shadow: 0 0 0 14px rgba(124,92,255,.12), 0 0 0 28px rgba(124,92,255,.06);
   transition: transform 0.3s ease-in-out;
 }
 .mg-breath-ring.inhale { transform: scale(1.35); }
@@ -839,8 +845,8 @@ a { color: var(--accent-dark); text-decoration: none; }
 }
 .mg-topbar-nav-link:hover { background: rgba(255,255,255,.08); }
 .mg-topbar-nav-link.active {
-  background: rgba(0,199,183,.16);
-  border-color: rgba(0,199,183,.5);
+  background: rgba(124,92,255,.16);
+  border-color: rgba(124,92,255,.5);
   color: var(--teal-300);
 }
 
@@ -896,12 +902,12 @@ a { color: var(--accent-dark); text-decoration: none; }
   width: 76px; height: 76px;
   border-radius: 50%;
   border: 2.5px solid var(--accent);
-  background: rgba(0,199,183,.1);
+  background: rgba(124,92,255,.1);
   font-size: 1.7rem;
   display: flex; align-items: center; justify-content: center;
   transition: background .15s, border-color .15s;
 }
-.sim-mic-btn:hover:not(:disabled) { background: rgba(0,199,183,.18); }
+.sim-mic-btn:hover:not(:disabled) { background: rgba(124,92,255,.18); }
 .sim-mic-btn:disabled { opacity: .4; cursor: not-allowed; }
 .sim-mic-btn.listening {
   border-color: var(--rose-500);
@@ -1008,8 +1014,8 @@ a { color: var(--accent-dark); text-decoration: none; }
 }
 .sim-score-overall {
   grid-column: span 2;
-  border-color: rgba(0,199,183,.4);
-  background: rgba(0,199,183,.07);
+  border-color: rgba(124,92,255,.4);
+  background: rgba(124,92,255,.07);
 }
 @media (min-width: 640px) { .sim-score-overall { grid-column: span 1; } }
 .sim-score-label { font-size: .78rem; color: var(--text-muted); }
@@ -1038,8 +1044,8 @@ a { color: var(--accent-dark); text-decoration: none; }
 
 /* ── Assessment <-> Run Simulation recommendation ── */
 .sim-recommend-banner {
-  border: 1.5px solid rgba(0,199,183,.4);
-  background: rgba(0,199,183,.08);
+  border: 1.5px solid rgba(124,92,255,.4);
+  background: rgba(124,92,255,.08);
   color: var(--text-secondary);
   border-radius: var(--radius-sm);
   padding: 12px 16px;
@@ -1047,15 +1053,15 @@ a { color: var(--accent-dark); text-decoration: none; }
   margin: 16px 0 20px;
 }
 .sim-recommended-card {
-  border-color: rgba(0,199,183,.5) !important;
-  box-shadow: 0 0 0 2px rgba(0,199,183,.12);
+  border-color: rgba(124,92,255,.5) !important;
+  box-shadow: 0 0 0 2px rgba(124,92,255,.12);
 }
 .sim-recommended-tag {
   display: inline-block;
   font-size: .7rem;
   font-weight: 700;
   color: var(--accent-dark);
-  background: rgba(0,199,183,.12);
+  background: rgba(124,92,255,.12);
   border-radius: 999px;
   padding: 3px 10px;
   margin-bottom: 8px;

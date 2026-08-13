@@ -33,7 +33,7 @@ export default function Login() {
   return (
     <Layout>
       <h1>Welcome back</h1>
-      <p className="mg-subtitle">Log in to continue your Mind Gym journey.</p>
+      <p className="mg-subtitle">Log in to continue your Mindkaar journey.</p>
 
       {error && <div className="mg-error">{error}</div>}
 

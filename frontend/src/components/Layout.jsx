@@ -2,12 +2,13 @@ import React from 'react'
 import { useNavigate, useLocation, useParams } from 'react-router-dom'
 import { useApp } from '../AppContext.jsx'
 import { setToken, setStoredUser } from '../api.js'
+import Logo from './Logo.jsx'
 
 // Pages reached via replace:true navigation (Login -> Profile, Profile ->
 // Scenario, etc.) leave nothing real in browser history to go back to, so
 // navigate(-1) can silently do nothing. Instead, every page gets an
 // explicit, predictable back destination here.
-const NO_BACK_BUTTON = ['/login', '/profile']
+const NO_BACK_BUTTON = ['/profile']
 
 export default function Layout({ children, wide = false, backPosition = 'top' }) {
   const { user, setUser, resetFlow, scenario, setIntakeEntryStep } = useApp()
@@ -51,6 +52,10 @@ export default function Layout({ children, wide = false, backPosition = 'top' })
       navigate('/login')
       return
     }
+    if (path.startsWith('/login')) {
+      navigate('/')
+      return
+    }
     if (params.sessionId && path.startsWith('/simulation') && path.endsWith('/results')) {
       navigate('/simulation')
       return
@@ -73,9 +78,8 @@ export default function Layout({ children, wide = false, backPosition = 'top' })
   return (
     <div className="mg-app">
       <div className="mg-topbar">
-        <button className="mg-brand mg-brand-link" onClick={() => navigate(user ? '/games' : '/login')}>
-          <span className="mg-brand-badge">🧠</span>
-          Mind Gym
+        <button className="mg-brand mg-brand-link" onClick={() => navigate(user ? '/games' : '/')}>
+          <Logo size={30} light />
         </button>
         {user && !location.pathname.startsWith('/profile') && (
           <nav className="mg-topbar-nav">
