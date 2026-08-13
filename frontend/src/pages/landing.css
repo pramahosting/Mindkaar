@@ -124,7 +124,7 @@
   max-width: 16ch;
 }
 .lp-hero h1 .lp-grad {
-  color: var(--rose-500);
+  color: var(--amber-400);
 }
 .lp-hero p.lp-lede {
   position: relative;

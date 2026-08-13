@@ -29,7 +29,7 @@ export function LogoMark({ size = 36, rounded = true }) {
         fill="none"
         opacity="0.96"
       />
-      <circle cx="28" cy="16" r="3.4" fill="#FFC857" />
+      <circle cx="28" cy="16" r="3.4" fill="var(--amber-400, #FFC857)" />
     </svg>
   )
 }
@@ -49,7 +49,7 @@ export default function Logo({ size = 36, withText = true, light = false, classN
             lineHeight: 1,
           }}
         >
-          Mind<span style={{ color: light ? '#FFC857' : 'var(--rose-500)' }}>kaar</span>
+          Mind<span style={{ color: 'var(--amber-400, #FFC857)' }}>kaar</span>
         </span>
       )}
     </span>
